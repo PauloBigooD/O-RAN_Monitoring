@@ -1,0 +1,8 @@
+
+        --------------------------------------------------------------------------------------------------------------------------------------------------
+        | 1 - xapp_kpm_moni               <-> Start the KPM monitor xApp - measurements stated in 2.1.1 E2SM-KPM.                                        |
+        | 2 - xapp_rc_moni                <-> Start the RC monitor xApp - aperiodic subscription for UE RRC State Change.                                |
+        | 3 - xapp_kpm_rc                 <-> Start the RC control xApp - RAN control function QoS flow mapping configuration (e.g. creating a new DRB). |
+        | 4 - xapp_gtp_mac_rlc_pdcp_moni  <-> Start the (MAC + RLC + PDCP + GTP) monitor xApp.                                                           |
+        --------------------------------------------------------------------------------------------------------------------------------------------------
+        

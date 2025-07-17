@@ -1,0 +1,613 @@
+Restarting cpufrequtils (via systemctl): cpufrequtils.service.
+net.ipv4.conf.all.forwarding = 1
+Error response from daemon: No such container: rfsim5g-oai-gnb
+[2024-10-23 13:55:00,433] root:DEBUG: [0;34m UnDeploying OAI 5G core components[0m....
+[2024-10-23 13:55:00,433] root:DEBUG: docker compose -f docker-compose-basic-nrf.yaml down -t 0
+
+[2024-10-23 13:55:00,528] root:DEBUG: [0;32m OAI 5G core components are UnDeployed[0m....
+net.ipv4.conf.all.forwarding = 1
+net.core.wmem_max = 33554432
+net.core.rmem_max = 33554432
+net.core.wmem_default = 33554432
+net.core.rmem_default = 33554432
+[2024-10-23 13:55:00,615] root:DEBUG: [0;34m Starting 5gcn components... Please wait[0m....
+[2024-10-23 13:55:00,692] root:DEBUG: docker compose -f docker-compose-basic-nrf.yaml up -d
+ Network nric-net  Creating
+ Network nric-net  Created
+ Container mysql  Creating
+ Container oai-nrf  Creating
+ Container oai-nrf  Created
+ Container mysql  Created
+ Container php-app  Creating
+ Container oai-udr  Creating
+ Container oai-udr  Created
+ Container oai-udm  Creating
+ Container php-app  Created
+ Container oai-udm  Created
+ Container oai-ausf  Creating
+ Container oai-ausf  Created
+ Container oai-amf  Creating
+ Container oai-amf  Created
+ Container oai-smf  Creating
+ Container oai-smf  Created
+ Container oai-spgwu  Creating
+ Container oai-spgwu  Created
+ Container oai-ext-dn  Creating
+ Container oai-ext-dn  Created
+ Container mysql  Starting
+ Container oai-nrf  Starting
+ Container oai-nrf  Started
+ Container mysql  Started
+ Container php-app  Starting
+ Container oai-udr  Starting
+ Container php-app  Started
+ Container oai-udr  Started
+ Container oai-udm  Starting
+ Container oai-udm  Started
+ Container oai-ausf  Starting
+ Container oai-ausf  Started
+ Container oai-amf  Starting
+ Container oai-amf  Started
+ Container oai-smf  Starting
+ Container oai-smf  Started
+ Container oai-spgwu  Starting
+ Container oai-spgwu  Started
+ Container oai-ext-dn  Starting
+ Container oai-ext-dn  Started
+#0 building with "default" instance using docker driver
+
+#1 [php-app internal] load .dockerignore
+#1 transferring context: 2B done
+#1 DONE 2.0s
+
+#2 [php-app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 993B done
+#2 DONE 2.7s
+
+#3 [php-app internal] load metadata for docker.io/library/php:7.4-apache
+#3 DONE 3.8s
+
+#4 [php-app internal] load build context
+#4 DONE 0.0s
+
+#5 [php-app 1/5] FROM docker.io/library/php:7.4-apache@sha256:c9d7e608f73832673479770d66aacc8100011ec751d1905ff63fae3fe2e0ca6d
+#5 resolve docker.io/library/php:7.4-apache@sha256:c9d7e608f73832673479770d66aacc8100011ec751d1905ff63fae3fe2e0ca6d
+#5 resolve docker.io/library/php:7.4-apache@sha256:c9d7e608f73832673479770d66aacc8100011ec751d1905ff63fae3fe2e0ca6d 1.2s done
+#5 sha256:c9d7e608f73832673479770d66aacc8100011ec751d1905ff63fae3fe2e0ca6d 1.86kB / 1.86kB done
+#5 sha256:18b3497ee7f2099a90b66c23a0bc3d5261b12bab367263e1b40e9b004c39e882 3.04kB / 3.04kB done
+#5 sha256:20a3732f422b7b28dcf99e8597f093a8c135efca62ff0dc02a2d92d916369413 12.51kB / 12.51kB done
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 0B / 31.41MB 0.4s
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 4.19MB / 31.41MB 0.9s
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 11.53MB / 31.41MB 1.2s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 0B / 91.63MB 1.2s
+#5 ...
+
+#4 [php-app internal] load build context
+#4 transferring context: 4.35kB done
+#4 DONE 1.9s
+
+#5 [php-app 1/5] FROM docker.io/library/php:7.4-apache@sha256:c9d7e608f73832673479770d66aacc8100011ec751d1905ff63fae3fe2e0ca6d
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 16.78MB / 31.41MB 1.3s
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 25.17MB / 31.41MB 1.5s
+#5 sha256:c428f1a494230852524a2a5957cc5199c36c8b403305e0e877d580bd0ec9e763 0B / 226B 1.5s
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 31.41MB / 31.41MB 1.6s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 5.24MB / 91.63MB 1.7s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 10.49MB / 91.63MB 1.9s
+#5 sha256:c428f1a494230852524a2a5957cc5199c36c8b403305e0e877d580bd0ec9e763 226B / 226B 1.9s
+#5 sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 31.41MB / 31.41MB 1.9s done
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 17.83MB / 91.63MB 2.1s
+#5 extracting sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2
+#5 sha256:c428f1a494230852524a2a5957cc5199c36c8b403305e0e877d580bd0ec9e763 226B / 226B 2.1s done
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 23.07MB / 91.63MB 2.3s
+#5 sha256:fb5a4c8af82f00730b7427e47bda7f76cea2e2b9aea421750bc9025aface98d8 0B / 270B 2.4s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 28.31MB / 91.63MB 2.5s
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 0B / 19.25MB 2.6s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 35.65MB / 91.63MB 2.7s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 40.89MB / 91.63MB 2.8s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 47.19MB / 91.63MB 3.0s
+#5 sha256:fb5a4c8af82f00730b7427e47bda7f76cea2e2b9aea421750bc9025aface98d8 270B / 270B 2.9s done
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 2.10MB / 19.25MB 3.0s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 53.48MB / 91.63MB 3.2s
+#5 extracting sha256:a603fa5e3b4127f210503aaa6189abf6286ee5a73deeaab460f8f33ebc6b64e2 1.0s done
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 6.29MB / 19.25MB 3.2s
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 8.39MB / 19.25MB 3.3s
+#5 sha256:9b233e420ac7bbca645bb82c213029762acf1742400c076360dc303213c309d5 0B / 475B 3.3s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 59.77MB / 91.63MB 3.4s
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 11.53MB / 19.25MB 3.4s
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 13.63MB / 19.25MB 3.5s
+#5 sha256:9b233e420ac7bbca645bb82c213029762acf1742400c076360dc303213c309d5 475B / 475B 3.5s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 67.11MB / 91.63MB 3.7s
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 19.25MB / 19.25MB 3.7s
+#5 sha256:9b233e420ac7bbca645bb82c213029762acf1742400c076360dc303213c309d5 475B / 475B 3.6s done
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 72.35MB / 91.63MB 4.0s
+#5 extracting sha256:c428f1a494230852524a2a5957cc5199c36c8b403305e0e877d580bd0ec9e763 done
+#5 sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 19.25MB / 19.25MB 4.0s done
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 83.89MB / 91.63MB 4.3s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 91.63MB / 91.63MB 4.6s
+#5 sha256:fe42347c4ecfc90333acd9cad13912387eea39d13827a25cfa78727fa5d200e9 0B / 514B 4.5s
+#5 sha256:fe42347c4ecfc90333acd9cad13912387eea39d13827a25cfa78727fa5d200e9 514B / 514B 4.7s
+#5 sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 0B / 10.76MB 4.7s
+#5 sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 4.19MB / 10.76MB 5.1s
+#5 sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 6.29MB / 10.76MB 5.2s
+#5 sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 8.39MB / 10.76MB 5.3s
+#5 sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 10.76MB / 10.76MB 5.4s
+#5 sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 91.63MB / 91.63MB 5.7s done
+#5 sha256:fe42347c4ecfc90333acd9cad13912387eea39d13827a25cfa78727fa5d200e9 514B / 514B 5.8s done
+#5 sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 10.76MB / 10.76MB 6.1s done
+#5 extracting sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de
+#5 sha256:66d98f73acb62e86c0c226f9eedcbc7eda305df0c1e171ca5caf81cb8b1c40cb 0B / 491B 6.5s
+#5 sha256:66d98f73acb62e86c0c226f9eedcbc7eda305df0c1e171ca5caf81cb8b1c40cb 491B / 491B 6.8s
+#5 sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8 0B / 10.20MB 6.8s
+#5 sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8 2.10MB / 10.20MB 7.0s
+#5 sha256:ab590b48ea476386dd7b07c34de9eff7cf2103c4668ade985fe31e59f15deee8 0B / 2.46kB 7.0s
+#5 sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8 5.24MB / 10.20MB 7.1s
+#5 sha256:66d98f73acb62e86c0c226f9eedcbc7eda305df0c1e171ca5caf81cb8b1c40cb 491B / 491B 7.1s done
+#5 sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8 10.20MB / 10.20MB 7.3s
+#5 sha256:ab590b48ea476386dd7b07c34de9eff7cf2103c4668ade985fe31e59f15deee8 2.46kB / 2.46kB 7.3s
+#5 sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8 10.20MB / 10.20MB 7.3s done
+#5 sha256:80692ae2d067c8358112c56490a2a97f69ef395fd8f7662a31498644c9a813ef 0B / 246B 7.8s
+#5 sha256:80692ae2d067c8358112c56490a2a97f69ef395fd8f7662a31498644c9a813ef 246B / 246B 8.1s
+#5 sha256:05e465aaa99a358add4acecdade8f39843089069f31fea0201533d3a09a98c9a 0B / 892B 8.1s
+#5 sha256:ab590b48ea476386dd7b07c34de9eff7cf2103c4668ade985fe31e59f15deee8 2.46kB / 2.46kB 8.1s done
+#5 sha256:05e465aaa99a358add4acecdade8f39843089069f31fea0201533d3a09a98c9a 892B / 892B 8.2s
+#5 extracting sha256:156740b07ef8a632f9f7bea4e57e4ee5541ade376adf9169351a1265382e39de 2.3s done
+#5 sha256:80692ae2d067c8358112c56490a2a97f69ef395fd8f7662a31498644c9a813ef 246B / 246B 8.2s done
+#5 sha256:05e465aaa99a358add4acecdade8f39843089069f31fea0201533d3a09a98c9a 892B / 892B 8.4s done
+#5 extracting sha256:fb5a4c8af82f00730b7427e47bda7f76cea2e2b9aea421750bc9025aface98d8 done
+#5 extracting sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971
+#5 extracting sha256:25f85b498fd5bfc6cce951513219fe480850daba71e6e997741e984d18483971 0.5s done
+#5 extracting sha256:9b233e420ac7bbca645bb82c213029762acf1742400c076360dc303213c309d5
+#5 extracting sha256:9b233e420ac7bbca645bb82c213029762acf1742400c076360dc303213c309d5 done
+#5 extracting sha256:fe42347c4ecfc90333acd9cad13912387eea39d13827a25cfa78727fa5d200e9 done
+#5 extracting sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa
+#5 extracting sha256:d14eb2ed1e17ae00f5fcb44b0d562e2867c401c20372829e2cf443fc409342fa 0.2s done
+#5 extracting sha256:66d98f73acb62e86c0c226f9eedcbc7eda305df0c1e171ca5caf81cb8b1c40cb done
+#5 extracting sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8
+#5 extracting sha256:d2c43c5efbc861f83ee6565c7102ca660d6f35e158324fbb042de5017e43afe8 0.5s done
+#5 extracting sha256:ab590b48ea476386dd7b07c34de9eff7cf2103c4668ade985fe31e59f15deee8 done
+#5 extracting sha256:80692ae2d067c8358112c56490a2a97f69ef395fd8f7662a31498644c9a813ef done
+#5 extracting sha256:05e465aaa99a358add4acecdade8f39843089069f31fea0201533d3a09a98c9a
+#5 extracting sha256:05e465aaa99a358add4acecdade8f39843089069f31fea0201533d3a09a98c9a done
+#5 DONE 29.3s
+
+#6 [php-app 2/5] RUN docker-php-ext-install pdo pdo_mysql
+#6 2.943 Configuring for:
+#6 2.943 PHP Api Version:         20190902
+#6 2.943 Zend Module Api No:      20190902
+#6 2.943 Zend Extension Api No:   320190902
+#6 3.531 checking for grep that handles long lines and -e... /bin/grep
+#6 3.533 checking for egrep... /bin/grep -E
+#6 3.534 checking for a sed that does not truncate output... /bin/sed
+#6 3.556 checking for pkg-config... /usr/bin/pkg-config
+#6 3.556 checking pkg-config is at least version 0.9.0... yes
+#6 3.558 checking for cc... cc
+#6 3.576 checking whether the C compiler works... yes
+#6 3.610 checking for C compiler default output file name... a.out
+#6 3.611 checking for suffix of executables... 
+#6 3.644 checking whether we are cross compiling... no
+#6 3.680 checking for suffix of object files... o
+#6 3.698 checking whether we are using the GNU C compiler... yes
+#6 3.715 checking whether cc accepts -g... yes
+#6 3.733 checking for cc option to accept ISO C89... none needed
+#6 3.760 checking how to run the C preprocessor... cc -E
+#6 3.799 checking for icc... no
+#6 3.806 checking for suncc... no
+#6 3.813 checking for system library directory... lib
+#6 3.813 checking if compiler supports -R... no
+#6 3.822 checking if compiler supports -Wl,-rpath,... yes
+#6 3.859 checking build system type... x86_64-pc-linux-gnu
+#6 3.863 checking host system type... x86_64-pc-linux-gnu
+#6 3.864 checking target system type... x86_64-pc-linux-gnu
+#6 3.890 checking for PHP prefix... /usr/local
+#6 3.890 checking for PHP includes... -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib
+#6 3.890 checking for PHP extension directory... /usr/local/lib/php/extensions/no-debug-non-zts-20190902
+#6 3.890 checking for PHP installed headers prefix... /usr/local/include/php
+#6 3.890 checking if debug is enabled... no
+#6 3.920 checking if zts is enabled... no
+#6 3.949 checking for gawk... no
+#6 3.950 checking for nawk... nawk
+#6 3.950 checking if nawk is broken... no
+#6 3.951 checking whether to enable PDO support... yes, shared
+#6 3.964 checking for a sed that does not truncate output... /bin/sed
+#6 3.966 checking for ld used by cc... /usr/bin/ld
+#6 3.970 checking if the linker (/usr/bin/ld) is GNU ld... yes
+#6 3.971 checking for /usr/bin/ld option to reload object files... -r
+#6 3.972 checking for BSD-compatible nm... /usr/bin/nm -B
+#6 3.974 checking whether ln -s works... yes
+#6 3.974 checking how to recognize dependent libraries... pass_all
+#6 3.986 checking for ANSI C header files... yes
+#6 4.076 checking for sys/types.h... yes
+#6 4.101 checking for sys/stat.h... yes
+#6 4.126 checking for stdlib.h... yes
+#6 4.152 checking for string.h... yes
+#6 4.178 checking for memory.h... yes
+#6 4.205 checking for strings.h... yes
+#6 4.231 checking for inttypes.h... yes
+#6 4.258 checking for stdint.h... yes
+#6 4.286 checking for unistd.h... yes
+#6 4.313 checking dlfcn.h usability... yes
+#6 4.337 checking dlfcn.h presence... yes
+#6 4.345 checking for dlfcn.h... yes
+#6 4.346 checking the maximum length of command line arguments... 1572864
+#6 4.349 checking command to parse /usr/bin/nm -B output from cc object... ok
+#6 4.405 checking for objdir... .libs
+#6 4.407 checking for ar... ar
+#6 4.408 checking for ranlib... ranlib
+#6 4.408 checking for strip... strip
+#6 4.454 checking if cc supports -fno-rtti -fno-exceptions... no
+#6 4.471 checking for cc option to produce PIC... -fPIC
+#6 4.471 checking if cc PIC flag -fPIC works... yes
+#6 4.488 checking if cc static flag -static works... yes
+#6 4.551 checking if cc supports -c -o file.o... yes
+#6 4.574 checking whether the cc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+#6 4.584 checking whether -lc should be explicitly linked in... no
+#6 4.607 checking dynamic linker characteristics... GNU/Linux ld.so
+#6 4.619 checking how to hardcode library paths into programs... immediate
+#6 4.619 checking whether stripping libraries is possible... yes
+#6 4.621 checking if libtool supports shared libraries... yes
+#6 4.621 checking whether to build shared libraries... yes
+#6 4.622 checking whether to build static libraries... no
+#6 4.742 
+#6 4.742 creating libtool
+#6 4.758 appending configuration tag "CXX" to libtool
+#6 4.806 configure: patching config.h.in
+#6 4.808 configure: creating ./config.status
+#6 4.846 config.status: creating config.h
+#6 4.875 /bin/bash /usr/src/php/ext/pdo/libtool --mode=compile cc  -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo/pdo.c -o pdo.lo 
+#6 4.947 mkdir .libs
+#6 4.948  cc -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo/pdo.c  -fPIC -DPIC -o .libs/pdo.o
+#6 5.116 /bin/bash /usr/src/php/ext/pdo/libtool --mode=compile cc  -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo/pdo_dbh.c -o pdo_dbh.lo 
+#6 5.188  cc -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo/pdo_dbh.c  -fPIC -DPIC -o .libs/pdo_dbh.o
+#6 5.699 /bin/bash /usr/src/php/ext/pdo/libtool --mode=compile cc  -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo/pdo_stmt.c -o pdo_stmt.lo 
+#6 5.772  cc -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo/pdo_stmt.c  -fPIC -DPIC -o .libs/pdo_stmt.o
+#6 6.501 /bin/bash /usr/src/php/ext/pdo/libtool --mode=compile cc  -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo/pdo_sql_parser.c -o pdo_sql_parser.lo 
+#6 6.573  cc -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo/pdo_sql_parser.c  -fPIC -DPIC -o .libs/pdo_sql_parser.o
+#6 6.810 /bin/bash /usr/src/php/ext/pdo/libtool --mode=compile cc  -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo/pdo_sqlstate.c -o pdo_sqlstate.lo 
+#6 6.883  cc -I. -I/usr/src/php/ext/pdo -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo/pdo_sqlstate.c  -fPIC -DPIC -o .libs/pdo_sqlstate.o
+#6 7.010 /bin/bash /usr/src/php/ext/pdo/libtool --mode=link cc -DPHP_ATOM_INC -I/usr/src/php/ext/pdo/include -I/usr/src/php/ext/pdo/main -I/usr/src/php/ext/pdo -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64  -Wl,-O1 -pie  -o pdo.la -export-dynamic -avoid-version -prefer-pic -module -rpath /usr/src/php/ext/pdo/modules  pdo.lo pdo_dbh.lo pdo_stmt.lo pdo_sql_parser.lo pdo_sqlstate.lo 
+#6 7.102 cc -shared  .libs/pdo.o .libs/pdo_dbh.o .libs/pdo_stmt.o .libs/pdo_sql_parser.o .libs/pdo_sqlstate.o   -Wl,-O1 -Wl,-soname -Wl,pdo.so -o .libs/pdo.so
+#6 7.119 creating pdo.la
+#6 7.126 (cd .libs && rm -f pdo.la && ln -s ../pdo.la pdo.la)
+#6 7.128 /bin/bash /usr/src/php/ext/pdo/libtool --mode=install cp ./pdo.la /usr/src/php/ext/pdo/modules
+#6 7.153 cp ./.libs/pdo.so /usr/src/php/ext/pdo/modules/pdo.so
+#6 7.156 cp ./.libs/pdo.lai /usr/src/php/ext/pdo/modules/pdo.la
+#6 7.173 PATH="$PATH:/sbin" ldconfig -n /usr/src/php/ext/pdo/modules
+#6 7.175 ----------------------------------------------------------------------
+#6 7.175 Libraries have been installed in:
+#6 7.175    /usr/src/php/ext/pdo/modules
+#6 7.175 
+#6 7.175 If you ever happen to want to link against installed libraries
+#6 7.175 in a given directory, LIBDIR, you must either use libtool, and
+#6 7.175 specify the full pathname of the library, or use the `-LLIBDIR'
+#6 7.175 flag during linking and do at least one of the following:
+#6 7.175    - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+#6 7.175      during execution
+#6 7.175    - add LIBDIR to the `LD_RUN_PATH' environment variable
+#6 7.175      during linking
+#6 7.175    - use the `-Wl,--rpath -Wl,LIBDIR' linker flag
+#6 7.175    - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+#6 7.175 
+#6 7.175 See any operating system documentation about shared libraries for
+#6 7.175 more information, such as the ld(1) and ld.so(8) manual pages.
+#6 7.176 ----------------------------------------------------------------------
+#6 7.177 
+#6 7.178 Build complete.
+#6 7.179 Don't forget to run 'make test'.
+#6 7.180 
+#6 7.195 + strip --strip-all modules/pdo.so
+#6 7.223 Installing shared extensions:     /usr/local/lib/php/extensions/no-debug-non-zts-20190902/
+#6 7.303 Installing header files:          /usr/local/include/php/
+#6 7.381 Installing PDO headers:           /usr/local/include/php/ext/pdo/
+#6 7.515 
+#6 7.515 warning: pdo (pdo.so) is already loaded!
+#6 7.515 
+#6 7.517 find . -name \*.gcno -o -name \*.gcda | xargs rm -f
+#6 7.520 find . -name \*.lo -o -name \*.o | xargs rm -f
+#6 7.523 find . -name \*.la -o -name \*.a | xargs rm -f
+#6 7.526 find . -name \*.so | xargs rm -f
+#6 7.528 find . -name .libs -a -type d|xargs rm -rf
+#6 7.531 rm -f libphp.la      modules/* libs/*
+#6 7.554 Configuring for:
+#6 7.554 PHP Api Version:         20190902
+#6 7.554 Zend Module Api No:      20190902
+#6 7.554 Zend Extension Api No:   320190902
+#6 8.215 checking for grep that handles long lines and -e... /bin/grep
+#6 8.217 checking for egrep... /bin/grep -E
+#6 8.218 checking for a sed that does not truncate output... /bin/sed
+#6 8.241 checking for pkg-config... /usr/bin/pkg-config
+#6 8.241 checking pkg-config is at least version 0.9.0... yes
+#6 8.242 checking for cc... cc
+#6 8.259 checking whether the C compiler works... yes
+#6 8.306 checking for C compiler default output file name... a.out
+#6 8.307 checking for suffix of executables... 
+#6 8.361 checking whether we are cross compiling... no
+#6 8.436 checking for suffix of object files... o
+#6 8.458 checking whether we are using the GNU C compiler... yes
+#6 8.505 checking whether cc accepts -g... yes
+#6 8.578 checking for cc option to accept ISO C89... none needed
+#6 8.629 checking how to run the C preprocessor... cc -E
+#6 8.683 checking for icc... no
+#6 8.690 checking for suncc... no
+#6 8.697 checking for system library directory... lib
+#6 8.697 checking if compiler supports -R... no
+#6 8.729 checking if compiler supports -Wl,-rpath,... yes
+#6 8.779 checking build system type... x86_64-pc-linux-gnu
+#6 8.783 checking host system type... x86_64-pc-linux-gnu
+#6 8.784 checking target system type... x86_64-pc-linux-gnu
+#6 8.810 checking for PHP prefix... /usr/local
+#6 8.810 checking for PHP includes... -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib
+#6 8.810 checking for PHP extension directory... /usr/local/lib/php/extensions/no-debug-non-zts-20190902
+#6 8.810 checking for PHP installed headers prefix... /usr/local/include/php
+#6 8.810 checking if debug is enabled... no
+#6 8.839 checking if zts is enabled... no
+#6 8.869 checking for gawk... no
+#6 8.869 checking for nawk... nawk
+#6 8.869 checking if nawk is broken... no
+#6 8.870 checking for MySQL support for PDO... yes, shared
+#6 8.871 checking for the location of libz... no
+#6 8.872 checking for MySQL UNIX socket location... 
+#6 8.873 checking for PDO includes... /usr/local/include/php/ext
+#6 8.879 checking for a sed that does not truncate output... /bin/sed
+#6 8.885 checking for ld used by cc... /usr/bin/ld
+#6 8.889 checking if the linker (/usr/bin/ld) is GNU ld... yes
+#6 8.891 checking for /usr/bin/ld option to reload object files... -r
+#6 8.891 checking for BSD-compatible nm... /usr/bin/nm -B
+#6 8.893 checking whether ln -s works... yes
+#6 8.893 checking how to recognize dependent libraries... pass_all
+#6 8.919 checking for ANSI C header files... yes
+#6 9.113 checking for sys/types.h... yes
+#6 9.169 checking for sys/stat.h... yes
+#6 9.224 checking for stdlib.h... yes
+#6 9.292 checking for string.h... yes
+#6 9.345 checking for memory.h... yes
+#6 9.429 checking for strings.h... yes
+#6 9.463 checking for inttypes.h... yes
+#6 9.537 checking for stdint.h... yes
+#6 9.609 checking for unistd.h... yes
+#6 9.707 checking dlfcn.h usability... yes
+#6 9.740 checking dlfcn.h presence... yes
+#6 9.748 checking for dlfcn.h... yes
+#6 9.749 checking the maximum length of command line arguments... 1572864
+#6 9.753 checking command to parse /usr/bin/nm -B output from cc object... ok
+#6 9.956 checking for objdir... .libs
+#6 9.959 checking for ar... ar
+#6 9.959 checking for ranlib... ranlib
+#6 9.959 checking for strip... strip
+#6 10.12 checking if cc supports -fno-rtti -fno-exceptions... no
+#6 10.21 checking for cc option to produce PIC... -fPIC
+#6 10.21 checking if cc PIC flag -fPIC works... yes
+#6 10.23 checking if cc static flag -static works... yes
+#6 10.36 checking if cc supports -c -o file.o... yes
+#6 10.38 checking whether the cc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+#6 10.39 checking whether -lc should be explicitly linked in... no
+#6 10.42 checking dynamic linker characteristics... GNU/Linux ld.so
+#6 10.43 checking how to hardcode library paths into programs... immediate
+#6 10.43 checking whether stripping libraries is possible... yes
+#6 10.43 checking if libtool supports shared libraries... yes
+#6 10.43 checking whether to build shared libraries... yes
+#6 10.43 checking whether to build static libraries... no
+#6 10.55 
+#6 10.55 creating libtool
+#6 10.57 appending configuration tag "CXX" to libtool
+#6 10.62 configure: patching config.h.in
+#6 10.62 configure: creating ./config.status
+#6 10.66 config.status: creating config.h
+#6 10.69 /bin/bash /usr/src/php/ext/pdo_mysql/libtool --mode=compile cc -I/usr/local/include/php/ext -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -I/usr/src/php/ext/pdo_mysql -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo_mysql/pdo_mysql.c -o pdo_mysql.lo 
+#6 10.76 mkdir .libs
+#6 10.76  cc -I/usr/local/include/php/ext -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -I/usr/src/php/ext/pdo_mysql -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo_mysql/pdo_mysql.c  -fPIC -DPIC -o .libs/pdo_mysql.o
+#6 11.69 /bin/bash /usr/src/php/ext/pdo_mysql/libtool --mode=compile cc -I/usr/local/include/php/ext -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -I/usr/src/php/ext/pdo_mysql -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo_mysql/mysql_driver.c -o mysql_driver.lo 
+#6 11.77  cc -I/usr/local/include/php/ext -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -I/usr/src/php/ext/pdo_mysql -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo_mysql/mysql_driver.c  -fPIC -DPIC -o .libs/mysql_driver.o
+#6 12.07 /bin/bash /usr/src/php/ext/pdo_mysql/libtool --mode=compile cc -I/usr/local/include/php/ext -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -I/usr/src/php/ext/pdo_mysql -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64   -c /usr/src/php/ext/pdo_mysql/mysql_statement.c -o mysql_statement.lo 
+#6 12.14  cc -I/usr/local/include/php/ext -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -I. -I/usr/src/php/ext/pdo_mysql -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -c /usr/src/php/ext/pdo_mysql/mysql_statement.c  -fPIC -DPIC -o .libs/mysql_statement.o
+#6 12.37 /bin/bash /usr/src/php/ext/pdo_mysql/libtool --mode=link cc -DPHP_ATOM_INC -I/usr/src/php/ext/pdo_mysql/include -I/usr/src/php/ext/pdo_mysql/main -I/usr/src/php/ext/pdo_mysql -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64  -Wl,-O1 -pie  -o pdo_mysql.la -export-dynamic -avoid-version -prefer-pic -module -rpath /usr/src/php/ext/pdo_mysql/modules  pdo_mysql.lo mysql_driver.lo mysql_statement.lo 
+#6 12.45 cc -shared  .libs/pdo_mysql.o .libs/mysql_driver.o .libs/mysql_statement.o   -Wl,-O1 -Wl,-soname -Wl,pdo_mysql.so -o .libs/pdo_mysql.so
+#6 12.46 creating pdo_mysql.la
+#6 12.47 (cd .libs && rm -f pdo_mysql.la && ln -s ../pdo_mysql.la pdo_mysql.la)
+#6 12.47 /bin/bash /usr/src/php/ext/pdo_mysql/libtool --mode=install cp ./pdo_mysql.la /usr/src/php/ext/pdo_mysql/modules
+#6 12.50 cp ./.libs/pdo_mysql.so /usr/src/php/ext/pdo_mysql/modules/pdo_mysql.so
+#6 12.50 cp ./.libs/pdo_mysql.lai /usr/src/php/ext/pdo_mysql/modules/pdo_mysql.la
+#6 12.52 PATH="$PATH:/sbin" ldconfig -n /usr/src/php/ext/pdo_mysql/modules
+#6 12.52 ----------------------------------------------------------------------
+#6 12.52 Libraries have been installed in:
+#6 12.52    /usr/src/php/ext/pdo_mysql/modules
+#6 12.52 
+#6 12.52 If you ever happen to want to link against installed libraries
+#6 12.52 in a given directory, LIBDIR, you must either use libtool, and
+#6 12.52 specify the full pathname of the library, or use the `-LLIBDIR'
+#6 12.52 flag during linking and do at least one of the following:
+#6 12.52    - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+#6 12.52      during execution
+#6 12.52    - add LIBDIR to the `LD_RUN_PATH' environment variable
+#6 12.52      during linking
+#6 12.52    - use the `-Wl,--rpath -Wl,LIBDIR' linker flag
+#6 12.52    - have your system administrator add LIBDIR to `/etc/ld.so.conf'
+#6 12.52 
+#6 12.52 See any operating system documentation about shared libraries for
+#6 12.52 more information, such as the ld(1) and ld.so(8) manual pages.
+#6 12.52 ----------------------------------------------------------------------
+#6 12.52 
+#6 12.52 Build complete.
+#6 12.52 Don't forget to run 'make test'.
+#6 12.52 
+#6 12.54 + strip --strip-all modules/pdo_mysql.so
+#6 12.55 Installing shared extensions:     /usr/local/lib/php/extensions/no-debug-non-zts-20190902/
+#6 12.61 find . -name \*.gcno -o -name \*.gcda | xargs rm -f
+#6 12.61 find . -name \*.lo -o -name \*.o | xargs rm -f
+#6 12.61 find . -name \*.la -o -name \*.a | xargs rm -f
+#6 12.61 find . -name \*.so | xargs rm -f
+#6 12.62 find . -name .libs -a -type d|xargs rm -rf
+#6 12.62 rm -f libphp.la      modules/* libs/*
+#6 DONE 13.6s
+
+#7 [php-app 3/5] COPY . /var/www/html/
+#7 DONE 2.7s
+
+#8 [php-app 4/5] RUN a2enmod rewrite
+#8 2.541 Enabling module rewrite.
+#8 2.544 To activate the new configuration, you need to run:
+#8 2.544   service apache2 restart
+#8 DONE 3.3s
+
+#9 [php-app 5/5] RUN echo '#!/bin/bash\nif apachectl -t > /dev/null 2>&1; then\n    exit 0\nelse\n    exit 1\nfi' > /usr/local/bin/healthcheck.sh && chmod +x /usr/local/bin/healthcheck.sh
+#9 DONE 3.5s
+
+#10 [php-app] exporting to image
+#10 exporting layers
+#10 exporting layers 2.3s done
+#10 writing image sha256:0789764745ae80c0d25d137200f9f3f80d8c4b437f4eead47e766ad5d48464ad 0.1s done
+#10 naming to docker.io/library/core-scripts-php-app
+#10 naming to docker.io/library/core-scripts-php-app 0.1s done
+#10 DONE 2.5s
+[2024-10-23 13:56:42,136] root:DEBUG: [0;32m OAI 5G Core network started, checking the health status of the containers... takes few secs[0m....
+[2024-10-23 13:56:42,136] root:DEBUG: docker compose -f docker-compose-basic-nrf.yaml ps -a
+[2024-10-23 13:57:57,836] root:DEBUG: [0;32m All components are healthy, please see below for more details[0m....
+NAME         IMAGE                   COMMAND                                                                                                                       SERVICE      CREATED              STATUS                        PORTS
+mysql        mysql:5.7               "docker-entrypoint.sh mysqld"                                                                                                 mysql        About a minute ago   Up About a minute (healthy)   3306/tcp, 33060/tcp
+oai-amf      oai-amf:v1.5.0          "python3 /openair-amf/bin/entrypoint.py /openair-amf/bin/oai_amf -c /openair-amf/etc/amf.conf -o"                             oai-amf      About a minute ago   Up About a minute (healthy)   80/tcp, 9090/tcp, 38412/sctp
+oai-ausf     oai-ausf:v1.5.0         "python3 /openair-ausf/bin/entrypoint.py /openair-ausf/bin/oai_ausf -c /openair-ausf/etc/ausf.conf -o"                        oai-ausf     About a minute ago   Up About a minute (healthy)   80/tcp
+oai-ext-dn   trf-gen-cn5g:latest     "/bin/bash -c ' ip route add 12.1.1.0/24 via 192.168.70.134 dev eth0; sleep infinity'"                                        oai-ext-dn   About a minute ago   Up About a minute (healthy)   
+oai-nrf      oai-nrf:v1.5.0          "python3 /openair-nrf/bin/entrypoint.py /openair-nrf/bin/oai_nrf -c /openair-nrf/etc/nrf.conf -o"                             oai-nrf      About a minute ago   Up About a minute (healthy)   80/tcp, 9090/tcp
+oai-smf      oai-smf:v1.5.0          "python3 /openair-smf/bin/entrypoint.py /openair-smf/bin/oai_smf -c /openair-smf/etc/smf.conf -o"                             oai-smf      About a minute ago   Up About a minute (healthy)   80/tcp, 8080/tcp, 8805/udp
+oai-spgwu    oai-spgwu-tiny:v1.5.0   "python3 /openair-spgwu-tiny/bin/entrypoint.py /openair-spgwu-tiny/bin/oai_spgwu -c /openair-spgwu-tiny/etc/spgw_u.conf -o"   oai-spgwu    About a minute ago   Up About a minute (healthy)   2152/udp, 8805/udp
+oai-udm      oai-udm:v1.5.0          "python3 /openair-udm/bin/entrypoint.py /openair-udm/bin/oai_udm -c /openair-udm/etc/udm.conf -o"                             oai-udm      About a minute ago   Up About a minute (healthy)   80/tcp
+oai-udr      oai-udr:v1.5.0          "python3 /openair-udr/bin/entrypoint.py /openair-udr/bin/oai_udr -c /openair-udr/etc/udr.conf -o"                             oai-udr      About a minute ago   Up About a minute (healthy)   80/tcp
+php-app      core-scripts-php-app    "docker-php-entrypoint apache2-foreground"                                                                                    php-app      About a minute ago   Up About a minute (healthy)   0.0.0.0:9000->80/tcp, :::9000->80/tcp
+[2024-10-23 13:58:07,846] root:DEBUG: [0;34m Checking if the containers are configured[0m....
+[2024-10-23 13:58:07,847] root:DEBUG: [0;34m Checking if AMF, SMF and UPF registered with nrf core network[0m....
+[2024-10-23 13:58:07,847] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="AMF" | grep -o "192.168.70.132"
+192.168.70.132
+[2024-10-23 13:58:07,856] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="SMF" | grep -o "192.168.70.133"
+192.168.70.133
+[2024-10-23 13:58:07,865] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="UPF" | grep -o "192.168.70.134"
+192.168.70.134
+[2024-10-23 13:58:07,872] root:DEBUG: [0;34m Checking if AUSF, UDM and UDR registered with nrf core network[0m....
+[2024-10-23 13:58:07,873] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="AUSF" | grep -o "192.168.70.138"
+192.168.70.138
+[2024-10-23 13:58:07,880] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="UDM" | grep -o "192.168.70.137"
+192.168.70.137
+[2024-10-23 13:58:07,887] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="UDR" | grep -o "192.168.70.136"
+192.168.70.136
+[2024-10-23 13:58:07,895] root:DEBUG: [0;32m AUSF, UDM, UDR, AMF, SMF and UPF are registered to NRF[0m....
+[2024-10-23 13:58:07,895] root:DEBUG: [0;34m Checking if SMF is able to connect with UPF[0m....
+[2024-10-23 13:58:07,930] root:DEBUG: [0;32m UPF did answer to N4 Association request from SMF[0m....
+[2024-10-23 13:58:07,948] root:DEBUG: [0;32m SMF is receiving heartbeats from UPF[0m....
+[2024-10-23 13:58:07,948] root:DEBUG: [0;32m OAI 5G Core network is configured and healthy[0m....
+CONTAINER ID   IMAGE                              COMMAND                  CREATED          STATUS                        PORTS                                                                                                                  NAMES
+5c8fa9d18d94   trf-gen-cn5g:latest                "/bin/bash -c ' ip r…"   2 minutes ago    Up About a minute (healthy)                                                                                                                          oai-ext-dn
+1ee31da77e10   oai-spgwu-tiny:v1.5.0              "python3 /openair-sp…"   2 minutes ago    Up About a minute (healthy)   2152/udp, 8805/udp                                                                                                     oai-spgwu
+655ce5421ad6   oai-smf:v1.5.0                     "python3 /openair-sm…"   2 minutes ago    Up About a minute (healthy)   80/tcp, 8080/tcp, 8805/udp                                                                                             oai-smf
+e261446e080d   oai-amf:v1.5.0                     "python3 /openair-am…"   2 minutes ago    Up About a minute (healthy)   80/tcp, 9090/tcp, 38412/sctp                                                                                           oai-amf
+92c7bec35f30   oai-ausf:v1.5.0                    "python3 /openair-au…"   2 minutes ago    Up About a minute (healthy)   80/tcp                                                                                                                 oai-ausf
+d5d96d43a855   oai-udm:v1.5.0                     "python3 /openair-ud…"   2 minutes ago    Up About a minute (healthy)   80/tcp                                                                                                                 oai-udm
+c23aa83a5a3f   core-scripts-php-app               "docker-php-entrypoi…"   2 minutes ago    Up About a minute (healthy)   0.0.0.0:9000->80/tcp, :::9000->80/tcp                                                                                  php-app
+ebbf0cba6d1a   oai-udr:v1.5.0                     "python3 /openair-ud…"   2 minutes ago    Up About a minute (healthy)   80/tcp                                                                                                                 oai-udr
+b8bf5d585a86   oai-nrf:v1.5.0                     "python3 /openair-nr…"   2 minutes ago    Up 2 minutes (healthy)        80/tcp, 9090/tcp                                                                                                       oai-nrf
+5cbcd30d31ba   mysql:5.7                          "docker-entrypoint.s…"   2 minutes ago    Up 2 minutes (healthy)        3306/tcp, 33060/tcp                                                                                                    mysql
+e909bc59ef18   zabbix-agent-docker-zabbix-agent   "/usr/bin/docker-ent…"   28 minutes ago   Up 28 minutes                 0.0.0.0:10050->10050/tcp, :::10050->10050/tcp                                                                          zabbix-agent
+31e568b1752b   fauria/vsftpd                      "/usr/sbin/run-vsftp…"   2 months ago     Up 4 weeks                    0.0.0.0:20-21->20-21/tcp, :::20-21->20-21/tcp, 0.0.0.0:21100-21110->21100-21110/tcp, :::21100-21110->21100-21110/tcp   ftp-server
+9cd2d54bda86   ghcr.io/librespeed/speedtest       "docker-php-entrypoi…"   4 months ago     Up 2 weeks                    80/tcp, 0.0.0.0:86->86/tcp, :::86->86/tcp                                                                              flamboyant_euclid
+Restarting cpufrequtils (via systemctl): cpufrequtils.service.
+net.ipv4.conf.all.forwarding = 1
+Error response from daemon: No such container: rfsim5g-oai-gnb
+[2024-10-24 15:31:18,434] root:DEBUG: [0;34m UnDeploying OAI 5G core components[0m....
+[2024-10-24 15:31:18,434] root:DEBUG: docker compose -f docker-compose-basic-nrf.yaml down -t 0
+
+[2024-10-24 15:31:18,526] root:DEBUG: [0;32m OAI 5G core components are UnDeployed[0m....
+net.ipv4.conf.all.forwarding = 1
+net.core.wmem_max = 33554432
+net.core.rmem_max = 33554432
+net.core.wmem_default = 33554432
+net.core.rmem_default = 33554432
+[2024-10-24 15:31:18,615] root:DEBUG: [0;34m Starting 5gcn components... Please wait[0m....
+[2024-10-24 15:31:18,691] root:DEBUG: docker compose -f docker-compose-basic-nrf.yaml up -d
+ Network nric-net  Creating
+ Network nric-net  Created
+ Container mysql  Creating
+ Container oai-nrf  Creating
+ Container oai-nrf  Created
+ Container mysql  Created
+ Container php-app  Creating
+ Container oai-udr  Creating
+ Container oai-udr  Created
+ Container oai-udm  Creating
+ Container php-app  Created
+ Container oai-udm  Created
+ Container oai-ausf  Creating
+ Container oai-ausf  Created
+ Container oai-amf  Creating
+ Container oai-amf  Created
+ Container oai-smf  Creating
+ Container oai-smf  Created
+ Container oai-spgwu  Creating
+ Container oai-spgwu  Created
+ Container oai-ext-dn  Creating
+ Container oai-ext-dn  Created
+ Container mysql  Starting
+ Container oai-nrf  Starting
+ Container oai-nrf  Started
+ Container mysql  Started
+ Container php-app  Starting
+ Container oai-udr  Starting
+ Container php-app  Started
+ Container oai-udr  Started
+ Container oai-udm  Starting
+ Container oai-udm  Started
+ Container oai-ausf  Starting
+ Container oai-ausf  Started
+ Container oai-amf  Starting
+ Container oai-amf  Started
+ Container oai-smf  Starting
+ Container oai-smf  Started
+ Container oai-spgwu  Starting
+ Container oai-spgwu  Started
+ Container oai-ext-dn  Starting
+ Container oai-ext-dn  Started
+
+[2024-10-24 15:31:49,328] root:DEBUG: [0;32m OAI 5G Core network started, checking the health status of the containers... takes few secs[0m....
+[2024-10-24 15:31:49,328] root:DEBUG: docker compose -f docker-compose-basic-nrf.yaml ps -a
+[2024-10-24 15:32:56,474] root:DEBUG: [0;32m All components are healthy, please see below for more details[0m....
+NAME         IMAGE                   COMMAND                                                                                                                       SERVICE      CREATED              STATUS                        PORTS
+mysql        mysql:5.7               "docker-entrypoint.sh mysqld"                                                                                                 mysql        About a minute ago   Up About a minute (healthy)   3306/tcp, 33060/tcp
+oai-amf      oai-amf:v1.5.0          "python3 /openair-amf/bin/entrypoint.py /openair-amf/bin/oai_amf -c /openair-amf/etc/amf.conf -o"                             oai-amf      About a minute ago   Up About a minute (healthy)   80/tcp, 9090/tcp, 38412/sctp
+oai-ausf     oai-ausf:v1.5.0         "python3 /openair-ausf/bin/entrypoint.py /openair-ausf/bin/oai_ausf -c /openair-ausf/etc/ausf.conf -o"                        oai-ausf     About a minute ago   Up About a minute (healthy)   80/tcp
+oai-ext-dn   trf-gen-cn5g:latest     "/bin/bash -c ' ip route add 12.1.1.0/24 via 192.168.70.134 dev eth0; sleep infinity'"                                        oai-ext-dn   About a minute ago   Up About a minute (healthy)   
+oai-nrf      oai-nrf:v1.5.0          "python3 /openair-nrf/bin/entrypoint.py /openair-nrf/bin/oai_nrf -c /openair-nrf/etc/nrf.conf -o"                             oai-nrf      About a minute ago   Up About a minute (healthy)   80/tcp, 9090/tcp
+oai-smf      oai-smf:v1.5.0          "python3 /openair-smf/bin/entrypoint.py /openair-smf/bin/oai_smf -c /openair-smf/etc/smf.conf -o"                             oai-smf      About a minute ago   Up About a minute (healthy)   80/tcp, 8080/tcp, 8805/udp
+oai-spgwu    oai-spgwu-tiny:v1.5.0   "python3 /openair-spgwu-tiny/bin/entrypoint.py /openair-spgwu-tiny/bin/oai_spgwu -c /openair-spgwu-tiny/etc/spgw_u.conf -o"   oai-spgwu    About a minute ago   Up About a minute (healthy)   2152/udp, 8805/udp
+oai-udm      oai-udm:v1.5.0          "python3 /openair-udm/bin/entrypoint.py /openair-udm/bin/oai_udm -c /openair-udm/etc/udm.conf -o"                             oai-udm      About a minute ago   Up About a minute (healthy)   80/tcp
+oai-udr      oai-udr:v1.5.0          "python3 /openair-udr/bin/entrypoint.py /openair-udr/bin/oai_udr -c /openair-udr/etc/udr.conf -o"                             oai-udr      About a minute ago   Up About a minute (healthy)   80/tcp
+php-app      core-scripts-php-app    "docker-php-entrypoint apache2-foreground"                                                                                    php-app      About a minute ago   Up About a minute (healthy)   0.0.0.0:9000->80/tcp, :::9000->80/tcp
+[2024-10-24 15:33:06,484] root:DEBUG: [0;34m Checking if the containers are configured[0m....
+[2024-10-24 15:33:06,485] root:DEBUG: [0;34m Checking if AMF, SMF and UPF registered with nrf core network[0m....
+[2024-10-24 15:33:06,485] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="AMF" | grep -o "192.168.70.132"
+192.168.70.132
+[2024-10-24 15:33:06,495] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="SMF" | grep -o "192.168.70.133"
+192.168.70.133
+[2024-10-24 15:33:06,503] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="UPF" | grep -o "192.168.70.134"
+192.168.70.134
+[2024-10-24 15:33:06,511] root:DEBUG: [0;34m Checking if AUSF, UDM and UDR registered with nrf core network[0m....
+[2024-10-24 15:33:06,511] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="AUSF" | grep -o "192.168.70.138"
+192.168.70.138
+[2024-10-24 15:33:06,518] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="UDM" | grep -o "192.168.70.137"
+192.168.70.137
+[2024-10-24 15:33:06,525] root:DEBUG: curl -s -X GET http://192.168.70.130/nnrf-nfm/v1/nf-instances?nf-type="UDR" | grep -o "192.168.70.136"
+192.168.70.136
+[2024-10-24 15:33:06,533] root:DEBUG: [0;32m AUSF, UDM, UDR, AMF, SMF and UPF are registered to NRF[0m....
+[2024-10-24 15:33:06,533] root:DEBUG: [0;34m Checking if SMF is able to connect with UPF[0m....
+[2024-10-24 15:33:06,569] root:DEBUG: [0;32m UPF did answer to N4 Association request from SMF[0m....
+[2024-10-24 15:33:06,588] root:DEBUG: [0;32m SMF is receiving heartbeats from UPF[0m....
+[2024-10-24 15:33:06,588] root:DEBUG: [0;32m OAI 5G Core network is configured and healthy[0m....
+CONTAINER ID   IMAGE                              COMMAND                  CREATED              STATUS                        PORTS                                                                                                                  NAMES
+5675262f8e7d   trf-gen-cn5g:latest                "/bin/bash -c ' ip r…"   About a minute ago   Up About a minute (healthy)                                                                                                                          oai-ext-dn
+5cd97c508f77   oai-spgwu-tiny:v1.5.0              "python3 /openair-sp…"   2 minutes ago        Up About a minute (healthy)   2152/udp, 8805/udp                                                                                                     oai-spgwu
+55018d646b79   oai-smf:v1.5.0                     "python3 /openair-sm…"   2 minutes ago        Up About a minute (healthy)   80/tcp, 8080/tcp, 8805/udp                                                                                             oai-smf
+b59371f625b4   oai-amf:v1.5.0                     "python3 /openair-am…"   2 minutes ago        Up About a minute (healthy)   80/tcp, 9090/tcp, 38412/sctp                                                                                           oai-amf
+6df05e44e01d   oai-ausf:v1.5.0                    "python3 /openair-au…"   2 minutes ago        Up About a minute (healthy)   80/tcp                                                                                                                 oai-ausf
+049a01626c31   oai-udm:v1.5.0                     "python3 /openair-ud…"   2 minutes ago        Up About a minute (healthy)   80/tcp                                                                                                                 oai-udm
+bf5f415a9bc3   core-scripts-php-app               "docker-php-entrypoi…"   2 minutes ago        Up About a minute (healthy)   0.0.0.0:9000->80/tcp, :::9000->80/tcp                                                                                  php-app
+b20ae19b5f8c   oai-udr:v1.5.0                     "python3 /openair-ud…"   2 minutes ago        Up About a minute (healthy)   80/tcp                                                                                                                 oai-udr
+bd66f544b1f2   mysql:5.7                          "docker-entrypoint.s…"   2 minutes ago        Up About a minute (healthy)   3306/tcp, 33060/tcp                                                                                                    mysql
+bbd52dbbafa5   oai-nrf:v1.5.0                     "python3 /openair-nr…"   2 minutes ago        Up About a minute (healthy)   80/tcp, 9090/tcp                                                                                                       oai-nrf
+e909bc59ef18   zabbix-agent-docker-zabbix-agent   "/usr/bin/docker-ent…"   26 hours ago         Up 26 hours                   0.0.0.0:10050->10050/tcp, :::10050->10050/tcp                                                                          zabbix-agent
+31e568b1752b   fauria/vsftpd                      "/usr/sbin/run-vsftp…"   2 months ago         Up 5 weeks                    0.0.0.0:20-21->20-21/tcp, :::20-21->20-21/tcp, 0.0.0.0:21100-21110->21100-21110/tcp, :::21100-21110->21100-21110/tcp   ftp-server
+9cd2d54bda86   ghcr.io/librespeed/speedtest       "docker-php-entrypoi…"   4 months ago         Up 2 weeks                    80/tcp, 0.0.0.0:86->86/tcp, :::86->86/tcp                                                                              flamboyant_euclid
