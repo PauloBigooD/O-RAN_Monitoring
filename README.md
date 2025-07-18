@@ -200,15 +200,15 @@ sudo docker network create -d macvlan --subnet=192.168.170.0/24 --gateway=192.16
 
 > ⚠️ Esse processo o faz rebuild dos componentes da RAN e pode levar alguns minutos.
 
-### Passo 4.1: Iniciar Near-RT RIC - Monolítico
+### Passo 4.1: 📊  Iniciar Near-RT RIC - Monolítico
 
 ```bash
 13) Iniciar nearRT-RIC
 ```
+![Near-Monolitico](https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Near-RT_RIC_Distribuido.png)
 
 ### Passo 4.2: Near-RT RIC - Distribuído
 
-> Para configurar o Near-RT de maneira distribuída é necessário mudar o endereço IP do arquivo `flexric/flexric.conf`. Mas primeiramente devemos instalar o FlexRIC. 
 
 ```bash
 12) Instalar FlexRIC
@@ -220,16 +220,16 @@ sudo docker network create -d macvlan --subnet=192.168.170.0/24 --gateway=192.16
 sudo ip addr add 192.168.170.187/24 dev enp3s0
 ```
 
-> Após adicionar o IP edite o arquivo `flexric/flexric.conf`. Após realizar os ajustes salve o arquivo.
+> Após adicionar o IP edite o arquivo `flexric/flexric.conf`, este será o novo IP do Near-RT RIC. Após realizar os ajustes salve o arquivo.
 
 ```bash
 [NEAR-RIC]
-NEAR_RIC_IP = 127.0.0.1 # Substitua pelo IP que foi adicionado a interface local
+NEAR_RIC_IP = 192.168.170.187 # Substitua pelo IP que foi adicionado a interface local
 ```
 
 ### Passo 4.2.1: Build Near-RT RIC manualmente
 
-> Primeiramente devemos remover a pasta `flexric/build`
+> Para rebuildar devemos remover a pasta `flexric/build`
 
 ```bash
 sudo rm -rf flexric/build
@@ -241,11 +241,13 @@ mkdir flexric/build
 cd flexric/build && sudo cmake .. && sudo make -j8 && sudo make install && cd ../..
 ```
 
-### Passo 4.2.2: Iniciar Near-RT RIC - Distribuído
+### Passo 4.2.2: 📊  Iniciar Near-RT RIC - Distribuído
 
 ```bash
 13) Iniciar nearRT-RIC
 ```
+
+![Near-Distribuido](https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Near-RT_RIC_Distribuido.png)
 
 ---
 
@@ -285,6 +287,12 @@ NETWORK_INTERFACES:
     GNB_INTERFACE_NAME_FOR_NG_AMF = "enp3s0"; # Deve ser a mesma do computador local
     GNB_IPV4_ADDRESS_FOR_NG_AMF   = "192.168.170.78/24";
     ...
+};
+
+e2_agent = {
+  near_ric_ip_addr = "192.168.170.187";
+  #sm_dir = "/path/where/the/SMs/are/located/"
+  sm_dir = "/usr/local/lib/flexric/"
 };
 ```
 

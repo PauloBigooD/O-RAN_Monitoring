@@ -1,0 +1,1275 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: f20f8505ac094e2fa6fe2e68976e80e4
+      name: logica
+    - uuid: b1a65eeba3cc4c9fb198e8f18f433839
+      name: 'Templates/Operating Systems'
+  templates:
+    - uuid: f17226fd9719463383baa592b33c2cc6
+      template: 'Linux Host  - Passivo'
+      name: 'Linux Host  - Passivo'
+      templates:
+        - name: 'Template ICMP Ping'
+      groups:
+        - name: logica
+        - name: 'Templates/Operating Systems'
+      items:
+        - uuid: 362e8ee110e24e87985ef0ff2494d086
+          name: 'Maximum number of opened files'
+          key: kernel.maxfiles
+          delay: 24h
+          history: 1w
+          description: 'It could be increased by using sysctrl utility or modifying file /etc/sysctl.conf.'
+          tags:
+            - tag: Application
+              value: OS
+          triggers:
+            - uuid: 1bcee713c59e4203a442aebd146274a4
+              expression: 'last(/Linux Host  - Passivo/kernel.maxfiles)<1024'
+              name: 'Configured max number of opened files is too low on {HOST.NAME}'
+              priority: INFO
+        - uuid: 88bd93282d444e20b61d0cf7255b40a6
+          name: 'Maximum number of processes'
+          key: kernel.maxproc
+          delay: 24h
+          history: 1w
+          trends: 30d
+          description: 'It could be increased by using sysctrl utility or modifying file /etc/sysctl.conf.'
+          tags:
+            - tag: Application
+              value: OS
+          triggers:
+            - uuid: 6bbf33091ce04389b2519b26ba171c44
+              expression: 'last(/Linux Host  - Passivo/kernel.maxproc)<256'
+              name: 'Configured max number of processes is too low on {HOST.NAME}'
+              priority: INFO
+        - uuid: f1a453a945a8429386a42fe1fa12c94e
+          name: 'Number of running processes'
+          key: 'proc.num[,,run]'
+          history: 1w
+          description: 'Number of processes in running state.'
+          tags:
+            - tag: Application
+              value: Processes
+          triggers:
+            - uuid: 0b8a756bc76e482b9e5d3e9ba8e63ea9
+              expression: 'avg(/Linux Host  - Passivo/proc.num[,,run],5m)>30'
+              name: 'Too many processes running on {HOST.NAME}'
+              priority: WARNING
+        - uuid: ecfde08c05514588b07af913f1fa9755
+          name: 'Number of processes'
+          key: 'proc.num[]'
+          history: 1w
+          description: 'Total number of processes in any state.'
+          tags:
+            - tag: Application
+              value: Processes
+          triggers:
+            - uuid: 052be8ef709f4f3f8d3c3fa91aab4d49
+              expression: 'avg(/Linux Host  - Passivo/proc.num[],1m)>400'
+              name: 'Too many processes on {HOST.NAME}'
+              priority: WARNING
+        - uuid: afb74070c75845968b62c8bff9f7d9a5
+          name: 'Host boot time'
+          key: system.boottime
+          delay: 24h
+          history: 1w
+          units: unixtime
+          tags:
+            - tag: Application
+              value: General
+            - tag: Application
+              value: OS
+        - uuid: 30aa5f0aa485431083d29483a6524e97
+          name: 'Interrupts per second'
+          key: system.cpu.intr
+          history: 1w
+          units: ips
+          preprocessing:
+            - type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: b8744218661343c7a253ab9a9486b366
+          name: 'Processor load (1 min average per core)'
+          key: 'system.cpu.load[percpu,avg1]'
+          history: 1w
+          value_type: FLOAT
+          description: 'The processor load is calculated as system CPU load divided by number of CPU cores.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+          triggers:
+            - uuid: fefec97acf12414b84f8d6254408e763
+              expression: 'avg(/Linux Host  - Passivo/system.cpu.load[percpu,avg1],5m)>5'
+              name: 'Processor load is too high on {HOST.NAME}'
+              priority: AVERAGE
+        - uuid: b14cf46441f7453e97bf45477641d327
+          name: 'Processor load (5 min average per core)'
+          key: 'system.cpu.load[percpu,avg5]'
+          history: 1w
+          value_type: FLOAT
+          description: 'The processor load is calculated as system CPU load divided by number of CPU cores.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 467475bf3d834423bf01f15cf4807c48
+          name: 'Processor load (15 min average per core)'
+          key: 'system.cpu.load[percpu,avg15]'
+          history: 1w
+          value_type: FLOAT
+          description: 'The processor load is calculated as system CPU load divided by number of CPU cores.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 96af908419174e7e903304a6818c2971
+          name: 'Total de CPU''s'
+          key: system.cpu.num
+          history: 90d
+          tags:
+            - tag: Application
+              value: core
+        - uuid: e19bf2370dca41b7b2303628f5f828cc
+          name: 'Context switches per second'
+          key: system.cpu.switches
+          history: 1w
+          units: sps
+          preprocessing:
+            - type: CHANGE_PER_SECOND
+              parameters:
+                - ''
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: d462745f3ae64c6eabe36ad6957fa8f5
+          name: 'CPU utilization'
+          type: DEPENDENT
+          key: system.cpu.util
+          delay: '0'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The CPU utilization expressed in %.'
+          preprocessing:
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  //Calculate utilization
+                  return (100 - value)
+          master_item:
+            key: 'system.cpu.util[,idle]'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 089d0593c49a490cb5884aa83c3ecc8b
+          name: 'CPU guest time'
+          key: 'system.cpu.util[,guest]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'Guest time - the time spent on running a virtual CPU for a guest operating system.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: adbef35661c9485a880fb39348237ea0
+          name: 'CPU guest nice time'
+          key: 'system.cpu.util[,guest_nice]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The time spent on running a niced guest (a virtual CPU for guest operating systems under the control of the Linux kernel).'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 0fef537461f3418aaaca8bdf6bf863b4
+          name: 'CPU idle time'
+          key: 'system.cpu.util[,idle]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The time the CPU has spent doing nothing.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: a881eee8bb804dd2af35687995e9ce65
+          name: 'CPU interrupt time'
+          key: 'system.cpu.util[,interrupt]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The amount of time the CPU has been servicing hardware interrupts.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 4dd29546bff245ebb2a7b0d038167192
+          name: 'CPU iowait time'
+          key: 'system.cpu.util[,iowait]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'Amount of time the CPU has been waiting for I/O to complete.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+          triggers:
+            - uuid: c4224aacc64c462c82a01ecde36fc188
+              expression: 'avg(/Linux Host  - Passivo/system.cpu.util[,iowait],5m)>20'
+              name: 'Disk I/O is overloaded on {HOST.NAME}'
+              priority: WARNING
+              description: 'OS spends significant time waiting for I/O (input/output) operations. It could be indicator of performance issues with storage system.'
+        - uuid: c2ba9311e4ac4fd8963110c3cc7d339f
+          name: 'CPU nice time'
+          key: 'system.cpu.util[,nice]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The time the CPU has spent running users'' processes that have been niced.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 7bf820fd8e194baa983a9efd94575f1a
+          name: 'CPU softirq time'
+          key: 'system.cpu.util[,softirq]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The amount of time the CPU has been servicing software interrupts.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 401c1d7e08b846c68e1840ba77677811
+          name: 'CPU steal time'
+          key: 'system.cpu.util[,steal]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The amount of CPU ''stolen'' from this virtual machine by the hypervisor for other tasks (such as running another virtual machine).'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 9ecde076c138498c8f878d0f5239fb0d
+          name: 'CPU system time'
+          key: 'system.cpu.util[,system]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The time the CPU has spent running the kernel and its processes.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 4c7950dfc9f04e1887d68df872145b87
+          name: 'CPU user time'
+          key: 'system.cpu.util[,user]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The time the CPU has spent running users'' processes that are not niced.'
+          tags:
+            - tag: Application
+              value: CPU
+            - tag: Application
+              value: Performance
+        - uuid: 164833ecd872442799acfe0acfcce837
+          name: 'Host name'
+          key: system.hostname
+          delay: 24h
+          history: 1w
+          value_type: CHAR
+          trends: '0'
+          description: 'System host name.'
+          inventory_link: NAME
+          tags:
+            - tag: Application
+              value: General
+            - tag: Application
+              value: OS
+          triggers:
+            - uuid: d6643171bf484d47964e66ea4d124e55
+              expression: '(last(/Linux Host  - Passivo/system.hostname,#1)<>last(/Linux Host  - Passivo/system.hostname,#2))>0'
+              name: 'Hostname was changed on {HOST.NAME}'
+              priority: INFO
+        - uuid: 4a160c279302493daa270f5e6d7f354d
+          name: 'Host local time'
+          key: system.localtime
+          history: 1w
+          units: unixtime
+          tags:
+            - tag: Application
+              value: General
+            - tag: Application
+              value: OS
+        - uuid: 7611592bdf1947ebbf8dc4b2974dacf6
+          name: 'Free swap space'
+          key: 'system.swap.size[,free]'
+          history: 1w
+          units: B
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: 81fa498a7afa4c7887a6bf85e9c6637c
+          name: 'Free swap space in %'
+          key: 'system.swap.size[,pfree]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          tags:
+            - tag: Application
+              value: Memory
+          triggers:
+            - uuid: 3733af2c4d0248aca5ef74043491e964
+              expression: 'last(/Linux Host  - Passivo/system.swap.size[,pfree])<50'
+              name: 'Lack of free swap space on {HOST.NAME}'
+              priority: WARNING
+              description: 'It probably means that the systems requires more physical memory.'
+        - uuid: 9ac048c2a7ae43a382697c851d7ae80e
+          name: 'Total swap space'
+          key: 'system.swap.size[,total]'
+          delay: '60'
+          history: 1w
+          units: B
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: 0106040359ef4320957624b898b14e50
+          name: 'System information'
+          key: system.uname
+          delay: 24h
+          history: 1w
+          value_type: CHAR
+          trends: '0'
+          description: 'The information as normally returned by ''uname -a''.'
+          inventory_link: OS
+          tags:
+            - tag: Application
+              value: General
+            - tag: Application
+              value: OS
+          triggers:
+            - uuid: f4525be29379456badd5b407ce4b7827
+              expression: '(last(/Linux Host  - Passivo/system.uname,#1)<>last(/Linux Host  - Passivo/system.uname,#2))>0'
+              name: 'Host information was changed on {HOST.NAME}'
+              priority: INFO
+        - uuid: babf037a46554321a2693fdcb55ee3b1
+          name: 'System uptime'
+          key: system.uptime
+          delay: 24h
+          history: 1w
+          units: uptime
+          tags:
+            - tag: Application
+              value: General
+            - tag: Application
+              value: OS
+          triggers:
+            - uuid: f4b874857311416387ce5c2350d4b331
+              expression: 'change(/Linux Host  - Passivo/system.uptime)<0'
+              name: '{HOST.NAME} has just been restarted'
+              priority: INFO
+        - uuid: 372b20c5813140529cf9782d9884fd7f
+          name: 'Number of logged in users'
+          key: system.users.num
+          history: 1w
+          description: 'Number of users who are currently logged in.'
+          tags:
+            - tag: Application
+              value: OS
+            - tag: Application
+              value: Security
+        - uuid: 08062fd682be4dc7bf3accaa85da9f6d
+          name: 'Checksum of $1'
+          key: 'vfs.file.cksum[/etc/passwd]'
+          delay: 24h
+          history: 1w
+          tags:
+            - tag: Application
+              value: Security
+          triggers:
+            - uuid: 52db5a6b5d4a45998f6ff58f840fb905
+              expression: '(last(/Linux Host  - Passivo/vfs.file.cksum[/etc/passwd],#1)<>last(/Linux Host  - Passivo/vfs.file.cksum[/etc/passwd],#2))>0'
+              name: '/etc/passwd has been changed on {HOST.NAME}'
+              priority: WARNING
+        - uuid: 1235a7dbc2a74ae698a4850b049434fb
+          name: 'Active memory'
+          key: 'vm.memory.size[active]'
+          history: 1w
+          units: B
+          description: 'memory currently in use or very recently used, and so it is in RAM'
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: 4a02f04b9f5d40a19bd7f8f8e1eae0fd
+          name: 'Available memory'
+          key: 'vm.memory.size[available]'
+          history: 1w
+          units: B
+          description: 'Available memory is defined as free+cached+buffers memory.'
+          tags:
+            - tag: Application
+              value: Memory
+          triggers:
+            - uuid: 879ebce768954311bf0ed5aa3ffd50d4
+              expression: 'last(/Linux Host  - Passivo/vm.memory.size[available])<20M'
+              name: 'Lack of available memory on server {HOST.NAME}'
+              priority: AVERAGE
+        - uuid: c7aa34265c234afe8eddad5e43a2eadb
+          name: 'Free memory'
+          key: 'vm.memory.size[free]'
+          history: 1w
+          units: B
+          description: 'memory that is readily available to any entity requesting memory'
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: 9ca8b6d5d4884765995b64f194487a68
+          name: 'Available memory in %'
+          key: 'vm.memory.size[pavailable]'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The available memory as percentage of the total. See also Appendixes in Zabbix Documentation about parameters of the `vm.memory.size` item.'
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: 553fdc8b175e41b580950fa03935876b
+          name: 'Total memory'
+          key: 'vm.memory.size[total]'
+          delay: '60'
+          history: 1w
+          units: B
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: fecc7af67ae14ceca5b3908efaebb9ea
+          name: 'Used memory'
+          key: 'vm.memory.size[used]'
+          history: 1w
+          units: B
+          description: 'used memory, calculated differently depending on the platform (see the table below)'
+          tags:
+            - tag: Application
+              value: Memory
+        - uuid: 5b70c068cee0418d9afeec3181cbfe31
+          name: 'Memory utilization'
+          type: DEPENDENT
+          key: vm.memory.utilization
+          delay: '0'
+          history: 1w
+          value_type: FLOAT
+          units: '%'
+          description: 'The percentage of used memory is calculated as `100-pavailable`.'
+          preprocessing:
+            - type: JAVASCRIPT
+              parameters:
+                - 'return (100-value);'
+          master_item:
+            key: 'vm.memory.size[pavailable]'
+          tags:
+            - tag: Application
+              value: Memory
+      discovery_rules:
+        - uuid: f42733526b4445e48dcb990175183301
+          name: 'Network interface discovery'
+          key: net.if.discovery
+          delay: '60'
+          filter:
+            conditions:
+              - macro: '{#IFNAME}'
+                value: '@Network interfaces for discovery'
+                formulaid: A
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          description: 'Discovery of network interfaces as defined in global regular expression "Network interfaces for discovery".'
+          item_prototypes:
+            - uuid: a6ef665001ae48a48b969416f6ed507f
+              name: 'Incoming packets discarded on {#IFNAME}'
+              key: 'net.if.in["{#IFNAME}",dropped]'
+              history: 1w
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: d94342c430da4b518ce382078e3b4317
+              name: 'Incoming packets with errors on {#IFNAME}'
+              key: 'net.if.in["{#IFNAME}",errors]'
+              history: 1w
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: 1eb1213a41aa4c8f9db078d4719ac74e
+              name: 'Incoming network traffic on {#IFNAME}'
+              key: 'net.if.in[{#IFNAME}]'
+              history: 1w
+              units: bps
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: 5f4cdc49b2c24d4a8fbb8a894edf1ca6
+              name: 'Outgoing packets discarded on {#IFNAME}'
+              key: 'net.if.out["{#IFNAME}",dropped]'
+              history: 1w
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: a1ee16db1ba740e6b9ef523edbb0e2e8
+              name: 'Outgoing packets with errors on {#IFNAME}'
+              key: 'net.if.out["{#IFNAME}",errors]'
+              history: 1w
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: 73360300ea8b4a029dfe6b4395743bed
+              name: 'Outgoing network traffic on {#IFNAME}'
+              key: 'net.if.out[{#IFNAME}]'
+              history: 1w
+              units: bps
+              preprocessing:
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '8'
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: ad0f732bc375486fbd622b115b4553b7
+              name: 'Interface {#IFNAME}: Operational status'
+              key: 'vfs.file.contents["/sys/class/net/{#IFNAME}/operstate"]'
+              history: 7d
+              trends: '0'
+              description: 'Reference: https://www.kernel.org/doc/Documentation/networking/operstates.txt'
+              valuemap:
+                name: ifOperStatus
+              preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - |
+                      var newvalue;
+                      switch(value) {
+                        case "unknown":
+                          newvalue = 0;
+                          break;
+                        case "notpresent":
+                          newvalue = 1;
+                          break;
+                        case "down":
+                          newvalue = 2;
+                          break;
+                        case "lowerlayerdown":
+                          newvalue = 3;
+                          break;
+                        case "testing":
+                          newvalue = 4;
+                          break;
+                        case "dormant":
+                          newvalue = 5;
+                          break;
+                        case "up":
+                          newvalue = 6;
+                          break;  default:
+                          newvalue = "Problem parsing interface operstate in JS";
+                      }
+                      return newvalue;
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+            - uuid: 2d732a5b79d54502b89c1feefde50d35
+              name: 'Interface {#IFNAME}: Speed'
+              key: 'vfs.file.contents["/sys/class/net/{#IFNAME}/speed"]'
+              history: 7d
+              trends: '0'
+              units: bps
+              description: |
+                It indicates the latest or current speed value of the interface. The value is an integer representing the link speed expressed in bits/sec.
+                This attribute is only valid for the interfaces that implement the ethtool `get_link_ksettings` method (mostly Ethernet).
+                
+                Reference: https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-net
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '1000000'
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1h
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+                - tag: interface
+                  value: '{#IFNAME}'
+            - uuid: 07208ccfbffe428785baf6be452b00b7
+              name: 'Interface {#IFNAME}: Interface type'
+              key: 'vfs.file.contents["/sys/class/net/{#IFNAME}/type"]'
+              delay: 1h
+              history: 7d
+              trends: '0'
+              description: |
+                It indicates the interface protocol type as a decimal value.
+                See `include/uapi/linux/if_arp.h` for all possible values.
+                Reference: https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-class-net
+              preprocessing:
+                - type: DISCARD_UNCHANGED_HEARTBEAT
+                  parameters:
+                    - 1d
+              tags:
+                - tag: Application
+                  value: 'Network interfaces'
+          graph_prototypes:
+            - uuid: 22aa8eb61dd74935a95290e161239d1e
+              name: 'Network traffic on {#IFNAME}'
+              ymin_type_1: FIXED
+              graph_items:
+                - drawtype: GRADIENT_LINE
+                  color: 00AA00
+                  item:
+                    host: 'Linux Host  - Passivo'
+                    key: 'net.if.in[{#IFNAME}]'
+                - sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: 3333FF
+                  item:
+                    host: 'Linux Host  - Passivo'
+                    key: 'net.if.out[{#IFNAME}]'
+        - uuid: 7dfbd36f6627460f8d60ef439fc4272c
+          name: 'Descoberta de Núcleos de CPU'
+          key: system.cpu.discovery
+          filter:
+            conditions:
+              - macro: '{#CPU.NUMBER}'
+                formulaid: A
+              - macro: '{#CPU.STATUS}'
+                value: online
+                formulaid: B
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 7dc1bb82d3cf4b05aae3cbb3a6beb319
+              name: 'CPU utilization core {#CPU.NUMBER}'
+              key: 'system.cpu.util[{#CPU.NUMBER}]'
+              value_type: FLOAT
+              units: '%'
+              tags:
+                - tag: Application
+                  value: core
+        - uuid: 95a49efe0bc74a398ab8d9b3f339d992
+          name: 'Block devices discovery'
+          key: vfs.dev.discovery
+          delay: 1h
+          filter:
+            conditions:
+              - macro: '{#DEVNAME}'
+                value: '{$VFS.DEV.DEVNAME.MATCHES}'
+                formulaid: A
+              - macro: '{#DEVNAME}'
+                value: '{$VFS.DEV.DEVNAME.NOT_MATCHES}'
+                operator: NOT_MATCHES_REGEX
+                formulaid: B
+              - macro: '{#DEVTYPE}'
+                value: disk
+                formulaid: C
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: f5e35593a22a4695870a40a508701585
+              name: '{#DEVNAME}: Disk average queue size (avgqu-sz)'
+              type: DEPENDENT
+              key: 'vfs.dev.queue_size[{#DEVNAME}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              description: 'The current average disk queue; the number of requests outstanding on the disk while the performance data is being collected.'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$[10]'
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.001'
+              master_item:
+                key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: a89db42ca1ac45c682198eac2e0e1fa3
+              name: '{#DEVNAME}: Disk read request avg waiting time (r_await)'
+              type: CALCULATED
+              key: 'vfs.dev.read.await[{#DEVNAME}]'
+              history: 7d
+              value_type: FLOAT
+              units: '!ms'
+              params: '(last(//vfs.dev.read.time.rate[{#DEVNAME}])/(last(//vfs.dev.read.rate[{#DEVNAME}])+(last(//vfs.dev.read.rate[{#DEVNAME}])=0)))*1000*(last(//vfs.dev.read.rate[{#DEVNAME}]) > 0)'
+              description: 'This formula contains two Boolean expressions that evaluate to 1 or 0 in order to set the calculated metric to zero and to avoid the exception - division by zero.'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: c904efd8420c47b3bbbfbeaf37184cb0
+              name: '{#DEVNAME}: Disk read rate'
+              type: DEPENDENT
+              key: 'vfs.dev.read.rate[{#DEVNAME}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              units: '!r/s'
+              description: 'r/s (read operations per second) - the number (after merges) of read requests completed per second for the device.'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$[0]'
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              master_item:
+                key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: 427bf2b9492a4c1abf51817bac7deedf
+              name: '{#DEVNAME}: Disk read time (rate)'
+              type: DEPENDENT
+              key: 'vfs.dev.read.time.rate[{#DEVNAME}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              description: 'The rate of total read time counter; used in `r_await` calculation.'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$[3]'
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.001'
+              master_item:
+                key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: 9e33112f07c7487fb99028fc588930de
+              name: '{#DEVNAME}: Disk utilization'
+              type: DEPENDENT
+              key: 'vfs.dev.util[{#DEVNAME}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              units: '%'
+              description: 'The rate of total write time counter; used in `w_await` calculation.'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$[9]'
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              master_item:
+                key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: 905b56a1867d4194b5531260486065ab
+              name: '{#DEVNAME}: Disk write request avg waiting time (w_await)'
+              type: CALCULATED
+              key: 'vfs.dev.write.await[{#DEVNAME}]'
+              history: 7d
+              value_type: FLOAT
+              units: '!ms'
+              params: '(last(//vfs.dev.write.time.rate[{#DEVNAME}])/(last(//vfs.dev.write.rate[{#DEVNAME}])+(last(//vfs.dev.write.rate[{#DEVNAME}])=0)))*1000*(last(//vfs.dev.write.rate[{#DEVNAME}]) > 0)'
+              description: 'This formula contains two Boolean expressions that evaluate to 1 or 0 in order to set the calculated metric to zero and to avoid the exception - division by zero.'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: 2212321d7f0f4f19939104d29c88d7bb
+              name: '{#DEVNAME}: Disk write rate'
+              type: DEPENDENT
+              key: 'vfs.dev.write.rate[{#DEVNAME}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              units: '!w/s'
+              description: 'w/s (write operations per second) - the number (after merges) of write requests completed per second for the device.'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$[4]'
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+              master_item:
+                key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: 37ab2b642f14426989640859475f90ee
+              name: '{#DEVNAME}: Disk write time (rate)'
+              type: DEPENDENT
+              key: 'vfs.dev.write.time.rate[{#DEVNAME}]'
+              delay: '0'
+              history: 7d
+              value_type: FLOAT
+              description: 'The rate of total write time counter; used in `w_await` calculation.'
+              preprocessing:
+                - type: JSONPATH
+                  parameters:
+                    - '$[7]'
+                - type: CHANGE_PER_SECOND
+                  parameters:
+                    - ''
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.001'
+              master_item:
+                key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              tags:
+                - tag: Application
+                  value: raw
+                - tag: disk
+                  value: '{#DEVNAME}'
+            - uuid: 688cbca50a794f22bd7e5d58b5430348
+              name: '{#DEVNAME}: Get stats'
+              key: 'vfs.file.contents[/sys/block/{#DEVNAME}/stat]'
+              value_type: TEXT
+              trends: '0'
+              description: 'The contents of get `/sys/block/{#DEVNAME}/stat` to get the disk statistics.'
+              preprocessing:
+                - type: JAVASCRIPT
+                  parameters:
+                    - 'return JSON.stringify(value.trim().split(/ +/));'
+              tags:
+                - tag: Application
+                  value: raw
+          preprocessing:
+            - type: DISCARD_UNCHANGED_HEARTBEAT
+              parameters:
+                - 1h
+        - uuid: 9d7d9662c57a4cbe82b6ea5dc4e73c2f
+          name: 'Mounted filesystem discovery'
+          key: vfs.fs.discovery
+          delay: '60'
+          filter:
+            conditions:
+              - macro: '{#FSTYPE}'
+                value: '@File systems for discovery'
+                formulaid: A
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          description: 'Discovery of file systems of different types as defined in global regular expression "File systems for discovery".'
+          item_prototypes:
+            - uuid: 3d05d9e9485f4f0da75c9121340d4433
+              name: 'Free inodes on {#FSNAME} %'
+              key: 'vfs.fs.inode[{#FSNAME},pfree]'
+              history: 30d
+              value_type: FLOAT
+              trends: 180d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Filesystems
+              trigger_prototypes:
+                - uuid: 40b7c602b55a4d26b349b0dd6ba767da
+                  expression: 'last(/Linux Host  - Passivo/vfs.fs.inode[{#FSNAME},pfree])<10'
+                  name: 'Free inodes is less than 10% on volume {#FSNAME}'
+                  priority: AVERAGE
+                - uuid: 2a8a015280244d44a590336dba4697b7
+                  expression: 'last(/Linux Host  - Passivo/vfs.fs.inode[{#FSNAME},pfree])<20'
+                  name: 'Free inodes is less than 20% on volume {#FSNAME}'
+                  priority: WARNING
+            - uuid: 8bc94ee281fe4391806705af0fd5ec6b
+              name: 'Free disk space on {#FSNAME}'
+              key: 'vfs.fs.size[{#FSNAME},free]'
+              history: 30d
+              trends: 180d
+              units: B
+              tags:
+                - tag: Application
+                  value: Filesystems
+            - uuid: 151a2e826b3a449d9382e16b059ea455
+              name: 'Free disk space on {#FSNAME} %'
+              key: 'vfs.fs.size[{#FSNAME},pfree]'
+              history: 30d
+              value_type: FLOAT
+              trends: 180d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Filesystems
+              trigger_prototypes:
+                - uuid: a900565dd85040aea539cf7d58df8016
+                  expression: 'last(/Linux Host  - Passivo/vfs.fs.size[{#FSNAME},pfree])<10'
+                  name: 'Free disk space is less than 10% on volume {#FSNAME}'
+                  priority: AVERAGE
+                  dependencies:
+                    - name: 'Free disk space is less than 20% on volume {#FSNAME}'
+                      expression: 'last(/Linux Host  - Passivo/vfs.fs.size[{#FSNAME},pfree])<20'
+                - uuid: c099b732319348729823bba783bd884f
+                  expression: 'last(/Linux Host  - Passivo/vfs.fs.size[{#FSNAME},pfree])<20'
+                  name: 'Free disk space is less than 20% on volume {#FSNAME}'
+                  priority: WARNING
+            - uuid: b834ab15e1c348cfa31b69fca1f8f9d5
+              name: 'Used disk space on {#FSNAME} %'
+              key: 'vfs.fs.size[{#FSNAME},pused]'
+              history: 30d
+              value_type: FLOAT
+              trends: 180d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: Filesystems
+            - uuid: 7a0802ede53a41dcbe08a1e4002e6930
+              name: 'Total disk space on {#FSNAME}'
+              key: 'vfs.fs.size[{#FSNAME},total]'
+              delay: 1h
+              history: 30d
+              trends: 180d
+              units: B
+              tags:
+                - tag: Application
+                  value: Filesystems
+            - uuid: aa2b808a38d34aefa6a9909bc728a071
+              name: 'Used disk space on {#FSNAME}'
+              key: 'vfs.fs.size[{#FSNAME},used]'
+              history: 30d
+              trends: 180d
+              units: B
+              tags:
+                - tag: Application
+                  value: Filesystems
+          graph_prototypes:
+            - uuid: 44c1a16775534fbf82ba9deac56b6a08
+              name: 'Disk space usage {#FSNAME}'
+              width: '600'
+              height: '340'
+              show_work_period: 'NO'
+              show_triggers: 'NO'
+              type: PIE
+              show_3d: 'YES'
+              graph_items:
+                - color: C80000
+                  type: GRAPH_SUM
+                  item:
+                    host: 'Linux Host  - Passivo'
+                    key: 'vfs.fs.size[{#FSNAME},total]'
+                - sortorder: '1'
+                  color: 00C800
+                  item:
+                    host: 'Linux Host  - Passivo'
+                    key: 'vfs.fs.size[{#FSNAME},free]'
+      dashboards:
+        - uuid: 426673e7c9b944d1a85029db359e4fb6
+          name: 'System performance'
+          pages:
+            - widgets:
+                - type: graph
+                  width: '36'
+                  height: '5'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'Linux Host  - Passivo'
+                        name: 'CPU load'
+                    - type: STRING
+                      name: reference
+                      value: AAAAA
+                    - type: INTEGER
+                      name: source_type
+                      value: '0'
+                - type: graph
+                  'y': '5'
+                  width: '36'
+                  height: '7'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'Linux Host  - Passivo'
+                        name: 'Memory usage'
+                    - type: STRING
+                      name: reference
+                      value: AAAAB
+                    - type: INTEGER
+                      name: source_type
+                      value: '0'
+                - type: graph
+                  'y': '12'
+                  width: '36'
+                  height: '5'
+                  fields:
+                    - type: ITEM
+                      name: itemid
+                      value:
+                        host: 'Linux Host  - Passivo'
+                        key: 'proc.num[]'
+                    - type: STRING
+                      name: reference
+                      value: AAAAC
+                    - type: INTEGER
+                      name: source_type
+                      value: '1'
+                - type: graph
+                  x: '36'
+                  width: '36'
+                  height: '5'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'Linux Host  - Passivo'
+                        name: 'CPU utilization'
+                    - type: STRING
+                      name: reference
+                      value: AAAAD
+                    - type: INTEGER
+                      name: source_type
+                      value: '0'
+                - type: graph
+                  x: '36'
+                  'y': '5'
+                  width: '36'
+                  height: '7'
+                  fields:
+                    - type: GRAPH
+                      name: graphid
+                      value:
+                        host: 'Linux Host  - Passivo'
+                        name: 'Swap usage'
+                    - type: STRING
+                      name: reference
+                      value: AAAAE
+                    - type: INTEGER
+                      name: source_type
+                      value: '0'
+                - type: graph
+                  x: '36'
+                  'y': '12'
+                  width: '36'
+                  height: '5'
+                  fields:
+                    - type: ITEM
+                      name: itemid
+                      value:
+                        host: 'Linux Host  - Passivo'
+                        key: 'proc.num[,,run]'
+                    - type: STRING
+                      name: reference
+                      value: AAAAF
+                    - type: INTEGER
+                      name: source_type
+                      value: '1'
+      valuemaps:
+        - uuid: 8d6f661ed5464cbe840e41aa6a28f505
+          name: ifOperStatus
+          mappings:
+            - value: '0'
+              newvalue: unknown
+            - value: '1'
+              newvalue: notpresent
+            - value: '2'
+              newvalue: down
+            - value: '3'
+              newvalue: lowerlayerdown
+            - value: '4'
+              newvalue: testing
+            - value: '5'
+              newvalue: dormant
+            - value: '6'
+              newvalue: up
+  triggers:
+    - uuid: c69df16fb0b44b48aa4ed6216374fbe2
+      expression: 'max(/Linux Host  - Passivo/icmpping,5m)=0'
+      name: 'Unavailable by ICMP ping'
+      priority: HIGH
+      description: |
+        Last value: {ITEM.LASTVALUE1}.
+        Last three attempts returned timeout.  Please check device connectivity.
+  graphs:
+    - uuid: 306290dba3bc4df98a99a126f3a9df13
+      name: 'CPU jumps'
+      graph_items:
+        - color: '009900'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: system.cpu.switches
+        - sortorder: '1'
+          color: '000099'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: system.cpu.intr
+    - uuid: 7e87c9659961447ab29c4f4999776677
+      name: 'CPU load'
+      ymin_type_1: FIXED
+      graph_items:
+        - color: '009900'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.load[percpu,avg1]'
+        - sortorder: '1'
+          color: '000099'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.load[percpu,avg5]'
+        - sortorder: '2'
+          color: '990000'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.load[percpu,avg15]'
+    - uuid: bc6cce1bdc6f4ef3aafd461a5eb4a023
+      name: 'CPU utilization'
+      show_triggers: 'NO'
+      type: STACKED
+      ymin_type_1: FIXED
+      ymax_type_1: FIXED
+      graph_items:
+        - drawtype: FILLED_REGION
+          color: FF5555
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,steal]'
+        - sortorder: '1'
+          drawtype: FILLED_REGION
+          color: 55FF55
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,softirq]'
+        - sortorder: '2'
+          drawtype: FILLED_REGION
+          color: '009999'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,interrupt]'
+        - sortorder: '3'
+          drawtype: FILLED_REGION
+          color: '990099'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,nice]'
+        - sortorder: '4'
+          drawtype: FILLED_REGION
+          color: '999900'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,iowait]'
+        - sortorder: '5'
+          drawtype: FILLED_REGION
+          color: '990000'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,system]'
+        - sortorder: '6'
+          drawtype: FILLED_REGION
+          color: '000099'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,user]'
+        - sortorder: '7'
+          drawtype: FILLED_REGION
+          color: '009900'
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.cpu.util[,idle]'
+    - uuid: 88a39e0e6b2f44f2ab8af023b0cd0cd7
+      name: 'Memory usage'
+      ymin_type_1: FIXED
+      ymax_type_1: ITEM
+      ymax_item_1:
+        host: 'Linux Host  - Passivo'
+        key: 'vm.memory.size[total]'
+      graph_items:
+        - drawtype: GRADIENT_LINE
+          color: 00C800
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'vm.memory.size[available]'
+    - uuid: c18e10f1406f4de6b623d00c6d3a483c
+      name: 'Swap usage'
+      width: '600'
+      height: '340'
+      show_work_period: 'NO'
+      show_triggers: 'NO'
+      type: PIE
+      show_3d: 'YES'
+      graph_items:
+        - color: AA0000
+          type: GRAPH_SUM
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.swap.size[,total]'
+        - sortorder: '1'
+          color: 00AA00
+          item:
+            host: 'Linux Host  - Passivo'
+            key: 'system.swap.size[,free]'
