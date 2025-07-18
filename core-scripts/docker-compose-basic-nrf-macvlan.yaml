@@ -17,8 +17,6 @@ services:
             timeout: 5s
             retries: 5
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.186
             macvlan-dhcp:
                 ipv4_address: 192.168.170.186
     oai-udr:
@@ -50,8 +48,6 @@ services:
             - mysql
             - oai-nrf
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.180
             macvlan-dhcp:
                 ipv4_address: 192.168.170.180
     oai-udm:
@@ -80,8 +76,6 @@ services:
         depends_on:
             - oai-udr
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.181
             macvlan-dhcp:
                 ipv4_address: 192.168.170.181
     oai-ausf:
@@ -109,8 +103,6 @@ services:
         depends_on:
             - oai-udm
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.182
             macvlan-dhcp:
                 ipv4_address: 192.168.170.182
     oai-nrf:
@@ -125,8 +117,6 @@ services:
             - INSTANCE=0
             - PID_DIRECTORY=/var/run
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.179
             macvlan-dhcp:
                 ipv4_address: 192.168.170.179
     oai-amf:
@@ -203,8 +193,6 @@ services:
             - oai-nrf
             - oai-ausf
         networks:
-            #public_net:
-                #ipv4_address: 192.168.70.132
             macvlan-dhcp:
                 ipv4_address: 192.168.170.178
     oai-smf:
@@ -272,8 +260,6 @@ services:
             - oai-nrf
             - oai-amf
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.183
             macvlan-dhcp:
                 ipv4_address: 192.168.170.183
     oai-spgwu:
@@ -328,8 +314,6 @@ services:
             - ALL
         privileged: true
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.184
             macvlan-dhcp:
                 ipv4_address: 192.168.170.184
     oai-ext-dn:
@@ -346,22 +330,8 @@ services:
             timeout: 5s
             retries: 5
         networks:
-            #public_net:
-                #ipv4_address: 192.168.170.185
             macvlan-dhcp:
                 ipv4_address: 192.168.170.185
 networks:
-    # public_net:
-    #     external:
-    #         name: demo-oai-public-net
-    #public_net:
-    #    driver: bridge
-    #    name: nric-net
-    #    ipam:
-    #        config:
-    #           - subnet: 192.168.70.128/26
-    #    driver_opts:
-    #        com.docker.network.bridge.name: "eth0"
-    #        com.docker.network.driver.mtu: 9000
     macvlan-dhcp:
         external: true

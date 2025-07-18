@@ -349,7 +349,7 @@ function start_4g(){
     }
 
 # Função que realiza o deploy da RAN e CORE do OAI
-function start_5g(){
+function start_5g_mono(){
     stop_5g
     sudo sysctl net.ipv4.conf.all.forwarding=1
     sudo iptables -P FORWARD ACCEPT
@@ -360,6 +360,20 @@ function start_5g(){
     cd $WORK_DIR/core-scripts || exit
     sudo python3 core-network.py --type start-basic --scenario 1
     sleep 20
+    docker ps -a
+    }
+
+# Função que realiza o deploy da RAN e CORE do OAI
+function start_5g_dist(){
+    stop_5g
+    sudo sysctl net.ipv4.conf.all.forwarding=1
+    sudo iptables -P FORWARD ACCEPT
+    sudo sysctl -w net.core.wmem_max=33554432
+    sudo sysctl -w net.core.rmem_max=33554432
+    sudo sysctl -w net.core.wmem_default=33554432
+    sudo sysctl -w net.core.rmem_default=33554432
+    cd $WORK_DIR/core-scripts || exit
+    sudo sudo docker compose -f docker-compose-basic-nrf-macvlan.yaml up -d
     docker ps -a
     }
 
@@ -717,7 +731,11 @@ case "${COMMAND}" in
         build_oai_RAN
         pull_docker_5g
         ;;
-    "--start_5g")
+    "--start_5g_mono")
+        init_performance
+        start_5g
+        ;;
+    "--start_5g_dist")
         init_performance
         start_5g
         ;;
