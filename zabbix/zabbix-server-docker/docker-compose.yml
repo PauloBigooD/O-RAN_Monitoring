@@ -34,8 +34,9 @@ services:
     ports:
       - '10051:10051'
     volumes:
-      - alertscripts:/usr/lib/zabbix/alertscripts
-      - externalscripts:/usr/lib/zabbix/externalscripts
+      - ./etc/zabbix/alertscripts:/usr/lib/zabbix/alertscripts
+      - ./etc/zabbix/externalscripts:/usr/lib/zabbix/externalscripts
+      - ./etc/zabbix/templates:/usr/share/zabbix/templates/custom
     environment:
       POSTGRES_USER: zabbix                                     # Database user
       POSTGRES_PASSWORD: zabbix                                 # Database password
