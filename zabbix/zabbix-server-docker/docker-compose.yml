@@ -95,11 +95,14 @@ services:
 
   grafana:
     container_name: grafana-server
-    image: grafana/grafana:latest-ubuntu                         # Modify according to the desired image version
+    image: grafana/grafana:10.2.9-ubuntu                         # Modify according to the desired image version
     networks:
       - network-zabbix
     ports:
-      - '3000:3000'                                              # By default Grafana uses port 3000, if necessary it can be changed. Example 3030:3000 - external-port:internal-port 
+      - '3000:3000'                                              # By default Grafana uses port 3000, if necessary it can be changed. Example 3030:3000 - external-port:internal-port
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     restart: always
     environment:
       GF_INSTALL_PLUGINS: alexanderzobnin-zabbix-app,grafana-piechart-panel,yesoreyeram-boomtable-panel,grafana-worldmap-panel,grafana-clock-panel,yesoreyeram-boomtheme-panel,briangann-gauge-panel,agenty-flowcharting-panel
@@ -109,6 +112,21 @@ services:
     volumes:
       - grafana:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+
+  zabbix-importer:
+    container_name: zabbix-importer
+    build:
+      context: ./Dockerfile
+      dockerfile: Dockerfile-importer
+    depends_on:
+      - postgres-server
+      - zabbix-server
+    volumes:
+      - ./etc/zabbix/templates:/templates
+      - ./etc/zabbix/importer:/importer
+    entrypoint: ["bash", "-c", "sleep 30 && python /importer/import_zabbix_templates.py"]
+    networks:
+      - network-zabbix
 
 volumes:
   pgdata:
