@@ -203,20 +203,117 @@ def get_template_ids(session, token, template_names):
     
     return list(template_map.values())
 
-def main():
-    # [Restante do código permanece igual...]
-    try:
-        print("\n🔍 Obtendo host 'Zabbix server'...")
-        host_id = get_zabbix_server_host(session, token)
-        
-        print("\n🔍 Buscando templates para vincular...")
-        template_ids = get_template_ids(session, token, TEMPLATES_TO_LINK)
-        
-        update_host_templates(session, token, host_id, template_ids)
-    except Exception as e:
-        print(f"[!] Falha ao vincular templates: {e}")
-        # Sugere ajustes específicos baseados nos nomes reais
-        print("\n💡 Dica: Ajuste a lista TEMPLATE_NAMES para corresponder exatamente aos nomes listados acima")
+def create_discovery_rule(session, token):
+    print("\n🔍 Verificando existência da Discovery Rule 'O-RAN'...")
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "drule.get",
+        "params": {"filter": {"name": "O-RAN"}},
+        "id": 12
+    }
+    headers = {
+        "Content-Type": "application/json-rpc",
+        "Authorization": f"Bearer {token}"
+    }
+
+    response = session.post(ZABBIX_URL, json=payload, headers=headers)
+    result = response.json()
+
+    if result.get("result"):
+        print("✅ Discovery Rule 'O-RAN' já existe.")
+        return result["result"][0]["druleid"]
+
+    print("➕ Criando Discovery Rule 'O-RAN'...")
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "drule.create",
+        "params": {
+            "name": "O-RAN",
+            "iprange": "192.168.1.1-254",
+            "delay": "300s",
+            "dchecks": [{
+                "type": 9,  # Zabbix agent
+                "key_": "system.uname",
+                "ports": "10050"
+            }]
+        },
+        "id": 13
+    }
+
+    response = session.post(ZABBIX_URL, json=payload, headers=headers)
+    result = response.json()
+
+    if "error" in result:
+        raise RuntimeError(f"Erro ao criar Discovery Rule: {json.dumps(result['error'], indent=2)}")
+
+    print("✅ Discovery Rule criada com sucesso.")
+    return result["result"]["druleids"][0]
+
+def create_autoregistration_action(session, token, group_id, template_ids):
+    print("\n🔍 Verificando existência da Auto-registration Action 'O-RAN'...")
+    headers = {
+        "Content-Type": "application/json-rpc",
+        "Authorization": f"Bearer {token}"
+    }
+
+    # Verifica se já existe
+    response = session.post(ZABBIX_URL, json={
+        "jsonrpc": "2.0",
+        "method": "action.get",
+        "params": {"filter": {"name": "O-RAN"}, "eventsource": 2},
+        "id": 14
+    }, headers=headers)
+    result = response.json()
+
+    if result.get("result"):
+        print("✅ Auto-registration Action 'O-RAN' já existe.")
+        return
+
+    print("➕ Criando Auto-registration Action 'O-RAN'...")
+
+    # Criação da action
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "action.create",
+        "params": {
+            "name": "O-RAN",
+            "eventsource": 2,  # Auto-registration
+            "status": 0,
+            "filter": {
+                "evaltype": 0,
+                "conditions": [
+                    {
+                        "conditiontype": 24,  # Host metadata
+                        "operator": 8,        # Matches regex
+                        "value": "ORAN"         # Qualquer metadata
+                    }
+                ]
+            }
+            ,
+            "operations": [
+                {
+                    "operationtype": 2  # Add host
+                },
+                {
+                    "operationtype": 4,
+                    "opgroup": [{"groupid": group_id}]
+                },
+                {
+                    "operationtype": 6,
+                    "optemplate": [{"templateid": tid} for tid in template_ids]
+                }
+            ]
+        },
+        "id": 15
+    }
+
+    response = session.post(ZABBIX_URL, json=payload, headers=headers)
+    result = response.json()
+
+    if "error" in result:
+        raise RuntimeError(f"Erro ao criar Action: {json.dumps(result['error'], indent=2)}")
+
+    print("✅ Auto-registration Action 'O-RAN' criada com sucesso.")
 
 def update_host_configuration(session, token, host_id):
     """Atualiza a configuração do host (IP e templates)"""
@@ -354,6 +451,32 @@ def update_host_templates_sequential(session, token, host_id):
         print(f"⚠️ Erro ao vincular templates: {str(e)}")
         return False
 
+def get_group_id(group_name, session, token):
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "hostgroup.get",
+        "params": {"filter": {"name": group_name}},
+        "id": 6
+    }
+    headers = {
+        "Content-Type": "application/json-rpc",
+        "Authorization": f"Bearer {token}"
+    }
+    response = session.post(ZABBIX_URL, json=payload, headers=headers)
+    result = response.json()
+    if result.get("result"):
+        return result["result"][0]["groupid"]
+    
+    # Cria se não existir
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "hostgroup.create",
+        "params": {"name": group_name},
+        "id": 7
+    }
+    response = session.post(ZABBIX_URL, json=payload, headers=headers)
+    return response.json()["result"]["groupids"][0]
+
 def main():
     session = requests.Session()
     zbx_version = wait_for_zabbix(session)
@@ -387,10 +510,20 @@ def main():
         if not linking_success:
             print("\n⚠️ Atenção: Nem todos os templates foram vinculados corretamente!")
             print("   Verifique as mensagens acima para detalhes.")
-        
     except Exception as e:
         print(f"[!] Falha durante configuração do host: {e}")
         failures.append("configuração do host")
+
+    # --- Discovery Setup ---
+    try:
+        group_id = get_group_id("O-RAN", session, token)
+        template_ids = get_template_ids(session, token, TEMPLATES_TO_LINK + ["O-RAN 5G monitoring - OAI"])
+        
+        print("\n🚀 Criando Discovery Rule e Action...")
+        create_discovery_rule(session, token)
+        create_autoregistration_action(session, token, group_id, template_ids)
+    except Exception as e:
+        print(f"❌ Falha ao configurar Discovery/Action: {e}")
 
     # Relatório final
     print(f"\n✅ Importação finalizada: {success} templates importados com sucesso.")
