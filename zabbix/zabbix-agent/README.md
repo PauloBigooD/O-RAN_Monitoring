@@ -1,2 +1,3 @@
-# Executar o script
-sudo ./install_zabbix_agent2.sh --hostname "teste" --server "192.168.1.100"
+# Instalar Zabbix Agent
+
+sudo ./install_zabbix_agent2.sh --hostname "HOST_NAME" --server "IP_ZABBIX-SERVER" --metadata "O-RAN" 

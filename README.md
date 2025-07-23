@@ -3,12 +3,13 @@
 - Este repositório fornece um arcabouço para **monitoramento unificado de E2 Service Models (E2SMs)** em arquiteturas O-RAN. A solução integra **Zabbix**, **Grafana** e **scripts personalizados**, permitindo descoberta e visualização contínua dos E2SMs disponíveis na rede. Isso facilita o desenvolvimento de xApps e a configuração de testbeds, oferecendo visibilidade em tempo real sobre as capacidades da rede O-RAN.
 
  - Também estão incluídas ferramentas para **deploy, gerenciamento e automação** de componentes do ecossistema **OpenAirInterface (OAI)**, como EPC 4G, Core 5G, RANs, FlexRIC e xApps.
+## 🔧 Arquitetura de Monitoramento
 
-- A solução pode ser implantada de forma **monolítica ou distribuída**. No cenário demonstrado, distribuído, o testbed utiliza **4 máquinas físicas**:
+<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/arquitetura.png" width="650px">
 
-## 🔧 Arquitetura do Testbed
+---
 
-![Testbed](https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Test_bed.png)
+> A solução pode ser implantada de forma **monolítica ou distribuída**. No cenário demonstrado, distribuído, o testbed utiliza **4 máquinas físicas**:
 
 | Host | IP             | Função               |
 |------|----------------|----------------------|
@@ -19,7 +20,15 @@
 
 ---
 
-## ✅ Requisitos
+## 🔧 Arquitetura do Testbed
+
+<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/testbed.png" width="650px">
+
+---
+
+
+
+## 🖥 Requisitos
 
 - Ubuntu 20.04 ou 22.04 (preferência por 20.04)
 - Acesso `sudo`
@@ -34,7 +43,7 @@ Clone o repositório:
 
 ```bash
 git clone https://github.com/PauloBigooD/O-RAN_Monitoring.git
-cd O-RAN_Monitoring
+cd  O-RAN_Monitoring
 ```
 
 O script `oai_tools_menu.sh` oferece um **menu interativo** com diversas opções para instalação, execução, logs e gerenciamento dos componentes do OAI.
@@ -271,8 +280,6 @@ Em hosts dedicados à RAN:
 12) Instalar FlexRIC
 ```
 
-
-
 ## Passo 5.3 📄 Ajuste de IPs
 
 > ⚠️ Para deployment Monolitico não é necessário alterar.
@@ -285,12 +292,12 @@ amf_ip_address = ( { ipv4 = "192.168.170.178"; ... } ); # Iforme o IP do AMF
 NETWORK_INTERFACES:
 {
     GNB_INTERFACE_NAME_FOR_NG_AMF = "enp3s0"; # Deve ser a mesma do computador local
-    GNB_IPV4_ADDRESS_FOR_NG_AMF   = "192.168.170.78/24";
+    GNB_IPV4_ADDRESS_FOR_NG_AMF   = "192.168.170.78/24"; # Mesmo IP da interface local
     ...
 };
 
 e2_agent = {
-  near_ric_ip_addr = "192.168.170.187";
+  near_ric_ip_addr = "192.168.170.187"; # Deve ser o mesmo IP que foi atribuído ao Near-RT RIC
   #sm_dir = "/path/where/the/SMs/are/located/"
   sm_dir = "/usr/local/lib/flexric/"
 };
@@ -317,6 +324,8 @@ e2_agent = {
 
 > ⚠️ É recomendado dedicar um Host ou uma Máquina Virtual para a instalação do Zabbix Server.
 
+#### Alterne para o seguinte diretório:
+
 ```bash
 cd zabbix/zabbix-server-docker
 ```
@@ -326,11 +335,57 @@ cd zabbix/zabbix-server-docker
 ### Passo 6: Iniciar Zabbix Server
 
 ```bash
-cd docker compose up -d
+sudo docker compose up -d
 ```
 
-## Zabbix Agent
+> Após executar o deployment do docker-compose as APIs do Zabbix e Grafana estarão disponíveis no IP local da Host. O acesso é feito a partir do navegador WEB.
 
+
+`Zabbix: 192.168.170.78`
+
+`Username: Admin`
+
+`Password: zabbix`
+
+<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Zabbix_API.png">
+
+---
+
+`Grafana: 192.168.170.78:3000`
+
+`Username: admin`
+
+`Password: Grafana`
+
+#### Dashboard Zabbix Server
+<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Dashboard_Zabbix-Server.png">
+
+#### Dashboard E2 Node
+<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Dashboard.png">
+
+
+## Passo 7: Zabbix Agent
+
+A instalação do Zabbix Agent deve ser realizada nos Hosts onde o 5GC foi instalado e no E2 Node. Para instalar o Zabbix Agent é bem simples, basta alternar para `zabbix/zabbix-agent` e executar o script `install_zabbix_agent2.sh`
+
+### Passo 7.2: Alterne para o seguinte diretório:
+
+```bash
+cd zabbix/zabbix-agent
+```
+
+### Passo 7.2: Instalar Zabbix Agent
+
+ - --hostname = Nome do Host/5GC/E2 Node, que desejamos monitorar
+
+```bash
+sudo ./install_zabbix_agent2.sh --hostname "HOST_NAME" --server "IP_ZABBIX-SERVER" --metadata "O-RAN"
+```
+
+> Após a instalação do Zabbix Agent o Host estará disponível no Zabbix Server
+
+#### Zabbix Hosts
+<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Dashboard.png">
 
 #
 ## 📬 Contato

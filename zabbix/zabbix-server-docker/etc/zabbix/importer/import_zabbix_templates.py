@@ -285,7 +285,7 @@ def create_autoregistration_action(session, token, group_id, template_ids):
                     {
                         "conditiontype": 24,  # Host metadata
                         "operator": 8,        # Matches regex
-                        "value": "ORAN"         # Qualquer metadata
+                        "value": "O-RAN"         # Qualquer metadata
                     }
                 ]
             }
