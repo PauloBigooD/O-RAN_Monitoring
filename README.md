@@ -3,6 +3,7 @@
 - Este repositório fornece um arcabouço para **monitoramento unificado de E2 Service Models (E2SMs)** em arquiteturas O-RAN. A solução integra **Zabbix**, **Grafana** e **scripts personalizados**, permitindo descoberta e visualização contínua dos E2SMs disponíveis na rede. Isso facilita o desenvolvimento de xApps e a configuração de testbeds, oferecendo visibilidade em tempo real sobre as capacidades da rede O-RAN.
 
  - Também estão incluídas ferramentas para **deploy, gerenciamento e automação** de componentes do ecossistema **OpenAirInterface (OAI)**, como EPC 4G, Core 5G, RANs, FlexRIC e xApps.
+
 ## 🔧 Arquitetura de Monitoramento
 
 <img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/arquitetura.png" width="650px">
@@ -10,6 +11,7 @@
 ---
 
 > A solução pode ser implantada de forma **monolítica ou distribuída**. No cenário demonstrado, distribuído, o testbed utiliza **4 máquinas físicas**:
+
 
 | Host | IP             | Função               |
 |------|----------------|----------------------|
@@ -20,13 +22,11 @@
 
 ---
 
-## 🔧 Arquitetura do Testbed
+## 📐 Arquitetura do Testbed
 
 <img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/testbed.png" width="650px">
 
 ---
-
-
 
 ## 🖥 Requisitos
 
@@ -37,9 +37,11 @@
 
 ---
 
-## Passo 1: ⚙️ Ferramentas de Deployment - OpenAirInterface
+## ⚙️ Etapas de Deployment
 
-Clone o repositório:
+### 1. Ferramentas de Deployment (OpenAirInterface)
+
+Clone o repositório e acesse a pasta:
 
 ```bash
 git clone https://github.com/PauloBigooD/O-RAN_Monitoring.git
@@ -65,7 +67,7 @@ O script `oai_tools_menu.sh` oferece um **menu interativo** com diversas opçõe
 
 ---
 
-## Passo 2: 🧪 Execução Recomendada Inicial
+### 2. Execução Recomendada Inicial
 
 Antes de iniciar o deploy completo, recomenda-se executar:
 
@@ -79,35 +81,22 @@ Antes de iniciar o deploy completo, recomenda-se executar:
 
 ##  🏗️ Deploy do Core 5G (5GC)
 
-### Passo 3: 🔧 Instalar dependências
+### 3.1 Monolítico
 
 ```bash
 4) Dependências 5GC e RAN
-```
-> Para instalação no modo monolítico realize o passo 3.1
-
-> Para instalação no modo distribuído realize o passo 3.2
-
-### Passo 3.1: 📶  Iniciar 5GC - Testbed Monolítico
-
-```bash
 6) Iniciar Core 5G Monolítico
-```
-
-### Passo 3.1.1: 📜 Visualizar logs do AMF
-
-```bash
 8) Logs Core 5G - AMF
 ```
 
-![AMF-log](https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/5GC-AMF.png)
+![AMF-log](figs/5GC-AMF.png)
 
 ---
 
-### Passo 3.2: 5GC - Testbed Distribuído
+### 3.2 Distribuído
 > Essas configurações devem ser aplicadas quando queremos que o CORE receba conexões de gNBs externas.
 
-### Passo 3.2.1: **Criar interface mac-vlan**:
+**Criar interface mac-vlan**:
 > Os endereços IPs a seguir devem ser configurados conforme as especificações da rede local.
 - --subnet= Endereço da rede do Host - (aqui: 192.168.170.0/24)
 - --gateway= Gatewai da rede do Host - (aqui: 192.168.170.1)
@@ -117,13 +106,13 @@ Antes de iniciar o deploy completo, recomenda-se executar:
 sudo docker network create -d macvlan --subnet=192.168.170.0/24 --gateway=192.168.170.1 -o parent=enp3s0 macvlan-dhcp
 ```
 
-### Passo 3.2.2: **Ajustar endereços IP do Docker-Compose**
+**Ajustar endereços IP do Docker-Compose**
 
 > Após realizar a configuração da interface `macvlan` é necessário conferir os IPs de cada uma das funções de rede do arquivo `docker-compose-basic-nrf-macvlan.yaml` localizado dentro da pasta `core-scripts`. Após realizar os ajustes salve o arquivo.
 
-> Todos os IPs devem ser ajustados para endereços IP disponíveis na mesma faixa da sua rede.
+>> Todos os IPs devem ser ajustados para endereços IP disponíveis na mesma faixa da sua rede.
 
->  ⚠️ Note que alguns IPs aparecem mais de uma vez. Realize o procedimento de substituição com muito cuidado!
+>>> ⚠️ Note que alguns IPs aparecem mais de uma vez. Realize o procedimento de substituição com muito cuidado!
 
  **Para este deployment foram utilizados os seguintes endereços IP**:
 
@@ -139,7 +128,7 @@ sudo docker network create -d macvlan --subnet=192.168.170.0/24 --gateway=192.16
 |trf-gen-cn5g |192.168.170.185
 |mysql        | 192.168.170.186
 
-### Passo 3.2.3: **Ajustar endereços IP do arquivo amf.conf**
+**Ajustar endereços IP do arquivo amf.conf**
 
 > Outro arquivo que exige o ajuste dos IPs é o `amf.conf` localizado em `core-scripts/etc`, os IPs devem ser configurados de acordo com os configurados no passo anterior. Após realizar os ajustes salve o arquivo.
 
@@ -184,44 +173,28 @@ sudo docker network create -d macvlan --subnet=192.168.170.0/24 --gateway=192.16
         RANDOM = "true";
     };
 ```
-### Passo 3.2.4: 📶  Iniciar 5GC 
+**Após isso:**
 
 ```bash
 7) Iniciar Core 5G Distribuido
-```
-
-### Passo 3.3: 🛑 Encerrar 5GC
-
-> Para encerra o 5GC selecione a seguinte opção
-
-```bash
 10) Parar Core 5G
 ```
+
 ---
 
 ## 🧠 Near-RT RIC
 
-### Passo 4: 🧱 Instalar FlexRIC
-
-```bash
-12) Instalar FlexRIC
-```
-
 > ⚠️ Esse processo o faz rebuild dos componentes da RAN e pode levar alguns minutos.
 
-### Passo 4.1: 📊  Iniciar Near-RT RIC - Monolítico
-
-```bash
-13) Iniciar nearRT-RIC
-```
-![Near-Monolitico](https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Near-RT_RIC_Distribuido.png)
-
-### Passo 4.2: Near-RT RIC - Distribuído
-
+### 4.1 Monolítico
 
 ```bash
 12) Instalar FlexRIC
+13) Iniciar nearRT-RIC
 ```
+![Near-Monolitico](figs/Near-RT_RIC_Distribuido.png)
+
+### 4.2 Distribuído
 
 > O proximo passo é adcionar um IP à interface de rede local, este será o novo IP do Near-RT RIC. 
 
@@ -236,7 +209,7 @@ sudo ip addr add 192.168.170.187/24 dev enp3s0
 NEAR_RIC_IP = 192.168.170.187 # Substitua pelo IP que foi adicionado a interface local
 ```
 
-### Passo 4.2.1: Build Near-RT RIC manualmente
+**Build Near-RT RIC manualmente**
 
 > Para rebuildar devemos remover a pasta `flexric/build`
 
@@ -250,19 +223,19 @@ mkdir flexric/build
 cd flexric/build && sudo cmake .. && sudo make -j8 && sudo make install && cd ../..
 ```
 
-### Passo 4.2.2: 📊  Iniciar Near-RT RIC - Distribuído
+**Iniciar Near-RT RIC**
 
 ```bash
 13) Iniciar nearRT-RIC
 ```
 
-![Near-Distribuido](https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Near-RT_RIC_Distribuido.png)
+![Near-Distribuido](figs/Near-RT_RIC_Distribuido.png)
 
 ---
 
 ## 📡 RAN (E2 Node)
 
-### Passo 5.1: 🗼 Testbed Monolítico
+### 5.1 Monolítico
 
 > ⚠️ Se o Core 5G e a RAN estiverem na mesma máquina, apenas execute:
 
@@ -270,9 +243,9 @@ cd flexric/build && sudo cmake .. && sudo make -j8 && sudo make install && cd ..
 15) Iniciar gNB rfsim
 ```
 
-### Passo 5.2: 🗼 Testbed Distribuído
+### 5.2 Distribuído
 
-Em hosts dedicados à RAN:
+> Hosts dedicados à RAN:
 
 ```bash
 1) Instalar Docker e UHD
@@ -280,9 +253,7 @@ Em hosts dedicados à RAN:
 12) Instalar FlexRIC
 ```
 
-## Passo 5.3 📄 Ajuste de IPs
-
-> ⚠️ Para deployment Monolitico não é necessário alterar.
+**Ajuste de IPs**
 
 Verifique os arquivos de configuração na pasta `conf/b210PRB106.conf` para ajustar os IPs conforme seu ambiente:
 
@@ -305,7 +276,7 @@ e2_agent = {
 
 > ⚠️ Certifique-se de ajustar `eth0` e os IPs para as interfaces reais do host nos casos de deploy bare metal.
 
-### Passo 5.4: Iniciar gNB 
+**Iniciar gNB**
 
 > Selecione uma das seguintes opções:
 
@@ -320,9 +291,11 @@ e2_agent = {
 
 ---
 
-## Zabbix Server / Grafana
+## 📊 Monitoramento com Zabbix & Grafana
 
 > ⚠️ É recomendado dedicar um Host ou uma Máquina Virtual para a instalação do Zabbix Server.
+
+### 6.1 Instalar Zabbix Server
 
 #### Alterne para o seguinte diretório:
 
@@ -331,8 +304,6 @@ cd zabbix/zabbix-server-docker
 ```
 
 > Caso o Host não tenha o Docker instalado utilize o script `install-docker.sh` e realize a instalação.
-
-### Passo 6: Iniciar Zabbix Server
 
 ```bash
 sudo docker compose up -d
@@ -360,23 +331,17 @@ sudo docker compose up -d
 #### Dashboard Zabbix Server
 <img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Dashboard_Zabbix-Server.png">
 
-#### Dashboard E2 Node
-<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Dashboard.png">
 
+### 6.2 Instalar Zabbix Agent
 
-## Passo 7: Zabbix Agent
+> A instalação do Zabbix Agent deve ser realizada nos Hosts onde o 5GC foi instalado e no E2 Node. Para instalar o Zabbix Agent é bem simples, basta alternar para `zabbix/zabbix-agent` e executar o script `install_zabbix_agent2.sh`
 
-A instalação do Zabbix Agent deve ser realizada nos Hosts onde o 5GC foi instalado e no E2 Node. Para instalar o Zabbix Agent é bem simples, basta alternar para `zabbix/zabbix-agent` e executar o script `install_zabbix_agent2.sh`
-
-### Passo 7.2: Alterne para o seguinte diretório:
 
 ```bash
 cd zabbix/zabbix-agent
 ```
 
-### Passo 7.2: Instalar Zabbix Agent
-
- - --hostname = Nome do Host/5GC/E2 Node, que desejamos monitorar
+> --hostname = Nome do Host/5GC/E2 Node, que desejamos monitorar
 
 ```bash
 sudo ./install_zabbix_agent2.sh --hostname "HOST_NAME" --server "IP_ZABBIX-SERVER" --metadata "O-RAN"
@@ -384,10 +349,19 @@ sudo ./install_zabbix_agent2.sh --hostname "HOST_NAME" --server "IP_ZABBIX-SERVE
 
 > Após a instalação do Zabbix Agent o Host estará disponível no Zabbix Server
 
-#### Zabbix Hosts
-<img src="https://raw.githubusercontent.com/PauloBigooD/O-RAN_Monitoring/refs/heads/main/figs/Dashboard.png">
+### Zabbix Hosts
+![API_Host_Bell](figs/Host_Bell.png)
 
-#
+> Agora também já é possível acompanhar as informações na dashboardo do Grafana
+
+### Dashboard E2 Node
+![Dashboard-E2_Node](figs/Dashboard.png)
+
+
+> Com o sistema de monitoramento desenvolvido, é possível visualizar os E2SMs suportados por cada nó E2, uma informação essencial para o desenvolvimento de xApps capazes de explorar plenamente as capacidades oferecidas pela infraestrutura disponível. Os resultados obtidos evidenciam que os componentes utilizados na solução de monitoramento — Zabbix, Grafana e scripts customizados — foram eficazes na coleta e armazenamento periódico das KPIs de interesse, viabilizando a visualização integrada do comportamento dos diversos elementos da rede.
+
+---
+
 ## 📬 Contato
 
 - 📧 Email: [paulo.eduardo.093@ufrn.edu.br](mailto:paulo.eduardo.093@ufrn.edu.br)
