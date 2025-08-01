@@ -12,11 +12,11 @@ cmd = "find / -type f -wholename '*/openairinterface5g/cmake_targets/ran_build/b
 try:
     file_path = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout.strip()
     if not file_path:
-        print("Arquivo nrRRC_stats.log não encontrado.")
+        #print("Arquivo nrRRC_stats.log não encontrado.")
         exit(1)
     #print("Arquivo encontrado em:", file_path)  # Debug
 except Exception as e:
-    print("Erro ao localizar o arquivo:", e)
+    #print("Erro ao localizar o arquivo:", e)
     exit(1)
 
 # Verifica a última modificação do arquivo
@@ -26,10 +26,10 @@ try:
     elapsed_time = current_time - last_modified
 
     if elapsed_time > 120:
-        print(f"Aviso: O arquivo {file_path} não foi atualizado nos últimos 2 minutos.")
+        #print(f"Aviso: O arquivo {file_path} não foi atualizado nos últimos 2 minutos.")
         exit(1)
 except Exception as e:
-    print(f"Erro ao verificar o tempo de modificação do arquivo: {e}")
+    #print(f"Erro ao verificar o tempo de modificação do arquivo: {e}")
     exit(1)
 
 
@@ -39,13 +39,13 @@ def read_log_file(log_file):
         with open(log_file, "r") as f:
             return f.read()
     except FileNotFoundError:
-        print(f"Erro: Arquivo {log_file} não encontrado ao tentar abrir.")
+        #print(f"Erro: Arquivo {log_file} não encontrado ao tentar abrir.")
         return None
 
 # Lê o conteúdo do arquivo
 log_text = read_log_file(file_path)
 if not log_text:
-    print("Não foi possível ler o arquivo.")
+    #print("Não foi possível ler o arquivo.")
     exit(1)
 
 

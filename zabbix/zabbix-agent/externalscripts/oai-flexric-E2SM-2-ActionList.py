@@ -1,19 +1,37 @@
 #!/usr/bin/env python3
 
-import subprocess
 import json
+import subprocess
 import re
-import sys
+import os
+import time
 
 def find_xapp():
-    """Localiza o executável do xApp"""
+# Comando para encontrar o caminho do arquivo (busca no $HOME para evitar erros de permissão)
+    cmd = "find / -type f -wholename '*/build/examples/xApp/c/monitor/xapp_kpm_moni' 2>/dev/null | head -1"
+
     try:
-        cmd = "find / -type f -wholename '*/build/examples/xApp/c/monitor/xapp_kpm_moni' 2>/dev/null | head -1"
         file_path = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout.strip()
-        return file_path if file_path else None
+        if not file_path:
+            #print("Arquivo nrRRC_stats.log não encontrado.")
+            exit(1)
+        #print("Arquivo encontrado em:", file_path)  # Debug
     except Exception as e:
-        print(f"Erro ao localizar o arquivo: {e}", file=sys.stderr)
-        return None
+        #print("Erro ao localizar o arquivo:", e)
+        exit(1)
+
+    # Verifica a última modificação do arquivo
+    try:
+        last_modified = os.path.getmtime(file_path)
+        current_time = time.time()
+        elapsed_time = current_time - last_modified
+
+        if elapsed_time > 120:
+            #print(f"Aviso: O arquivo {file_path} não foi atualizado nos últimos 2 minutos.")
+            exit(1)
+    except Exception as e:
+        #print(f"Erro ao verificar o tempo de modificação do arquivo: {e}")
+        exit(1)
 
 def run_xapp(file_path):
     """Executa o xApp e retorna o output"""
@@ -27,10 +45,10 @@ def run_xapp(file_path):
         )
         return result.stdout
     except subprocess.TimeoutExpired:
-        print("O xApp demorou muito para responder e foi interrompido.", file=sys.stderr)
+        #print("O xApp demorou muito para responder e foi interrompido.", file=sys.stderr)
         return None
     except Exception as e:
-        print(f"Erro ao executar o xApp: {e}", file=sys.stderr)
+        #print(f"Erro ao executar o xApp: {e}", file=sys.stderr)
         return None
 
 def extract_data(output_text):
@@ -134,7 +152,7 @@ def extract_data(output_text):
 def main():
     file_path = find_xapp()
     if not file_path:
-        print("xApp não encontrado.", file=sys.stderr)
+        #print("xApp não encontrado.", file=sys.stderr)
         sys.exit(1)
 
     output = run_xapp(file_path)
@@ -145,7 +163,7 @@ def main():
         data = extract_data(output)
         print(json.dumps(data, indent=4))
     except Exception as e:
-        print(f"Erro ao processar dados: {e}", file=sys.stderr)
+        #print(f"Erro ao processar dados: {e}", file=sys.stderr)
         sys.exit(1)
 
 if __name__ == "__main__":

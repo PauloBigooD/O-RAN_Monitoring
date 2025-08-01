@@ -16,13 +16,13 @@ def get_docker_logs(container_name: str, tail: int = 11) -> str:
         )
         return logs
     except subprocess.CalledProcessError as e:
-        print(f"Erro ao executar comando Docker: {e.output}")
+        #print(f"Erro ao executar comando Docker: {e.output}")
         return ""
 
 container_name = "oai-amf"
 logs = get_docker_logs(container_name)
 if not logs:
-    print("Nenhum log capturado ou container não acessível.")
+    #print("Nenhum log capturado ou container não acessível.")
     exit(1)
 
 gnb_pattern = re.compile(r"\|\s+(\d+)\s+\|\s+(Connected|Disconnected)\s+\|\s+([0-9a-fx]+)\s+\|\s+([^|]+)\s+\|\s+([\d, ]+)\s+\|")

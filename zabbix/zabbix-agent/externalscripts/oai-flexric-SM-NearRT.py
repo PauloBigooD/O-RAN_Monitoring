@@ -9,10 +9,10 @@ cmd = "find / -type f -wholename '/home/ric-bigood/Documents/flexric/flexric/bui
 try:
     file_path = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout.strip()
     if not file_path:
-        print("Arquivo não encontrado.")
+        #print("Arquivo não encontrado.")
         exit(1)
 except Exception as e:
-    print("Erro ao localizar o arquivo:", e)
+    #print("Erro ao localizar o arquivo:", e)
     exit(1)
 
 # Executar o xApp
@@ -25,10 +25,10 @@ try:
     )
     output_lines = result.stdout.splitlines()
 except subprocess.TimeoutExpired:
-    print("O script demorou muito para responder e foi interrompido.")
+    #print("O script demorou muito para responder e foi interrompido.")
     exit(1)
 except Exception as e:
-    print("Erro ao executar o script:", e)
+    #print("Erro ao executar o script:", e)
     exit(1)
 
 output_text = "\n".join(output_lines)

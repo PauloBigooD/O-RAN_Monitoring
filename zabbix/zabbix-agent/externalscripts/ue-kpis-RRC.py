@@ -12,11 +12,11 @@ cmd = "find / -type f -wholename '*/openairinterface5g/cmake_targets/ran_build/b
 try:
     file_path = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout.strip()
     if not file_path:
-        print("Arquivo nrRRC_stats.log não encontrado.")
+        #print("Arquivo nrRRC_stats.log não encontrado.")
         exit(1)
     #print("Arquivo encontrado em:", file_path)  # Debug
 except Exception as e:
-    print("Erro ao localizar o arquivo:", e)
+    #print("Erro ao localizar o arquivo:", e)
     exit(1)
 
 # Verifica o tempo da última modificação do arquivo
