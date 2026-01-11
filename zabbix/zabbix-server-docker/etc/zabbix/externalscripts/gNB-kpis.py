@@ -19,19 +19,19 @@ except Exception as e:
     #print("Erro ao localizar o arquivo:", e)
     exit(1)
 
-# Verifica o tempo da última modificação do arquivo
+# Verifica a última modificação do arquivo
 try:
     last_modified = os.path.getmtime(file_path)
     current_time = time.time()
     elapsed_time = current_time - last_modified
 
-    if elapsed_time > 120:  # Mais de 2 minutos sem atualização
-        print(f"Aviso: O arquivo {file_path} não foi atualizado nos últimos 2 minutos.")
+    if elapsed_time > 120:
+        #print(f"Aviso: O arquivo {file_path} não foi atualizado nos últimos 2 minutos.")
         exit(1)
-
 except Exception as e:
-    print(f"Erro ao verificar o tempo de modificação do arquivo: {e}")
+    #print(f"Erro ao verificar o tempo de modificação do arquivo: {e}")
     exit(1)
+
 
 # Função para ler o conteúdo do arquivo
 def read_log_file(log_file):
@@ -39,25 +39,32 @@ def read_log_file(log_file):
         with open(log_file, "r") as f:
             return f.read()
     except FileNotFoundError:
-        print(f"Erro: Arquivo {log_file} não encontrado ao tentar abrir.")
+        #print(f"Erro: Arquivo {log_file} não encontrado ao tentar abrir.")
         return None
 
 # Lê o conteúdo do arquivo
 log_text = read_log_file(file_path)
 if not log_text:
-    print("Não foi possível ler o arquivo.")
+    #print("Não foi possível ler o arquivo.")
     exit(1)
 
 
 # Expressões regulares para capturar as informações necessárias
 patterns = {
-    "{#RRC_ACTIVITY}": r"last RRC activity:\s+(\d+)",
-    "{#PDU_ID}": r"PDU session\s+(\d+)",
-    "{#PDU_UE_ID}": r"PDU session\s+\d+\s+ID\s+(\d+)",
-    "{#TYPE_DU}": r"associated DU:\s+\((.*?)\)",
-    "{#CU_UE_ID}": r"CU UE ID (\d+)",
-    "{#RNTI}": r"RNTI ([0-9a-fA-F]+)",
-    "{#DU_UE_ID}": r"DU UE ID (\d+)",
+    #"last RRC activity": r"last RRC activity:\s+(\d+)",
+    #"PDU session": r"PDU session\s+(\d+)",
+    #"PDU session ID": r"PDU session\s+\d+\s+ID\s+(\d+)",
+    #"associated DU": r"associated DU:\s+\((.*?)\)",
+    "{#GNB_NRCELLID}": r"nrCellID\s+(\d+)",
+    "{#GNB_PCI}": r"PCI\s+(\d+)",
+    "{#GNB_SSB_ARFCN}": r"SSB ARFCN\s+(\d+)",
+    "{#GNB_BAND}": r"band\s+(\d+)",
+    "{#GNB_ARFCN}": r"ARFCN\s+(\d+)",
+    "{#GNB_SCS}": r"SCS\s+(\d+)",
+    "{#GNB_PRB}": r"PRB\s+(\d+)",
+    "{#GNB_AMF_DU_ID}": r"DU ID\s+(\d+)",
+    "{#GNB_NAME}": r"\[\d+\] DU ID \d+ \((.*?)\)",
+    "{#GNB_TOTAL_CONECTED}": r"(\d+) connected DUs"
 }
 
 # Dicionário para armazenar os dados capturados
@@ -78,3 +85,4 @@ json_data["data"] = [{k: v for k, v in json_data["data"][0].items() if v is not 
 
 # Imprimir JSON formatado
 print(json.dumps(json_data, indent=4))
+

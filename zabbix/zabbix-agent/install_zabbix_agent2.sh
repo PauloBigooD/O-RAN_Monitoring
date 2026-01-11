@@ -23,7 +23,8 @@ EXTERNAL_SCRIPTS_DIR="/etc/zabbix/externalscripts"
 
 # UserParameters customizados (OAI + monitoração de processos/disco)
 CUSTOM_USER_PARAMS=(
-  "UserParameter=oai.flexric.SM[*],$EXTERNAL_SCRIPTS_DIR/oai-flexric-SM.py \$1"
+  "UserParameter=oai.flexric.SM[*],$EXTERNAL_SCRIPTS_DIR/oai-flexric-SM-NearRT.py"
+  "UserParameter=oai.e2node.SM[*],$EXTERNAL_SCRIPTS_DIR/oai-flexric-SM-E2Node.py \$1"
   "UserParameter=oai.ue.kpi.MAC[*],$EXTERNAL_SCRIPTS_DIR/ue-kpis-MAC.py \$1"
   "UserParameter=oai.ue.kpi.RRC[*],$EXTERNAL_SCRIPTS_DIR/ue-kpis-RRC.py \$1"
   "UserParameter=oai.gnb.kpi[*],$EXTERNAL_SCRIPTS_DIR/gNB-kpis.py \$1"
