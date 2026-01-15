@@ -7,7 +7,7 @@ import time
 import sys
 
 def exit_with_empty_json():
-    """Imprime um JSON com uma lista de dados vazia e encerra o script de forma limpa."""
+    """Imprime um JSON com uma lista de dados vazia e encerra o script."""
     print(json.dumps({"data": []}, indent=4))
     sys.exit(0)
 
@@ -15,20 +15,17 @@ def exit_with_empty_json():
 
 LOG_FILE = "/tmp/gnb.log"
 
-# Verifica se o arquivo existe
 if not os.path.exists(LOG_FILE):
     exit_with_empty_json()
 
-# Verifica se o arquivo foi atualizado recentemente (ex: nos últimos 5 minutos)
-# Isso evita que o Zabbix colete dados de uma gNB que pode estar offline.
+# Verifica atualização do arquivo (5 min)
 try:
-    # 300 segundos = 5 minutos
-    if (time.time() - os.path.getmtime(LOG_FILE)) > 30:
+    if (time.time() - os.path.getmtime(LOG_FILE)) > 300:
         exit_with_empty_json()
 except OSError:
     exit_with_empty_json()
 
-# --- Seção 2: Ler e Processar o Log ---
+# --- Seção 2: Ler o Log ---
 
 try:
     with open(LOG_FILE, "r") as f:
@@ -38,46 +35,77 @@ try:
 except IOError:
     exit_with_empty_json()
 
-# --- Seção 3: Extrair Métricas com Regex ---
+# --- Seção 3: Extrair Métricas ---
 
-# Define os padrões de regex para cada informação desejada
+gnb_data = {}
+
+# Regex ajustados. O PLMN agora busca especificamente o valor numérico (incluindo zeros)
 patterns = {
+    "{#GNB_NAME}": r"ran_node_name:\s*([\w-]+)",
     "{#GNB_PCI}": r"pci:\s*(\d+)",
-    "{#GNB_SSB_ARFCN}": r"SSB arfcn:(\d+)",
     "{#GNB_BAND}": r"band:\s*(\d+)",
     "{#GNB_ARFCN}": r"dl_arfcn:\s*(\d+)",
     "{#GNB_SCS}": r"common_scs:\s*(\d+)",
-    "{#GNB_NAME}": r"ran_node_name:\s*([\w-]+)"
+    "{#GNB_SSB_ARFCN}": r"SSB arfcn:(\d+)",
+    "{#GNB_PLMN}": r"Supported PLMNs:\s*(\d+)", # Pega do log de conexão com AMF para garantir precisão
+    "{#GNB_PRB}": r"nof_crbs:\s*(\d+)"
 }
 
-# Dicionário para armazenar os dados encontrados
-gnb_data = {}
+# Fallback para PLMN se não achar na linha do AMF (pega do config)
+if not re.search(patterns["{#GNB_PLMN}"], log_text):
+    patterns["{#GNB_PLMN}"] = r"plmn:\s*(\d+)"
 
-# Itera sobre os padrões e busca os valores no texto do log
 for key, pattern in patterns.items():
     match = re.search(pattern, log_text)
     if match:
-        value_str = match.group(1)
-        # Converte para inteiro se for numérico, senão mantém como texto
-        try:
-            gnb_data[key] = int(value_str)
-        except ValueError:
-            gnb_data[key] = value_str
-    else:
-        # Se uma chave não for encontrada, atribui um valor padrão
-        # para manter a estrutura do JSON consistente.
-        if key == "{#GNB_NAME}":
-            gnb_data[key] = "" # Padrão para texto
+        val = match.group(1)
+        
+        # --- LÓGICA DE TIPAGEM ---
+        # PLMN e NAME devem ser String (PLMN para manter zeros à esquerda)
+        if key in ["{#GNB_PLMN}", "{#GNB_NAME}"]:
+            gnb_data[key] = val
         else:
-            gnb_data[key] = 0  # Padrão para números
+            # Os demais tentamos converter para Inteiro
+            try:
+                gnb_data[key] = int(val)
+            except ValueError:
+                gnb_data[key] = val
+    else:
+        # Valores padrão
+        if key in ["{#GNB_NAME}", "{#GNB_PLMN}"]:
+            gnb_data[key] = "" 
+        else:
+            gnb_data[key] = 0
 
-# --- Seção 4: Gerar a Saída JSON Final ---
+# 3.2 Cell ID (Binário -> Decimal)
+cell_id_match = re.search(r'"cellIdentity":\s*"([01]+)"', log_text)
+if cell_id_match:
+    binary_string = cell_id_match.group(1)
+    try:
+        # Converte binário para inteiro decimal (ex: 6733824)
+        gnb_data["{#GNB_NRCELLID}"] = int(binary_string, 2)
+    except ValueError:
+        gnb_data["{#GNB_NRCELLID}"] = 0
+else:
+    gnb_data["{#GNB_NRCELLID}"] = 0
 
-# Garante que não retornemos um JSON de zeros se o log estiver malformado
-if not gnb_data.get("{#GNB_NAME}") and gnb_data.get("{#GNB_PCI}", 0) == 0:
+# 3.3 Status (0 ou 1)
+idx_start = log_text.rfind("Cell creation")
+idx_stop = log_text.rfind("Cell was stopped")
+
+if idx_stop > idx_start:
+    gnb_data["{#GNB_STATUS}"] = 0
+elif idx_start != -1:
+    gnb_data["{#GNB_STATUS}"] = 1
+else:
+    gnb_data["{#GNB_STATUS}"] = 0
+
+# --- Seção 4: Saída ---
+
+# Validação mínima
+if not gnb_data["{#GNB_NAME}"] and gnb_data["{#GNB_PCI}"] == 0:
     exit_with_empty_json()
 
-# Monta o objeto final no formato esperado pelo Zabbix LLD
 json_output = {"data": [gnb_data]}
 
 print(json.dumps(json_output, indent=4))
