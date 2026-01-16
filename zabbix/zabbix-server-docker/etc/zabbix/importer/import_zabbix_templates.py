@@ -12,7 +12,11 @@ TEMPLATE_NAMES = [
     "ICMP Ping",                   
     "Template Linux Disk IO",      
     "Linux CPU Core - Ativo",      
-    "O-RAN 5G monitoring - OAI"    
+    "O-RAN 5G monitoring - OAI",
+    "O-RAN 5G monitoring - FlexRIC info",
+    "O-RAN 5G monitoring - FlexRIC OAI",
+    "O-RAN 5G monitoring - FlexRIC srsRAN",
+    "O-RAN 5G monitoring - srsRAN"
 ]
     # Lista de templates na ordem desejada
 TEMPLATES_TO_LINK = [
