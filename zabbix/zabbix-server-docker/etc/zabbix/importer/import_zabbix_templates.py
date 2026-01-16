@@ -21,9 +21,12 @@ TEMPLATE_NAMES = [
     # Lista de templates na ordem desejada
 TEMPLATES_TO_LINK = [
     "Linux CPU Core - Ativo", 
-    #"Template Linux Disk IO",
     "Docker by Zabbix agent 2",
-    "ICMP Ping"
+    "ICMP Ping",
+    "O-RAN 5G monitoring - FlexRIC info",
+    "O-RAN 5G monitoring - FlexRIC OAI",
+    "O-RAN 5G monitoring - FlexRIC srsRAN",
+    "O-RAN 5G monitoring - srsRAN"
 ]
 
 def wait_for_zabbix(session, retries=30, delay=5):
