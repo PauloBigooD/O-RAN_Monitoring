@@ -19,19 +19,6 @@ services:
         networks:
             public_net:
                 ipv4_address: 192.168.70.131
-    php-app:
-        container_name: "php-app"
-        build:
-            context: ../php-app
-        # volumes:
-        #     - ./php-app:/var/www/html
-        networks:
-            public_net:
-                ipv4_address: 192.168.70.142
-        ports:
-            - "9000:80"  # Expondo a porta 80 do container para a porta 9000 da máquina host
-        depends_on:
-            - mysql
     oai-udr:
         container_name: "oai-udr"
         image: oai-udr:v1.5.0

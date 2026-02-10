@@ -26,68 +26,11 @@ INTERFACE_PC="enp3s"
 DOCKER_CMD="docker compose"
 [[ $# -eq 2 ]] && DOCKER_CMD="docker compose"
 
-# Função para exibir ajuda
-function show_help(){
-    echo -e "Comandos comuns: 
-            ------------------------------------------------------------------------------------
-            ||   \e[0;34mOpções\e[0m        ||               🛠 \e[1;36m oai_tools \e[0m🛠                                ||
-            |==================================================================================|
-            || --install       || Instalar componentes Git, Docker e libuhd atualizados.      ||
-            || --performance   || Instalar componentes Git e libuhd \e[1;33m4.4; 4.5; 4.6 ou 4.7\e[0m.     ||
-            || --install_UHD   || Instalar modo performance para processador \e[1;31mAMD\e[0m ou \e[1;36mIntel\e[0m 🚀. ||
-            || --install_5g    || Instalar dependências para Core e RAN 5G.                   ||
-            || --install_4g    || Instalar dependências para EPC e RAN 4G.                    ||
-            || --flexric       || Instalar dependências para FlexRIC                          ||
-            || --start_5g      || Iniciar Core 5G.                                            ||
-            || --start_4g      || Iniciar EPC 4G.                                             ||
-            || --logs_5g       || Exibir logs Core 5G - AMF.                                  ||
-            || --logs_4g       || Exibir logs EPC 4G - MME.                                   ||
-            || --stop_5g       || Parar Core 5G.                                              ||
-            || --stop_4g       || Parar EPC 4G.                                               ||
-            |==================================================================================|
-            |                             gNB's n310 in Docker 🐳                              |
-            |==================================================================================|
-            || --gNB_n106      || Iniciar gNB usrp 1 n310 5G - 106 prbs 📡                    ||
-            || --gNB_n106_2    || Iniciar gNB usrp 2 n310 5G - 106 prbs 📡                    ||
-            || --gNB_n162      || Iniciar gNB usrp 1 n310 5G - 162 prbs 📡                    ||
-            || --gNB_n162_2    || Iniciar gNB usrp 2 n310 5G - 162 prbs 📡                    ||
-            || --gNB_n273      || Iniciar gNB usrp 1 n310 5G - 273 prbs 📡                    ||
-            || --gNB_n273_2    || Iniciar gNB usrp 2 n310 5G - 273 prbs 📡                    ||
-            |==================================================================================|
-            |                             gNB's n310 Bare Metal 🪖                              |
-            |==================================================================================|
-            || --gNB_n106_bm   || Iniciar gNB usrp 1 n310 5G - 106 prbs 📡                    ||
-            || --gNB_n106_2_bm || Iniciar gNB usrp 2 n310 5G - 106 prbs 📡                    ||
-            || --gNB_n162_bm   || Iniciar gNB usrp 1 n310 5G - 162 prbs 📡                    ||
-            || --gNB_n162_2_bm || Iniciar gNB usrp 2 n310 5G - 162 prbs 📡                    ||
-            || --gNB_n273_bm   || Iniciar gNB usrp 1 n310 5G - 273 prbs 📡                    ||
-            || --gNB_n273_2_bm || Iniciar gNB usrp 2 n310 5G - 273 prbs 📡                    ||
-            |==================================================================================|
-            |                             gNB's b210 in Docker 🐳                              |
-            |==================================================================================|
-            || --gNB_b106      || Iniciar gNB usrp 1 b210 5G - 106 prbs 📡                    ||
-            |==================================================================================|
-            |                             gNB's b210 Bare Metal 🪖                              |
-            |==================================================================================|
-            || --gNB_b106_bm   || Iniciar gNB usrp 1 b210 5G - 106 prbs 📡                    ||
-            |==================================================================================|
-            |                             eNB's n310 in Docker 🐳                              |
-            |==================================================================================|
-            || --eNB_n100      || Iniciar eNB usrp 1 n310 4G - 100 prbs 📡                    ||
-            || --eNB_n100_2    || Iniciar eNB usrp 2 n310 4G - 100 prbs 📡                    ||
-            |==================================================================================|
-            |                             eNB's n310 Bare Metal 🪖                              |
-            |==================================================================================|
-            || --eNB_n100_bm   || Iniciar gNB usrp 1 n310 5G - 100 prbs 📡                    ||
-            || --eNB_n100_2_bm || Iniciar gNB usrp 2 n310 5G - 100 prbs 📡                    ||
-            |==================================================================================|
-    "
-    }
-
 # Função para verificar se um pacote está instalado
 function is_installed(){
     dpkg -l | grep -q "$1"
     }
+
 # Função para instalar pacotes se não estiverem instalados
 function install_package() {
     for package in "$@"; do
@@ -99,6 +42,7 @@ function install_package() {
         fi
     done
     }
+
 # Função para gerenciar performance mode
 function performance_mode(){
     install_package "linux-image-lowlatency" "linux-headers-lowlatency"
@@ -124,6 +68,7 @@ function performance_mode(){
         echo "CPU não identificada."
     fi
     }
+
 # Função para verificar dispositivos USRP
 function check_usrp_device(){
     echo "Realizando a verificação da USRP"
@@ -144,6 +89,7 @@ function check_usrp_device(){
     uhd_find_devices
     echo "--------------------------------------------------"
     }
+
 # Função que verifica acionamento da dashboard OAI
 function dashboard_check(){
     # Condição que verifica o uso da Dashboard
@@ -158,6 +104,7 @@ function dashboard_check(){
         echo -e "Dashboard \e[31mOFF\e[0m"
     fi
     }
+
 # Função que instala o modo performance
 function init_performance(){
     ## Performance mode
@@ -267,6 +214,7 @@ function install_docker(){
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo apt-get clean
     }
+
 # Função que clona o repositorio da RAN do oai
 function clone_repo_RAN(){
     cd $WORK_DIR || exit
@@ -312,45 +260,9 @@ function build_oai_RAN(){
     sudo ./build_oai -w USRP --ninja --build-e2 --gNB --eNB --nrUE -C --build-lib "uescope nrscope enbscope telnetsrv"
     }
 
-# Função que realiza o deploy da RAN e EPC do OAI
-function start_4g(){
-    stop_4g
-    sudo sysctl net.ipv4.conf.all.forwarding=1
-    sudo iptables -P FORWARD ACCEPT
-    sudo sysctl -w net.core.wmem_max=33554432
-    sudo sysctl -w net.core.rmem_max=33554432
-    sudo sysctl -w net.core.wmem_default=33554432
-    sudo sysctl -w net.core.rmem_default=33554432
-    echo "Deploy and Configure Cassandra Database"
-    cd $WORK_DIR/core-scripts || exit
-    ## Un-deployment olds containers
-    sudo docker compose down
-    ## Deploy and Configure Cassandra Database
-    sudo docker compose -f docker-compose-4g.yml up -d db_init
-    ## Run docker COMMAND in background
-    sudo docker logs rfsim4g-db-init --follow &
-    ## Monitor docker COMMAND output
-    while :
-    do
-    ## Checks if the COMMAND output contains "OK"
-    if sudo docker logs rfsim4g-db-init | grep -q "OK"; then
-        echo "Status OK!"
-        sudo docker rm rfsim4g-db-init
-        ## Deploy Magma-MME
-        sleep 5
-        sudo docker compose -f docker-compose-4g.yml up -d magma_mme oai_spgwu trf_gen
-        ## Container list
-	sleep 5
-        sudo docker compose ps -a
-	break
-	fi
-	sleep 20
-	done
-    }
-
 # Função que realiza o deploy da RAN e CORE do OAI
-function start_5g_mono(){
-    stop_5g
+function start_5g_oai_mono(){
+    stop_5g_oai
     sudo sysctl net.ipv4.conf.all.forwarding=1
     sudo iptables -P FORWARD ACCEPT
     sudo sysctl -w net.core.wmem_max=33554432
@@ -364,8 +276,8 @@ function start_5g_mono(){
     }
 
 # Função que realiza o deploy da RAN e CORE do OAI
-function start_5g_dist(){
-    stop_5g
+function start_5g_oai_dist(){
+    stop_5g_oai
     sudo sysctl net.ipv4.conf.all.forwarding=1
     sudo iptables -P FORWARD ACCEPT
     sudo sysctl -w net.core.wmem_max=33554432
@@ -377,23 +289,6 @@ function start_5g_dist(){
     docker ps -a
     }
 
-# Função para realizar pull imagens docker 4G
-function pull_docker_4g(){
-    echo "Pulling the images from Docker Hub"
-    sudo docker pull cassandra:2.1
-    sudo docker pull redis:6.0.5
-    sudo docker pull oaisoftwarealliance/oai-hss:latest
-    sudo docker pull oaisoftwarealliance/magma-mme:latest
-    sudo docker pull oaisoftwarealliance/oai-spgwc:latest
-    sudo docker pull oaisoftwarealliance/oai-spgwu-tiny:latest
-    sudo docker pull oaisoftwarealliance/oai-enb:develop
-    sudo docker pull oaisoftwarealliance/oai-lte-ue:develop
-    ## Re-tag
-    sudo docker image tag oaisoftwarealliance/oai-spgwc:latest oai-spgwc:latest
-    sudo docker image tag oaisoftwarealliance/oai-hss:latest oai-hss:latest
-    sudo docker image tag oaisoftwarealliance/oai-spgwu-tiny:latest oai-spgwu-tiny:latest
-    sudo docker image tag oaisoftwarealliance/magma-mme:latest magma-mme:latest
-    }
 # Função para realizar pull imagens docker 5G
 function pull_docker_5g(){
     echo "Pulling the images from Docker Hub"   
@@ -417,35 +312,15 @@ function pull_docker_5g(){
     sudo docker image tag oaisoftwarealliance/oai-spgwu-tiny:$DOCKER_IMAGE_OAI oai-spgwu-tiny:$DOCKER_IMAGE_OAI
     }
 
-# Função que pausa o 4G OAI
-function stop_4g(){
-    ## 4G EPC stop
-    cd $WORK_DIR/core-scripts || exit
-    sudo docker compose down
-    }
-
 # Função que pausa o 5G OAI
-function stop_5g(){
+function stop_5g_oai(){
     cd $WORK_DIR/core-scripts
     sudo docker rm -f rfsim5g-oai-gnb
     sudo python3 core-network.py --type stop-basic
     }
 
-# Função que gera o log do MME 4G OAI
-function logs_4g() {
-    ## Verifica se o contêiner EPC está em execução
-    if sudo docker inspect -f '{{.State.Running}}' rfsim4g-magma-mme | grep true > /dev/null; then
-        ## Exibe os logs do EPC
-        echo "Exibindo logs do 4G EPC..."
-        sudo docker exec -it rfsim4g-magma-mme /bin/bash -c "tail -f /var/log/mme.log"
-    else
-        ## Exibe mensagem se o EPC não estiver em execução
-        echo "O EPC não está em execução. Por favor, selecione a opção 7 do menu para iniciar o EPC 4G."
-    fi
-    }
-
 # Função que gera o log do AMF 5G OAI
-function logs_5g() {
+function logs_5g_oai() {
     ## Verifica se o contêiner 5G Core está em execução
     if sudo docker inspect -f '{{.State.Running}}' oai-amf | grep true > /dev/null; then
         ## Exibe os logs do 5G Core
@@ -454,60 +329,6 @@ function logs_5g() {
     else
         ## Exibe mensagem se o 5G Core não estiver em execução
         echo "O 5G Core não está em execução. Por favor, selecione a opção 6 do menu para iniciar o Core 5G."
-    fi
-    }
-
-# Função para checar mcc, mnc e IP do arquivo de configuração da eNB
-function chek_eNB_conf(){
-    sudo docker rm -f oai-enb oai-enb-2
-    # check_usrp_device
-    if [ "$4" = "docker" ]; then
-        cd $WORK_DIR || exit
-        ${DOCKER_CMD} -f docker-compose/docker-compose-"$1""$2"-PRB"$3""$5".yaml up
-    else
-        dashboard_check
-	cd $WORK_DIR || exit
-        # Caminho do arquivo de configuração
-        CONFIG_FILE="conf/${1}${2}PRB${3}bm${5}.conf"
-        # Verifica se o arquivo existe
-        if [ ! -f "$CONFIG_FILE" ]; then
-            echo "Arquivo de configuração não encontrado: $CONFIG_FILE"
-            exit 1
-        fi
-        # Novos valores
-        NEW_MCC=208
-        NEW_MNC=96
-        NEW_MME_IP=192.168.61.3
-        # Inicializa a variável de IP
-        IP_ADDRESS=""
-        # Laço para verificar as interfaces enp3s0 até enp3s4
-        for i in {0..4}; do
-            INTERFACE="enp3s$i"
-            IP_ADDRESS=$(ip -4 addr show "$INTERFACE" 2>/dev/null | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
-            if [ -n "$IP_ADDRESS" ]; then
-                break
-            fi
-        done
-        # Verifica se um endereço IP foi encontrado
-        if [ -z "$IP_ADDRESS" ]; then
-            echo "Nenhum endereço IP encontrado para as interfaces enp3s0 a enp3s4"
-            exit 1
-        fi
-        # Faz as substituições no arquivo de configuração
-        sed -i.bak \
-            -e "s/mcc = [0-9]\{3\};/mcc = $NEW_MCC;/" \
-            -e "s/mnc = [0-9]\{2\};/mnc = $NEW_MNC;/" \
-            -e "s/ENB_IPV4_ADDRESS_FOR_S1_MME *= *\"[0-9.]*\";/ENB_IPV4_ADDRESS_FOR_S1_MME              = \"$IP_ADDRESS\";/" \
-            -e "s/ENB_IPV4_ADDRESS_FOR_S1U *= *\"[0-9.]*\";/ENB_IPV4_ADDRESS_FOR_S1U                 = \"$IP_ADDRESS\";/" \
-            -e "s/ENB_IPV4_ADDRESS_FOR_X2C *= *\"[0-9.]*\";/ENB_IPV4_ADDRESS_FOR_X2C                 = \"$IP_ADDRESS\";/" \
-            -e "s/mme_ip_address = ({ ipv4 = \"[0-9.]*\";/mme_ip_address = ({ ipv4 = \"$NEW_MME_IP\";/" \
-            -e "s/ENB_INTERFACE_NAME_FOR_S1_MME *= *\"[^\"]*\";/ENB_INTERFACE_NAME_FOR_S1_MME            = \"$INTERFACE\";/" \
-            -e "s/ENB_INTERFACE_NAME_FOR_S1U *= *\"[^\"]*\";/ENB_INTERFACE_NAME_FOR_S1U               = \"$INTERFACE\";/" \
-            "$CONFIG_FILE"
-        # Exibe uma mensagem de sucesso
-        echo "Configurações atualizadas com sucesso no arquivo: $CONFIG_FILE"
-        cd openairinterface5g/cmake_targets/ran_build/build/
-	sudo -E ./lte-softmodem -O ../../../../conf/${1}${2}PRB${3}bm${5}.conf $dash
     fi
     }
 
@@ -574,27 +395,29 @@ function start_E2Agent(){
     ./build/examples/emulator/agent/emu_agent_gnb
     }
 
+function start_gNB_rfsim_docker(){
+    echo "Encerrando gNB rfSIM Docker"
+    cd "$WORK_DIR" || exit
+    ${DOCKER_CMD} -f docker-compose/docker-compose-b210-PRB106-rfSIM.yaml down
+    echo "Iniciando gNB rfSIM Docker"
+    ${DOCKER_CMD} -f docker-compose/docker-compose-b210-PRB106-rfSIM.yaml up -d
+    docker logs -f rfsim5g-oai-gnb
+    }
+
 function start_gNB_rfsim(){
-    # Caminho do arquivo de configuração
-    CONFIG_FILE="openairinterface5g/targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band78.fr1.106PRB.usrpb210.conf"                
-    NEW_MCC=001
-    NEW_MNC=01
-    NEW_TRACKING_AREA_CODE=0x0001
-    NEW_AMF_IP="192.168.70.132"
-    NEW_SNSSAI="snssaiList = ({ sst = 1; sd = 0x1 });"
-    # Faz as substituições no arquivo de configuração
-    sed -i.bak \
-        -e "s/mcc = [0-9]\{3\};/mcc = $NEW_MCC;/" \
-        -e "s/mnc = [0-9]\{2\};/mnc = $NEW_MNC;/" \
-        -e "s/tracking_area_code = [0-9a-fx]*;/tracking_area_code = $NEW_TRACKING_AREA_CODE;/" \
-        -e "s/snssaiList = ({ sst = 1; sd = [0-9a-fx]* });/$NEW_SNSSAI/" \
-        -e "s/amf_ip_address = ({ ipv4 = \"[0-9.]*\";/amf_ip_address = ({ ipv4 = \"$NEW_AMF_IP\";/" \
-    "$CONFIG_FILE"
-    # Exibe uma mensagem de sucesso
-    echo "Configurações atualizadas com sucesso no arquivo: $CONFIG_FILE"
     cd openairinterface5g/cmake_targets/ran_build/build/
     # Iniciar o softmodem
-    sudo ./nr-softmodem --rfsimulator server --rfsim --sa -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/gnb.sa.band78.fr1.106PRB.usrpb210.conf --continuous-tx --gNBs.[0].min_rxtxtime 6
+    sudo ./nr-softmodem --rfsimulator server --rfsim --sa -O ../../../../conf/b210PRB106bm.conf --continuous-tx --gNBs.[0].min_rxtxtime 6
+    }
+
+function logs_gNB_rfsim_docker(){
+    docker logs -f rfsim5g-oai-gnb
+    }
+    
+function stop_gNB_rfsim_docker(){
+    cd "$WORK_DIR" || exit
+    echo "Encerrando gNB rfSIM Docker"
+    ${DOCKER_CMD} -f docker-compose/docker-compose-b210-PRB106-rfSIM.yaml down   
     }
 
 function start_UE_rfsim(){
@@ -649,7 +472,7 @@ function FlexRIC() {
     cd "$WORK_DIR" || { echo "Erro ao acessar WORK_DIR"; exit 1; }
     git clone https://gitlab.eurecom.fr/mosaic5g/flexric.git
     cd flexric || { echo "Erro ao acessar diretório flexric"; exit 1; }
-    git checkout dev #  beabdd072ca9e381d4d27c9fbc6bb19382817489|| { echo "Erro ao alternar para o branch dev"; exit 1; }
+    git checkout 37e85a00 #dev #  beabdd072ca9e381d4d27c9fbc6bb19382817489|| { echo "Erro ao alternar para o branch dev"; exit 1; }
     mkdir -p build
     cd build || { echo "Erro ao acessar diretório build"; exit 1; }
     cmake .. || { echo "Erro no comando cmake"; exit 1; }
@@ -694,104 +517,50 @@ function xApps(){
     done    
     }
 
+function startZabbix(){
+    cd zabbix/zabbix-server-docker/
+    docker compose up -d
+    }
+
+function stopZabbix(){
+    cd zabbix/zabbix-server-docker/
+    docker compose down
+    }
+
 # Case principal
 case "${COMMAND}" in
-    "--help")
-        show_help
-        ;;
     "--install")
         install_package "git"
         install_docker
         install_libuhd
-        ;;
-    "--performance")
         performance_mode
         ;;
-    "--install_UHD")
-        install_package "git"
-        install_libuhd
+    "--startZabbix")
+        startZabbix
         ;;
-    "--install_4g")
-        clone_repo_RAN
-        build_oai_RAN
-        pull_docker_4g
+    "--stopZabbix")
+        stopZabbix
         ;;
-    "--start_4g")
-        init_performance
-        start_4g
-        ;;
-    "--stop_4g")
-        stop_4g
-        ;;
-    "--logs_4g")
-        logs_4g
-        ;;
-    "--install_5g")
-        clone_repo_RAN
-        build_oai_RAN
+    "--install_5gc_oai")
         pull_docker_5g
         ;;
-    "--start_5g_mono")
+    "--install_RAN_oai")
+        clone_repo_RAN
+        build_oai_RAN       
+        ;;
+    "--start_5g_oai_mono")
         init_performance
-        start_5g
+        start_5g_oai_mono
         ;;
-    "--start_5g_dist")
+    "--start_5g_oai_dist")
         init_performance
-        start_5g
+        start_5g_oai_dist
         ;;
-    "--stop_5g")
-        stop_5g
+    "--stop_5g_oai")
+        stop_5g_oai
         ;;
-    "--logs_5g")
-        logs_5g
-        ;;
-    "--eNB_n100")
-        chek_eNB_conf "n" "310" "100" "docker" ""
-        ;;
-    "--eNB_n100_bm")
-        chek_eNB_conf "n" "310" "100" "" ""
-        ;;
-    "--eNB_n100_2")
-        chek_eNB_conf "n" "310" "100" "docker" "_2"
-        ;;
-    "--eNB_n100_2_bm")
-        chek_eNB_conf "n" "310" "100" "" "_2"
-        ;;
-    "--gNB_n106")
-        chek_gNB_conf "n" "310" "106" "docker" ""
-        ;;
-    "--gNB_n106_2")
-        chek_gNB_conf "n" "310" "106" "docker" "_2"
-        ;;
-    "--gNB_n106_bm")
-        chek_gNB_conf "n" "310" "106" "" ""
-        ;;
-    "--gNB_n106_2_bm")
-        chek_gNB_conf "n" "310" "106" "" "_2"
-        ;;
-    "--gNB_n162")
-        chek_gNB_conf "n" "310" "162" "docker" ""
-        ;;
-    "--gNB_n162_2")
-        chek_gNB_conf "n" "310" "162" "docker" "_2"
-        ;;
-    "--gNB_n162_2_bm")
-        chek_gNB_conf "n" "310" "162" "" "_2"
-        ;;
-    "--gNB_n162_bm")
-        chek_gNB_conf "n" "310" "162" "" ""
-        ;;
-    "--gNB_n273")
-        chek_gNB_conf "n" "310" "273" "docker" ""
-        ;;
-    "--gNB_n273_2")
-        chek_gNB_conf "n" "310" "273" "docker" "_2"
-        ;;
-    "--gNB_n273_bm")
-        chek_gNB_conf "n" "310" "273" "" ""
-        ;;
-    "--gNB_n273_2_bm")
-        chek_gNB_conf "n" "310" "273" "" "_2"
+    "--logs_5g_oai")
+        logs_5g_oai
         ;;
     "--gNB_b106")
         chek_gNB_conf "b" "210" "106" "docker" ""      
@@ -810,6 +579,15 @@ case "${COMMAND}" in
         ;;
     "--start_gNB_rfsim")
         start_gNB_rfsim
+        ;;
+    "--start_gNB_rfsim_docker")
+        start_gNB_rfsim_docker
+        ;;
+    "--stop_gNB_rfsim_docker")
+        stop_gNB_rfsim_docker
+        ;;
+    "--logs_gNB_rfsim_docker")
+        logs_gNB_rfsim_docker
         ;;
     "--start_UE_rfsim")
         start_UE_rfsim

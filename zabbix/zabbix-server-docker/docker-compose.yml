@@ -3,8 +3,7 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.18.0.0/24
-          gateway: 172.18.0.1
+        - subnet: ${ZABBIX_NET}
 
 services:
   postgres-server:                                              # The Postgres Database Service
@@ -14,9 +13,9 @@ services:
      - network-zabbix
     restart: always
     environment:                                                # Username, password and database name variables
-      POSTGRES_USER: zabbix                                     # Database user
-      POSTGRES_PASSWORD: zabbix                                 # Database password
-      POSTGRES_DB: zabbix                                       # Database name
+      POSTGRES_USER: ${ZBX_DB_USER}                                     # Database user
+      POSTGRES_PASSWORD: ${ZBX_DB_PASS}                                 # Database password
+      POSTGRES_DB: ${ZBX_DB_NAME}                                       # Database name
       PG_DATA: /var/lib/postgresql/data/pgdata                  # Data storage
     volumes:
       - ./var/lib/postgresql/data:/var/lib/postgresql/data
@@ -30,7 +29,7 @@ services:
       - network-zabbix
     links:
       - postgres-server
-    restart: always
+    restart: unless-stopped
     ports:
       - '10051:10051'
     volumes:
@@ -38,15 +37,15 @@ services:
       - ./etc/zabbix/externalscripts:/usr/lib/zabbix/externalscripts
       - ./etc/zabbix/templates:/usr/share/zabbix/templates/custom
     environment:
-      POSTGRES_USER: zabbix                                     # Database user
-      POSTGRES_PASSWORD: zabbix                                 # Database password
-      POSTGRES_DB: zabbix                                       # Database name
-      ZBX_SERVER_NAME: zabbix-server                            # Zabbix Server name
-      PHP_TZ: America/Recife                                    # Defining time zone
-      ZBX_CACHESIZE: 400M                                       # Maximum disk cache size to store collected data. Increasing the value of this variable can improve Zabbix performance, but it can also increase disk space usage
-      ZBX_HISTORYCACHESIZE: 50M                                 # This cache is used to store historical data collected by Zabbix agents and is used to speed up access to this data.
-      ZBX_HOUSEKEEPINGFREQUENCY: 6                              # Defines how often database cleanup tasks are run. These tasks include removing old historical data, deleting resolved events, and compacting database tables.
-      ZBX_TRENDCACHESIZE: 50M                                   # Cache used to store trend data collected by Zabbix agents and is used to speed up access to this data.
+      POSTGRES_USER: ${ZBX_DB_USER}                               # Database user
+      POSTGRES_PASSWORD: ${ZBX_DB_PASS}                           # Database password
+      POSTGRES_DB: ${ZBX_DB_NAME}                                 # Database name
+      ZBX_SERVER_NAME: zabbix-server                              # Zabbix Server name
+      PHP_TZ: ${TZ}                                               # Defining time zone
+      ZBX_CACHESIZE: 512M                                         # Maximum disk cache size to store collected data. Increasing the value of this variable can improve Zabbix performance, but it can also increase disk space usage
+      ZBX_HISTORYCACHESIZE: 256M                                  # This cache is used to store historical data collected by Zabbix agents and is used to speed up access to this data.
+      ZBX_HOUSEKEEPINGFREQUENCY: 6                                # Defines how often database cleanup tasks are run. These tasks include removing old historical data, deleting resolved events, and compacting database tables.
+      ZBX_TRENDCACHESIZE: 256M                                    # Cache used to store trend data collected by Zabbix agents and is used to speed up access to this data.
       ZBX_NODEADDRESS: 172.18.0.1:10051
     depends_on:
       - postgres-server
@@ -63,10 +62,10 @@ services:
       - '80:8080'                                                # By default Zabbix Web uses port 80, if necessary it can be changed. Example 8080:8080 - external-port:internal-port
       - '443:8443'
     environment:
-      POSTGRES_USER: zabbix                                      # Database user
-      POSTGRES_PASSWORD: zabbix                                  # Database password
-      POSTGRES_DB: zabbix                                        # Database name
-      PHP_TZ: America/Recife                                     # Defining time zone
+      POSTGRES_USER: ${ZBX_DB_USER}                              # Database user
+      POSTGRES_PASSWORD: ${ZBX_DB_PASS}                          # Database password
+      POSTGRES_DB: ${ZBX_DB_NAME}                                # Database name
+      PHP_TZ: ${ZBX_DB_NAME}                                     # Defining time zone
     depends_on:
       - postgres-server
 
@@ -75,13 +74,13 @@ services:
     build:
       context: ./Dockerfile                                      # Adjust as per location of Dockerfile-server file
       dockerfile: Dockerfile-agent
-    user: root
+    privileged: true
     networks:
       - network-zabbix
     links:
       - zabbix-server
-    restart: always
-    privileged: true
+    restart: unless-stopped
+    user: root
     volumes:
       - /var/run:/var/run
       - ./etc/zabbix/externalscripts:/etc/zabbix/externalscripts
@@ -95,7 +94,7 @@ services:
 
   grafana:
     container_name: grafana-server
-    image: grafana/grafana:10.2.9-ubuntu                         # Modify according to the desired image version
+    image: grafana/grafana:10.0.0-ubuntu                        # Modify according to the desired image version
     networks:
       - network-zabbix
     ports:
@@ -103,12 +102,19 @@ services:
     dns:
       - 8.8.8.8
       - 1.1.1.1
-    restart: always
+    restart: unless-stopped
     environment:
-      GF_INSTALL_PLUGINS: alexanderzobnin-zabbix-app,grafana-piechart-panel,yesoreyeram-boomtable-panel,grafana-worldmap-panel,grafana-clock-panel,yesoreyeram-boomtheme-panel,briangann-gauge-panel,agenty-flowcharting-panel
-      GF_SECURITY_ADMIN_PASSWORD: Grafana                        # Grafana admin user access password
       GF_USERS_DEFAULT_THEME: dark                               # Defining Grafana theme
-      TZ: America/Recife                                         # Defining time zone
+      TZ: ${TZ}
+      GF_LOG_LEVEL: debug
+      GF_INSTALL_PLUGINS: >
+        alexanderzobnin-zabbix-app,
+        grafana-piechart-panel,
+        yesoreyeram-boomtable-panel,
+        grafana-worldmap-panel,
+        grafana-clock-panel,
+        briangann-gauge-panel,
+        agenty-flowcharting-panel
     volumes:
       - grafana:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/

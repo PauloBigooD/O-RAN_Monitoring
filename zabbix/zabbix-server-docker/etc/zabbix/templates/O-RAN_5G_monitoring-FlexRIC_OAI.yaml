@@ -18,7 +18,8 @@ zabbix_export:
             - uuid: 1da749649525477cb56a7af2a6233b7c
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: E2SM''s available'
               type: CALCULATED
-              key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_E2SM_SUP}]'
+              key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_E2SM_SUP},available]'
+              history: 1d
               trends: '0'
               params: '{#E2_NODE_E2SM_SUP}'
               tags:
@@ -28,6 +29,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: MCC'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_MCC}, MCC]'
+              history: 1d
               trends: '0'
               params: '{#E2_NODE_MCC}'
               tags:
@@ -37,6 +39,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: MNC'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_MNC}, MNC]'
+              history: 1d
               trends: '0'
               params: '{#E2_NODE_MNC}'
               tags:
@@ -46,6 +49,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_2}: {#E2_NODE_KPM_SERVICE}: {#E2_NODE_KPM_STYLE_TYPE}: IE List'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}, {#E2_NODE_SM_NAME_2}, {#E2_NODE_KPM_STYLES}, {#E2_NODE_KPM_SERVICE}, {#E2_NODE_KPM_STYLE_TYPE}, {#E2_NODE_KPM_STYLE_NAME}, {#E2_NODE_KPM_MEAS_LIST}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_KPM_MEAS_LIST}'
@@ -56,6 +60,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_2}: {#E2_NODE_KPM_SERVICE}: Style Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}, {#E2_NODE_SM_NAME_2}, {#E2_NODE_KPM_STYLES}, {#E2_NODE_KPM_SERVICE}, {#E2_NODE_KPM_STYLE_TYPE}, {#E2_NODE_KPM_STYLE_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_KPM_STYLE_NAME}'
@@ -66,6 +71,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_2}: {#E2_NODE_KPM_SERVICE}: {#E2_NODE_KPM_STYLE_TYPE}: Style Type'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}, {#E2_NODE_SM_NAME_2}, {#E2_NODE_KPM_STYLES}, {#E2_NODE_KPM_SERVICE}, {#E2_NODE_KPM_STYLE_TYPE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_KPM_STYLE_TYPE}'
@@ -76,6 +82,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_2}: {#E2_NODE_KPM_SERVICE}: RIC Service'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}, {#E2_NODE_SM_NAME_2}, {#E2_NODE_KPM_STYLES}, {#E2_NODE_KPM_SERVICE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_KPM_SERVICE}'
@@ -86,6 +93,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_2}: Styles Total'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}, {#E2_NODE_SM_NAME_2}, {#E2_NODE_KPM_STYLES}]'
+              history: 1d
               trends: '0'
               params: '{#E2_NODE_KPM_STYLES}'
               tags:
@@ -95,6 +103,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_2}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}, {#E2_NODE_SM_NAME_2}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_2}'
@@ -105,6 +114,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID ORAN-E2SM-KPM'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}, {#E2_NODE_SM_OID_2}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_2}'
@@ -115,6 +125,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: ORAN-E2SM-KPM'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_2}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_2}'
@@ -125,6 +136,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_CTL_SERVICE}: {#E2_NODE_RC_CTL_STYLE_TYPE}: IE List'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_CTL_STYLES_COUNT}, {#E2_NODE_RC_CTL_SERVICE}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_CTL_STYLE_NAME}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_ACTION_2_PRM_ITEM_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_ACTION_2_PRM_ITEM_NAME}'
@@ -135,6 +147,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_CTL_SERVICE}: {#E2_NODE_RC_CTL_STYLE_TYPE}: IE List'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_CTL_STYLES_COUNT}, {#E2_NODE_RC_CTL_SERVICE}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_CTL_STYLE_NAME}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_ACTION_2_PRM_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_ACTION_2_PRM_NAME}'
@@ -145,6 +158,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_CTL_SERVICE}: {#E2_NODE_RC_CTL_STYLE_TYPE}: IE List'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_CTL_STYLES_COUNT}, {#E2_NODE_RC_CTL_SERVICE}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_CTL_STYLE_NAME}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_CTL_ACTION_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_CTL_ACTION_NAME}'
@@ -155,6 +169,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_CTL_SERVICE}: {#E2_NODE_RC_CTL_STYLE_TYPE}: Style Type'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_CTL_STYLES_COUNT}, {#E2_NODE_RC_CTL_SERVICE}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_CTL_STYLE_NAME}, {#E2_NODE_RC_CTL_STYLE_TYPE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_CTL_STYLE_TYPE}'
@@ -165,6 +180,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_CTL_SERVICE}: Style Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_CTL_STYLES_COUNT}, {#E2_NODE_RC_CTL_SERVICE}, {#E2_NODE_RC_CTL_STYLE_TYPE}, {#E2_NODE_RC_CTL_STYLE_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_CTL_STYLE_NAME}'
@@ -175,6 +191,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_CTL_SERVICE}: RIC Service'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_RPT_STYLES_COUNT}, {#E2_NODE_RC_CTL_SERVICE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_CTL_SERVICE}'
@@ -185,6 +202,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_RPT_SERVICE}: {#E2_NODE_RC_RPT_STYLE_TYPE}: IE List'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_RPT_STYLES_COUNT}, {#E2_NODE_RC_RPT_SERVICE}, {#E2_NODE_RC_RPT_STYLE_TYPE}, {#E2_NODE_RC_RPT_STYLE_NAME}, {#E2_NODE_RC_RPT_STYLE_TYPE}, {#E2_NODE_RC_RPT_ACTION_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_RPT_ACTION_NAME}'
@@ -195,6 +213,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_RPT_SERVICE}: {#E2_NODE_RC_RPT_STYLE_TYPE}: Style Type'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_RPT_STYLES_COUNT}, {#E2_NODE_RC_RPT_SERVICE}, {#E2_NODE_RC_RPT_STYLE_TYPE}, {#E2_NODE_RC_RPT_STYLE_NAME}, {#E2_NODE_RC_RPT_STYLE_TYPE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_RPT_STYLE_TYPE}'
@@ -205,6 +224,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_RPT_SERVICE}: Style Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_RPT_STYLES_COUNT}, {#E2_NODE_RC_RPT_SERVICE}, {#E2_NODE_RC_RPT_STYLE_TYPE}, {#E2_NODE_RC_RPT_STYLE_NAME}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_RPT_STYLE_NAME}'
@@ -215,6 +235,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: {#E2_NODE_RC_RPT_SERVICE}: RIC Service'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_RPT_STYLES_COUNT}, {#E2_NODE_RC_RPT_SERVICE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_RC_RPT_SERVICE}'
@@ -225,6 +246,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: Styles Total'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}, {#E2_NODE_RC_RPT_STYLES_COUNT}]'
+              history: 1d
               trends: '0'
               params: '{#E2_NODE_RC_RPT_STYLES_COUNT}'
               tags:
@@ -234,6 +256,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_3}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}, {#E2_NODE_SM_NAME_3}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_3}'
@@ -244,6 +267,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID ORAN-E2SM-RC'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}, {#E2_NODE_SM_OID_3}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_3}'
@@ -254,6 +278,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: ORAN-E2SM-RC'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_3}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_3}'
@@ -264,6 +289,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_142}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_142}, {#E2_NODE_SM_OID_142}, {#E2_NODE_SM_NAME_142}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_142}'
@@ -274,6 +300,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID MAC_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_142}, {#E2_NODE_SM_OID_142}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_142}'
@@ -284,6 +311,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: MAC_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_142}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_142}'
@@ -294,6 +322,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_143}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_143}, {#E2_NODE_SM_OID_143}, {#E2_NODE_SM_NAME_143}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_143}'
@@ -304,6 +333,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID RLC_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_143}, {#E2_NODE_SM_OID_143}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_143}'
@@ -314,6 +344,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: RLC_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_143}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_143}'
@@ -324,6 +355,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_144}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_144}, {#E2_NODE_SM_OID_144}, {#E2_NODE_SM_NAME_144}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_144}'
@@ -334,6 +366,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID PDCP_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_144},{#E2_NODE_SM_OID_144}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_144}'
@@ -344,6 +377,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: PDCP_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_144}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_144}'
@@ -354,6 +388,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_145}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_145}, {#E2_NODE_SM_OID_145}, {#E2_NODE_SM_NAME_145}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_145}'
@@ -364,6 +399,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID SLICE_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_145}, {#E2_NODE_SM_OID_145}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_145}'
@@ -374,6 +410,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: SLICE_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_145}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_145}'
@@ -384,6 +421,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_146}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_146}, {#E2_NODE_SM_OID_146}, {#E2_NODE_SM_NAME_146}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_146}'
@@ -394,6 +432,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID TC_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_146}, {#E2_NODE_SM_OID_146}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_146}'
@@ -404,6 +443,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: TC_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_146}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_146}'
@@ -414,6 +454,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: {#E2_NODE_SM_NAME_148}: SM Name'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_148}, {#E2_NODE_SM_OID_148}, {#E2_NODE_SM_NAME_148}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_NAME_148}'
@@ -424,6 +465,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: OID GTP_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_148}, {#E2_NODE_SM_OID_148}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_SM_OID_148}'
@@ -434,6 +476,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: GTP_STATS_V0'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_SM_ID_148}]'
+              history: 1d
               value_type: FLOAT
               trends: '0'
               params: '{#E2_NODE_SM_ID_148}'
@@ -444,6 +487,7 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: E2 Node Type'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}, {#E2_NODE_TYPE}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#E2_NODE_TYPE}'
@@ -454,12 +498,13 @@ zabbix_export:
               name: '{#E2_NODE_ID}: {#E2_NODE_TYPE}: E2 Node ID'
               type: CALCULATED
               key: 'e2node.SM[{#E2_NODE_ID}, {#E2_NODE_TYPE}]'
+              history: 1d
               trends: '0'
               params: '{#E2_NODE_ID}'
               tags:
                 - tag: E2_Node
                   value: 'E2_Node - SM'
-          timeout: 10s
+          timeout: 20s
           preprocessing:
             - type: JAVASCRIPT
               parameters:
@@ -701,6 +746,7 @@ zabbix_export:
               name: 'Flexric: GIT Branch'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_BRANCH}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_BRANCH}'
@@ -711,6 +757,7 @@ zabbix_export:
               name: 'Flexric: Database nearRT-RIC'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_DB}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_DB}'
@@ -721,6 +768,7 @@ zabbix_export:
               name: 'Flexric: E2AP Version'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_E2AP}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_E2AP}'
@@ -731,6 +779,7 @@ zabbix_export:
               name: 'Flexric: IP nearRT-RIC'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_IP}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_IP}'
@@ -741,6 +790,7 @@ zabbix_export:
               name: 'Flexric: Total E2 Nodes'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_NODES}]'
+              history: 1d
               params: '{#NEAR_RT_RIC_NODES}'
               tags:
                 - tag: RIC
@@ -749,6 +799,7 @@ zabbix_export:
               name: 'Flexric: Port'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_PORT}]'
+              history: 1d
               params: '{#NEAR_RT_RIC_PORT}'
               tags:
                 - tag: RIC
@@ -757,6 +808,7 @@ zabbix_export:
               name: 'Service Model: SM ID 2 - {#NEAR_RT_RIC_SM_ID_2}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_2}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_2}'
@@ -767,6 +819,7 @@ zabbix_export:
               name: 'Service Model: SM ID 3 - {#NEAR_RT_RIC_SM_ID_3}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_3}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_3}'
@@ -777,6 +830,7 @@ zabbix_export:
               name: 'Service Model: SM ID 142 - {#NEAR_RT_RIC_SM_ID_142}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_142}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_142}'
@@ -787,6 +841,7 @@ zabbix_export:
               name: 'Service Model: SM ID 143 - {#NEAR_RT_RIC_SM_ID_143}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_143}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_143}'
@@ -797,6 +852,7 @@ zabbix_export:
               name: 'Service Model: SM ID 144 - {#NEAR_RT_RIC_SM_ID_144}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_144}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_144}'
@@ -807,6 +863,7 @@ zabbix_export:
               name: 'Service Model: SM ID 146 - {#NEAR_RT_RIC_SM_ID_145}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_145}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_145}'
@@ -817,6 +874,7 @@ zabbix_export:
               name: 'Service Model: SM ID 146 - {#NEAR_RT_RIC_SM_ID_146}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_146}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_146}'
@@ -827,6 +885,7 @@ zabbix_export:
               name: 'Service Model: SM ID 148 - {#NEAR_RT_RIC_SM_ID_148}'
               type: CALCULATED
               key: 'flexric.SM[{#NEAR_RT_RIC_SM_ID_148}]'
+              history: 1d
               value_type: TEXT
               trends: '0'
               params: '{#NEAR_RT_RIC_SM_ID_148}'

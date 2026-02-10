@@ -6,17 +6,24 @@ import re
 import os
 import time
 
-# Comando para encontrar o caminho do arquivo (busca no $HOME para evitar erros de permissão)
+# --- JSON vazio padrão para exceções ---
+def print_empty_json_and_exit():
+    print(json.dumps({"data": []}, indent=4))
+    exit(0)
+
+# Comando para encontrar o caminho do arquivo
 cmd = "find / -type f -wholename '*/openairinterface5g/cmake_targets/ran_build/build/nrMAC_stats.log' 2>/dev/null"
 
 try:
-    file_path = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout.strip()
+    file_path = subprocess.run(
+        cmd, shell=True, capture_output=True, text=True
+    ).stdout.strip()
+
     if not file_path:
-        #print("Arquivo nrMAC_stats.log não encontrado.")
-        exit(1)
-except Exception as e:
-    #print("Erro ao localizar o arquivo:", e)
-    exit(1)
+        print_empty_json_and_exit()
+
+except Exception:
+    print_empty_json_and_exit()
 
 # Verifica o tempo da última modificação do arquivo
 try:
@@ -24,30 +31,26 @@ try:
     current_time = time.time()
     elapsed_time = current_time - last_modified
 
-    if elapsed_time > 120:  # Mais de 2 minutos sem atualização
-        #print(f"Aviso: O arquivo {file_path} não foi atualizado nos últimos 2 minutos.")
-        exit(1)
+    if elapsed_time > 120:  # mais de 2 minutos sem atualização
+        print_empty_json_and_exit()
 
-except Exception as e:
-    #print(f"Erro ao verificar o tempo de modificação do arquivo: {e}")
-    exit(1)
+except Exception:
+    print_empty_json_and_exit()
 
 # Função para ler o conteúdo do arquivo
 def read_log_file(log_file):
     try:
         with open(log_file, "r") as f:
             return f.read()
-    except FileNotFoundError:
-        print(f"Erro: Arquivo {log_file} não encontrado ao tentar abrir.")
+    except Exception:
         return None
 
 # Lê o conteúdo do arquivo
 log_text = read_log_file(file_path)
 if not log_text:
-    #print("Não foi possível ler o arquivo.")
-    exit(1)
+    print_empty_json_and_exit()
 
-# Expressões regulares para capturar as informações necessárias
+# Expressões regulares
 patterns = {
     "{#MAC_UE_RNTI}": r"UE RNTI ([0-9a-fA-F]+)",
     "{#MAC_CU_UE_ID}": r"CU-UE-ID (\d+)",
@@ -66,7 +69,7 @@ patterns = {
     "{#MAC_SNR}": r"SNR ([\d\.]+) dB"
 }
 
-# Dicionário para armazenar os dados capturados
+# Dicionário de dados
 data = {}
 
 # Extração dos dados
@@ -74,29 +77,35 @@ for key, pattern in patterns.items():
     match = re.search(pattern, log_text)
     if match:
         value = match.group(1)
-        if key in ["{#MAC_DLSCH_rounds}", "{#MAC_ULSCH_rounds}"]:
-            data[key] = value  # Mantém como string
+        if "/" in value:
+            data[key] = value
         else:
             data[key] = int(value) if value.isdigit() else value
 
-# Captura as linhas completas de LCID
+# Captura LCIDs
 for lcid in [1, 2, 4]:
-    lcid_match = re.search(fr"LCID {lcid}:\s*TX\s*(\d+)\s*RX\s*(\d+)", log_text)
+    lcid_match = re.search(
+        fr"LCID {lcid}:\s*TX\s*(\d+)\s*RX\s*(\d+)", log_text
+    )
     if lcid_match:
         data[f"{{#MAC_LCID_{lcid}_TX}}"] = int(lcid_match.group(1))
         data[f"{{#MAC_LCID_{lcid}_RX}}"] = int(lcid_match.group(2))
 
-# Captura a linha completa do MAC
+# Captura MAC TX/RX
 mac_match = re.search(r"MAC:\s*TX\s*(\d+)\s*RX\s*(\d+)", log_text)
 if mac_match:
     data["{#MAC_MAC_TX}"] = int(mac_match.group(1))
     data["{#MAC_MAC_RX}"] = int(mac_match.group(2))
 
-# Criar o JSON final no formato esperado
-json_data = {"data": [data]}
+# Se nada foi extraído, retorna JSON vazio
+if not data:
+    print_empty_json_and_exit()
 
-# Remover valores None do JSON final
-json_data["data"] = [{k: v for k, v in json_data["data"][0].items() if v is not None}]
+# JSON final
+json_data = {
+    "data": [
+        {k: v for k, v in data.items() if v is not None}
+    ]
+}
 
-# Imprimir JSON formatado
 print(json.dumps(json_data, indent=4))

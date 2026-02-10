@@ -3,33 +3,75 @@
 import json
 import subprocess
 import re
+import sys
+
+# --------------------------------------------------
+# JSON vazio padrão para exceções
+# --------------------------------------------------
+
+def print_empty_json_and_exit():
+    print(json.dumps({"data": []}, indent=4))
+    sys.exit(0)
+
+# --------------------------------------------------
+# Funções Docker
+# --------------------------------------------------
 
 def get_docker_logs(container_name: str, tail: int = 11) -> str:
     try:
-        logs = subprocess.check_output(
-            ["docker", "logs", container_name, "--tail", str(tail)], 
-            stderr=subprocess.STDOUT, text=True
+        return subprocess.check_output(
+            ["docker", "logs", container_name, "--tail", str(tail)],
+            stderr=subprocess.STDOUT,
+            text=True
         )
-        return logs
-    except subprocess.CalledProcessError as e:
-        #print(f"Erro ao executar comando Docker: {e.output}")
+    except subprocess.CalledProcessError:
         return ""
 
-container_name = "oai-amf-A"
-logs = get_docker_logs(container_name)
-if not logs:
-    #print("Nenhum log capturado ou container não acessível.")
-    exit(1)
+def find_containers_by_pattern(pattern: str):
+    try:
+        output = subprocess.check_output(
+            ["docker", "ps", "--format", "{{.Names}}"],
+            text=True
+        )
+        regex = re.compile(pattern)
+        return [c for c in output.splitlines() if regex.match(c)]
+    except subprocess.CalledProcessError:
+        return []
 
-ue_pattern = re.compile(r"\|\s*(\d+)\s*\|\s*(5GMM-[A-Z]+)\s*\|\s*(\d+)\s*\|\s*(\d*)\s*\|\s*(\d*)\s*\|\s*(\d*)\s*\|\s*([\d, ]+)\s*\|\s*(\d*)\s*\|")
+# --------------------------------------------------
+# Descoberta dinâmica dos AMFs
+# --------------------------------------------------
+
+containers = find_containers_by_pattern(r"^oai-amf.*")
+
+if not containers:
+    print_empty_json_and_exit()
+
+# --------------------------------------------------
+# Coleta agregada de logs
+# --------------------------------------------------
+
+logs = ""
+for container in containers:
+    container_logs = get_docker_logs(container)
+    if container_logs:
+        logs += container_logs + "\n"
+
+if not logs.strip():
+    print_empty_json_and_exit()
+
+# --------------------------------------------------
+# Parsing dos UEs
+# --------------------------------------------------
+
+ue_pattern = re.compile(
+    r"\|\s*(\d+)\s*\|\s*(5GMM-[A-Z]+)\s*\|\s*(\d+)\s*\|\s*(\d*)\s*\|\s*(\d*)\s*\|\s*(\d*)\s*\|\s*([\d, ]+)\s*\|\s*(\d*)\s*\|"
+)
 
 data = {"data": []}
 
-
-# Processamento dos dados do UE
 ue_matches = list(ue_pattern.finditer(logs))
-if not ue_matches:
-    print("Nenhuma informação de UE encontrada nos logs.")
+
 for match in ue_matches:
     index, state, imsi, guti, ran_ue_ngap_id, amf_ue_id, plmn, cell_id = match.groups()
     data["data"].append({
@@ -43,10 +85,11 @@ for match in ue_matches:
         "{#UE_CELL_ID}": int(cell_id) if cell_id else None
     })
 
-json_output = json.dumps(data, indent=4)
+# --------------------------------------------------
+# Saída JSON (LLD-safe)
+# --------------------------------------------------
 
-output_file = "/tmp/oai_amf_ue.json"
-with open(output_file, "w") as f:
-    f.write(json_output)
+if not data["data"]:
+    print_empty_json_and_exit()
 
-print(json_output)
+print(json.dumps(data, indent=4))
