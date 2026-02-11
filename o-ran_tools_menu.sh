@@ -75,7 +75,7 @@ menu() {
         echo "25) Iniciar 5GC Local Open5GS"
         echo "26) Logs 5GC Open5GS"
         echo "27) Parar 5GC Open5GS"
-        echo "28) Dependências 5G RAN srsRAN"     
+        echo "28) Dependências 5G RAN srsRAN (Bare Metal)"     
         echo "29) Iniciar gNB srsRAN b210 106_PRBs (Bare Metal)"
         echo "30) Iniciar gNB srsRAN b210 106_PRBs (Docker 🐳)"
         echo -e "31) \e[1;31mSair\e[0m"
@@ -103,7 +103,7 @@ menu() {
             19) run --start_E2Agent ;;
             20) run --xApps ;;
             21) run --install_scRIC ;;
-            22) run --start__scRIC ;;
+            22) run --start_scRIC ;;
             23) run --logs_scRIC ;;
             24) run --stop_scRIC ;;      
             25) run --start_Open5GS ;;

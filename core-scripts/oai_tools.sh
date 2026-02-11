@@ -527,6 +527,96 @@ function stopZabbix(){
     docker compose down
     }
 
+function install_scRIC(){
+    sudo rm -rf oran-sc-ric
+    echo "Instalando dependências do O-RAN SC RIC"
+    git clone https://github.com/srsran/oran-sc-ric
+    cd ./oran-sc-ric
+    echo "Copiando xAppMON"
+    cp ../xApp/scRIC/xappMON-SC.py ./xApps/python/
+    }
+
+function start_scRIC(){
+    echo "Iniciando O-RAN SC RIC"
+    cd ./oran-sc-ric
+    docker compose up -d
+    }
+
+function logs_scRIC(){
+    cd ./oran-sc-ric
+    docker compose logs -f
+    }
+
+function stop_scRIC(){
+    cd ./oran-sc-ric
+    docker compose down
+    }
+
+function start_Open5GS(){
+    cd ./open5GS
+    OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml up 5gc -d
+    }
+
+function stop_Open5GS(){
+    cd ./open5GS
+    OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml down
+    }
+
+function logs_Open5GS(){
+    docker logs -f open5gs_5gc
+    }
+
+function install_RAN_srsRAN(){
+    echo "Instalando dependências"
+    sudo apt-get install cmake make gcc-10 g++-10 libgtest-dev pkg-config libfftw3-dev libmbedtls-dev libsctp-dev libyaml-cpp-dev libdw-dev libbfd-dev libdwarf-dev binutils-dev
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+    sudo rm -rf mbedtls
+    echo "Clonando mbedtls"
+    git clone https://github.com/Mbed-TLS/mbedtls.git
+    cd mbedtls
+    git checkout v3.5.2
+    mkdir build && cd build
+    cmake ..
+    make -j$(nproc)
+    sudo make install
+    sudo ldconfig
+    cd ../..
+    sudo rm -rf libzmq
+    echo "Clonando libzmq"
+    export CXXFLAGS="-Wno-stringop-overflow -Wno-error=stringop-overflow"
+    git clone https://github.com/zeromq/libzmq.git
+    cd libzmq
+    mkdir build && cd build
+    cmake ..
+    make -j$(nproc)
+    sudo make install
+    sudo ldconfig
+    cd ..
+    sudo rm -rf czmq
+    echo "Clonando czmq"
+    git clone https://github.com/zeromq/czmq.git
+    cd czmq
+    ./autogen.sh
+    ./configure
+    make
+    sudo make install
+    sudo ldconfig
+    cd ..
+    echo "Ativar modo performance"
+    cd $WORK_DIR/srsRAN/utils/
+    ./srsran_performance.sh
+    cd ..
+    sudo rm -rf build
+    mkdir build
+    cd build
+    echo "Build srsRAN"
+    cmake ../ -DENABLE_EXPORT=ON -DENABLE_ZEROMQ=ON
+    make -j`nproc`
+    sudo make install
+    echo "Instalado com sucesso"
+    }
+
 # Case principal
 case "${COMMAND}" in
     "--install")
@@ -534,6 +624,30 @@ case "${COMMAND}" in
         install_docker
         install_libuhd
         performance_mode
+        ;;
+    "--install_RAN_srsRAN")
+        install_RAN_srsRAN
+        ;; 
+    "--start_Open5GS")
+        start_Open5GS
+        ;;    
+    "--logs_Open5GS")
+        logs_Open5GS
+        ;;
+    "--stop_Open5GS")
+        stop_Open5GS
+        ;;
+    "--start_scRIC")
+        start_scRIC
+        ;;
+    "--stop_scRIC")
+        stop_scRIC
+        ;;
+    "--install_scRIC")
+        install_scRIC
+        ;;
+    "--logs_scRIC")
+        logs_scRIC
         ;;
     "--startZabbix")
         startZabbix
