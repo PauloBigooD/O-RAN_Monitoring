@@ -210,6 +210,7 @@ function install_docker(){
         install_package "docker-ce" "docker-ce-cli" "containerd.io" "docker-buildx-plugin" "docker-compose-plugin"
         # Instalar Docker Compose via pip3 (opcional, se não instalado com o plugin)
         sudo pip3 install docker-compose
+        docker login
     fi
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo apt-get clean
@@ -339,7 +340,7 @@ function chek_gNB_conf(){
     #check_usrp_device
     if [ "$4" = "docker" ]; then
         cd "$WORK_DIR" || exit
-        ${DOCKER_CMD} -f docker-compose/docker-compose-"$1""$2"-PRB"$3""$5".yaml up
+        ${DOCKER_CMD} -f core-scripts/docker-compose/docker-compose-"$1""$2"-PRB"$3""$5".yaml up
     else
         dashboard_check
         # Caminho do arquivo de configuração
@@ -398,9 +399,9 @@ function start_E2Agent(){
 function start_gNB_rfsim_docker(){
     echo "Encerrando gNB rfSIM Docker"
     cd "$WORK_DIR" || exit
-    ${DOCKER_CMD} -f docker-compose/docker-compose-b210-PRB106-rfSIM.yaml down
+    ${DOCKER_CMD} -f core-scripts/docker-compose/docker-compose-b210-PRB106-rfSIM.yaml down
     echo "Iniciando gNB rfSIM Docker"
-    ${DOCKER_CMD} -f docker-compose/docker-compose-b210-PRB106-rfSIM.yaml up -d
+    ${DOCKER_CMD} -f core-scripts/docker-compose/docker-compose-b210-PRB106-rfSIM.yaml up -d
     docker logs -f rfsim5g-oai-gnb
     }
 
@@ -417,7 +418,7 @@ function logs_gNB_rfsim_docker(){
 function stop_gNB_rfsim_docker(){
     cd "$WORK_DIR" || exit
     echo "Encerrando gNB rfSIM Docker"
-    ${DOCKER_CMD} -f docker-compose/docker-compose-b210-PRB106-rfSIM.yaml down   
+    ${DOCKER_CMD} -f core-scripts/docker-compose/docker-compose-b210-PRB106-rfSIM.yaml down   
     }
 
 function start_UE_rfsim(){
@@ -439,6 +440,15 @@ function start_UE_rfsim(){
     echo "Configurações atualizadas com sucesso no arquivo: $CONFIG_FILE"  
     cd openairinterface5g/cmake_targets/ran_build/build/
     sudo ./nr-uesoftmodem --rfsimulator.serveraddr 192.168.70.129 -r 106 --numerology 1 --band 78 -C 3619200000 --rfsim --sa -O ../../../targets/PROJECTS/GENERIC-NR-5GC/CONF/ue.conf
+    }
+
+function start_UE_rfsim_docker(){
+    echo "Encerrando UE rfSIM Docker"
+    cd "$WORK_DIR" || exit
+    ${DOCKER_CMD} -f core-scripts/docker-compose/docker-compose-ue.yaml down
+    echo "Iniciando UE rfSIM Docker"
+    ${DOCKER_CMD} -f core-scripts/docker-compose/docker-compose-ue.yaml up
+    docker logs -f rfsim5g-oai-ue
     }
 
 function FlexRIC() {
@@ -533,7 +543,7 @@ function install_scRIC(){
     git clone https://github.com/srsran/oran-sc-ric
     cd ./oran-sc-ric
     echo "Copiando xAppMON"
-    cp ../xApp/scRIC/xappMON-SC.py ./xApps/python/
+    cd $WORK_DIR/xApp/scRIC/xappMON-SC.py ./xApps/python/
     }
 
 function start_scRIC(){
@@ -568,7 +578,7 @@ function logs_Open5GS(){
 
 function install_RAN_srsRAN(){
     echo "Instalando dependências"
-    sudo apt-get install cmake make gcc-10 g++-10 libgtest-dev pkg-config libfftw3-dev libmbedtls-dev libsctp-dev libyaml-cpp-dev libdw-dev libbfd-dev libdwarf-dev binutils-dev
+    install_package "cmake" "make" "gcc-10" "g++-10" "libgtest-dev" "pkg-config" "libfftw3-dev" "libmbedtls-dev" "libsctp-dev" "libyaml-cpp-dev" "libdw-dev" "libbfd-dev" "libdwarf-dev" "binutils-dev"
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
     sudo rm -rf mbedtls
@@ -617,6 +627,28 @@ function install_RAN_srsRAN(){
     echo "Instalado com sucesso"
     }
 
+function gNB_b106_bm_srsRAN(){
+    cd $WORK_DIR/srsRAN/utils/
+    ./gnb_up_b210_256QAM_MIMO_30Mhz.sh
+    }
+
+function gNB_srsRAN_docker(){
+    sudo docker rm -f srsran_gnb
+    cd $WORK_DIR/srsRAN/docker
+    sudo docker compose -f  docker-compose.yaml up gnb -d
+    sudo docker logs -f srsran_gnb
+    }
+
+function logs_gNB_srsRAN_docker(){
+    sudo docker logs -f srsran_gnb
+    }
+
+function stop_gNB_srsRAN_docker(){
+    echo "Encerrando gNB srsRAN"
+    cd $WORK_DIR/srsRAN/docker
+    sudo docker compose -f docker-compose.yaml down gnb
+    }
+
 # Case principal
 case "${COMMAND}" in
     "--install")
@@ -624,6 +656,18 @@ case "${COMMAND}" in
         install_docker
         install_libuhd
         performance_mode
+        ;;
+    "--stop_srsRAN_docker")
+        stop_gNB_srsRAN_docker
+        ;;
+    "--logs_srsRAN_docker")
+        logs_gNB_srsRAN_docker
+        ;;
+    "--gNB_srsRAN_docker")
+        gNB_srsRAN_docker
+        ;;
+    "--gNB_b106_bm_srsRAN")
+        gNB_b106_bm_srsRAN
         ;;
     "--install_RAN_srsRAN")
         install_RAN_srsRAN
@@ -705,6 +749,9 @@ case "${COMMAND}" in
         ;;
     "--start_UE_rfsim")
         start_UE_rfsim
+        ;;
+    "--start_UE_rfsim_docker")
+        start_UE_rfsim_docker
         ;;
     "--xApps")
         xApps

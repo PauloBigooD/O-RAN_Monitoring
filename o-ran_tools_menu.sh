@@ -47,39 +47,42 @@ menu() {
         echo  "1) Instalar componentes Git, Docker e UHD"
         echo  "2) Iniciar Servidor de Monitoramento (Zabbix Server; Grafana)"
         echo  "3) Parar Servidor de Monitoramento (Zabbix Server; Grafana)"
-        echo "========================================================"
+        echo -e "\n===================== OAI ====================="
         echo  "4) Dependências 5GC OAI"
         echo  "5) Dependências 5G RAN OAI"
         echo  "6) Iniciar 5GC Local OAI"
-        echo  "7) Iniciar 5GC MACvLAN OAI"
-        echo  "8) Logs 5GC OAI"
-        echo  "9) Parar 5GC OAI"
-        echo "10) Iniciar gNB OAI rfsim (Docker 🐳)"
-        echo "11) Logs gNB OAI rfsim (Docker 🐳)"
-        echo "12) Parar gNB OAI rfsim (Docker 🐳)"
-        echo "13) Iniciar gNB OAI rfsim"
-        echo "14) Iniciar gNB OAI b210 106_PRBs (Bare Metal)"
-        echo "15) Iniciar gNB OAI b210 106_PRBs (Docker 🐳)"
-        echo "16) Iniciar UE OAI rfsim"
-        echo "========================================================"
+        echo  "7) Logs 5GC OAI"
+        echo  "8) Parar 5GC OAI"
+        echo "9) Iniciar gNB OAI rfsim (Docker 🐳)"
+        echo "10) Logs gNB OAI rfsim (Docker 🐳)"
+        echo "11) Parar gNB OAI rfsim (Docker 🐳)"
+        echo "12) Iniciar gNB OAI rfsim (Bare Metal)"
+        echo "13) Iniciar gNB OAI b210 106_PRBs (Bare Metal)"
+        echo "14) Iniciar gNB OAI b210 106_PRBs (Docker 🐳)"
+        echo "15) Iniciar UE OAI rfsim (Docker 🐳)"
+        echo "16) Iniciar UE OAI rfsim (Bare Metal)"
+        echo -e "\n===================== FlexRIC ====================="
         echo "17) Instalar FlexRIC"
-        echo "18) Iniciar FlexRIC"
+        echo "18) Iniciar FlexRIC - 127.0.0.1"
         echo "19) Iniciar E2 Node Simulado"
         echo "20) Iniciar xApps FlexRIC"
-        echo "========================================================"
+        echo -e "\n===================== O-RAN SC RIC ====================="
         echo "21) Instalar O-RAN SC RIC"
-        echo "22) Iniciar O-RAN SC RIC"
+        echo "22) Iniciar O-RAN SC RIC - 10.0.2.10"
         echo "23) Logs O-RAN SC RIC"
         echo "24) Parar O-RAN SC RIC"
-        echo "========================================================"
+        echo -e "\n===================== Open5GS ====================="
         echo "25) Iniciar 5GC Local Open5GS"
         echo "26) Logs 5GC Open5GS"
         echo "27) Parar 5GC Open5GS"
+        echo -e "\n===================== srsRAN ====================="
         echo "28) Dependências 5G RAN srsRAN (Bare Metal)"     
         echo "29) Iniciar gNB srsRAN b210 106_PRBs (Bare Metal)"
         echo "30) Iniciar gNB srsRAN b210 106_PRBs (Docker 🐳)"
-        echo -e "31) \e[1;31mSair\e[0m"
-        echo "========================================================"
+        echo "31) Logs gNB srsRAN b210 106_PRBs (Docker 🐳)"
+        echo "32) Parar gNB srsRAN b210 106_PRBs (Docker 🐳)"
+        echo "========================================================"        
+        echo -e "33) \e[1;31mSair\e[0m"
         read -p "Escolha uma opção: " opt
         case $opt in
             1) run --install ;;
@@ -88,15 +91,15 @@ menu() {
             4) run --install_5gc_oai ;;
             5) run --install_RAN_oai ;;                  
             6) run --start_5g_oai_mono ;;
-            7) run --start_5g_oai_dist ;;
-            8) run --logs_5g_oai ;;
-            9) run --stop_5g_oai ;;
-            10) run --start_gNB_rfsim_docker ;;
-            11) run --logs_gNB_rfsim_docker ;;
-            12) run --stop_gNB_rfsim_docker ;;
-            13) run --start_gNB_rfsim ;;
-            14) run --gNB_b106_bm ;;
-            15) run --gNB_b106 ;;
+            7) run --logs_5g_oai ;;
+            8) run --stop_5g_oai ;;
+            9) run --start_gNB_rfsim_docker ;;
+            10) run --logs_gNB_rfsim_docker ;;
+            11) run --stop_gNB_rfsim_docker ;;
+            12) run --start_gNB_rfsim ;;
+            13) run --gNB_b106_bm ;;
+            14) run --gNB_b106 ;;
+            15) run --start_UE_rfsim_docker ;;
             16) run --start_UE_rfsim ;;
             17) run --FlexRIC ;;
             18) run --start_nearRT-RIC ;;
@@ -111,8 +114,10 @@ menu() {
             27) run --stop_Open5GS ;;
             28) run --install_RAN_srsRAN ;;
             29) run --gNB_b106_bm_srsRAN ;;
-            30) run --gNB_b106_srsRAN ;;    
-            31) echo "Saindo..."; break ;;
+            30) run --gNB_srsRAN_docker ;; 
+            31) run --logs_srsRAN_docker ;;
+            32) run --stop_srsRAN_docker ;;   
+            33) echo "Saindo..."; break ;;
             *) echo "Opção inválida!" ;;
 	esac
     done
