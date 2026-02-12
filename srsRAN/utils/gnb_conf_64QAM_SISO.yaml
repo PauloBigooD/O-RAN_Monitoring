@@ -41,6 +41,17 @@ cell_cfg:
 #  nof_antennas_dl: 2                    # Optional UINT (1). Sets the number of antennas for downlink transmission. Supported: [1, 2, 4].
 #  nof_antennas_ul: 2
 
+e2:
+  e2sm_kpm_enabled: true            # Enable KPM service module
+  e2sm_rc_enabled: true             # Enable RC service module
+  enable_du_e2: true                # Enable DU E2 agent (one for each DU instance)
+  e2sm_kpm_enabled: true            # Enable KPM service module
+  e2sm_rc_enabled: true             # Enable RC service module
+  bind_addr: 0.0.0.0                #10.0.2.1
+  addr: 10.0.2.10                   # RIC IP address
+  port: 36421                       # RIC port
+
+
 log:
   filename: /tmp/gnb.log
   all_level: warning
@@ -50,6 +61,7 @@ log:
   #radio_level: info  
 
 pcap:
+  e2ap_enable: true
   mac_enable: false
   mac_filename: /tmp/gnb_mac.pcap
   ngap_enable: false

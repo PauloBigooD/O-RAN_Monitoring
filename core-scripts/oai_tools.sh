@@ -516,6 +516,8 @@ function xApps(){
         | 2 - xapp_rc_moni                <-> Start the RC monitor xApp - aperiodic subscription for UE RRC State Change.                                |
         | 3 - xapp_kpm_rc                 <-> Start the RC control xApp - RAN control function QoS flow mapping configuration (e.g. creating a new DRB). |
         | 4 - xapp_gtp_mac_rlc_pdcp_moni  <-> Start the (MAC + RLC + PDCP + GTP) monitor xApp.                                                           |
+        | 5 - xappMON_RAN_OAI             <-> Collect the E2SMs capabilities E2 Node OAI                                                                 |
+        | 6 - xappMON_RAN_srsRAN          <-> Collect the E2SMs capabilities E2 Node OAI                                                                 |
         --------------------------------------------------------------------------------------------------------------------------------------------------
         "
     read -p "Escolha uma opção [1 ... 4] para deploy: " escolha
@@ -524,6 +526,8 @@ function xApps(){
         2) ./flexric/build/examples/xApp/c/monitor/xapp_rc_moni ;;
         3) ./flexric/build/examples/xApp/c/kpm_rc/xapp_kpm_rc ;;
         4) ./flexric/build/examples/xApp/c/monitor/xapp_gtp_mac_rlc_pdcp_moni ;;
+        5) ./flexric/build/examples/xApp/c/monitor/xappMON.c ;;
+        6) ./flexric/build/examples/xApp/c/monitor/xappMON_srs.c ;;
         *) echo "Opção inválida! Tente novamente." ;;
         esac
         echo ""

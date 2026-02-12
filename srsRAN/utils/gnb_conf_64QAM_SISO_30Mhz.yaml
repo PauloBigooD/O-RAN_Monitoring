@@ -5,9 +5,9 @@
 ran_node_name: gNB-srsRAN-64QAM_SISO_30Mhz
 cu_cp:
   amf:
-    addr: 10.53.1.2  # AMF ngap IP
+    addr: 10.53.1.2       # AMF ngap IP
     port: 38412
-    bind_addr: 10.53.1.3  # local IP
+    bind_addr: 10.53.1.3  # Ajuste para o IP local do host
     supported_tracking_areas:
       - tac: 1 
         plmn_list:
@@ -21,7 +21,7 @@ cu_cp:
 ru_sdr:
   device_driver: uhd
   device_args: type=b200,num_recv_frames=64,num_send_frames=64
-    #device_args: type=b200
+  #device_args: type=b200
   clock: internal #gpsdo #internal                                             # Specify the clock source used by the RF. NOTE: Set to internal if NOT using an external 10 MHz reference clock.  
   sync: internal #gpsdo
   srate: 30.72 #23.04
@@ -44,12 +44,11 @@ cell_cfg:
 e2:
   e2sm_kpm_enabled: true            # Enable KPM service module
   e2sm_rc_enabled: true             # Enable RC service module
-    #e2sm_ccc_enabled: true            # Enable CCC service module
   enable_du_e2: true                # Enable DU E2 agent (one for each DU instance)
   e2sm_kpm_enabled: true            # Enable KPM service module
   e2sm_rc_enabled: true             # Enable RC service module
-  bind_addr: 0.0.0.0 #10.0.2.1
-  addr: 10.0.2.10             # RIC IP address
+  bind_addr: 0.0.0.0                #10.0.2.1
+  addr: 10.0.2.10                   # RIC IP address
   port: 36421                       # RIC port
 
 
