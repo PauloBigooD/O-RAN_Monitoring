@@ -483,6 +483,9 @@ function FlexRIC() {
     git clone https://gitlab.eurecom.fr/mosaic5g/flexric.git
     cd flexric || { echo "Erro ao acessar diretório flexric"; exit 1; }
     git checkout 37e85a00 #dev #  beabdd072ca9e381d4d27c9fbc6bb19382817489|| { echo "Erro ao alternar para o branch dev"; exit 1; }
+    rm examples/xApp/c/monitor/CMakeLists.txt
+    echo "Copiando xAppMON"
+    cp -f $WORK_DIR/xApp/flexRIC/* examples/xApp/c/monitor/ 
     mkdir -p build
     cd build || { echo "Erro ao acessar diretório build"; exit 1; }
     cmake .. || { echo "Erro no comando cmake"; exit 1; }
@@ -543,7 +546,7 @@ function install_scRIC(){
     git clone https://github.com/srsran/oran-sc-ric
     cd ./oran-sc-ric
     echo "Copiando xAppMON"
-    cd $WORK_DIR/xApp/scRIC/xappMON-SC.py ./xApps/python/
+    cp $WORK_DIR/xApp/scRIC/xappMON-SC.py ./xApps/python/
     }
 
 function start_scRIC(){
