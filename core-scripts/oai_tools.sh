@@ -565,6 +565,9 @@ function stop_scRIC(){
 function start_Open5GS(){
     cd ./open5GS
     docker compose --env-file open5gs/open5gs.env -f docker-compose.yml up -d 5gc
+    echo "Iniciando Open5GS"
+    sleep 10
+    docker logs -f open5gs_5gc
     #OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml up 5gc -d
     }
 
@@ -637,7 +640,7 @@ function gNB_b106_bm_srsRAN(){
 function gNB_srsRAN_docker(){
     sudo docker rm -f srsran_gnb
     cd $WORK_DIR/srsRAN/docker
-    sudo docker compose -f  docker-compose.yaml up gnb -d
+    sudo docker compose up -d
     sudo docker logs -f srsran_gnb
     }
 
@@ -648,7 +651,7 @@ function logs_gNB_srsRAN_docker(){
 function stop_gNB_srsRAN_docker(){
     echo "Encerrando gNB srsRAN"
     cd $WORK_DIR/srsRAN/docker
-    sudo docker compose -f docker-compose.yaml down gnb
+    sudo docker compose -f docker-compose.yaml down
     }
 
 # Case principal
