@@ -564,12 +564,14 @@ function stop_scRIC(){
 
 function start_Open5GS(){
     cd ./open5GS
-    OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml up 5gc -d
+    docker compose --env-file open5gs/open5gs.env -f docker-compose.yml up -d 5gc
+    #OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml up 5gc -d
     }
 
 function stop_Open5GS(){
     cd ./open5GS
-    OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml down
+    docker compose --env-file open5gs/open5gs.env -f docker-compose.yml down 5gc
+    #OPEN_5GS_ENV_FILE=open5gs/open5gs.env docker compose -f docker-compose.yml down
     }
 
 function logs_Open5GS(){

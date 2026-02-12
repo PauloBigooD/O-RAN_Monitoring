@@ -77,7 +77,7 @@ mme:
     - plmn_id:
         mcc: 001
         mnc: 01
-      tac: 1
+      tac: 7
   security:
     integrity_order: [EIA2, EIA1, EIA0]
     ciphering_order: [EEA0, EEA1, EEA2]
@@ -126,10 +126,10 @@ smf:
   session:
     - subnet: ${UE_GATEWAY_IP}
       gateway: 10.45.0.1
-      dnn: open5GS 
+      dnn: lance
     - subnet: 2001:db8:cafe::/48
       gateway: 2001:db8:cafe::1
-      dnn: open5GS
+      dnn: lance
   dns:
     - 8.8.8.8
     - 8.8.4.4
@@ -139,11 +139,11 @@ smf:
         - sst: 1
           sd: 000001
           dnn:
-            - open5GS
+            - lance
         - sst: 1
           sd: 000002
           dnn:
-            - open5GS
+            - lance
   freeDiameter:
     identity: smf.localdomain
     realm: localdomain
@@ -223,7 +223,7 @@ upf:
         advertise: ${UPF_ADVERTISE_IP}
   session:
     - subnet: ${UE_GATEWAY_IP}
-      dnn: open5GS
+      dnn: lance
     #- subnet: 2001:db8:cafe::/48
       #gateway: 2001:db8:cafe::1
       #dnn: lance
@@ -352,4 +352,3 @@ udr:
     client:
       scp:
         - uri: http://127.0.0.22:7777
-
