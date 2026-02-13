@@ -81,8 +81,10 @@ menu() {
         echo "30) Iniciar gNB srsRAN b210 106_PRBs (Docker 🐳)"
         echo "31) Logs gNB srsRAN b210 106_PRBs (Docker 🐳)"
         echo "32) Parar gNB srsRAN b210 106_PRBs (Docker 🐳)"
-        echo "========================================================"        
-        echo -e "33) \e[1;31mSair\e[0m"
+        echo -e "\n===================== Zabbix Agent ====================="
+        echo "33) Instalar Coletor de KPIs (Zabbix Agent)"
+        echo -e "\n========================================================"
+        echo -e "34) \e[1;31mSair\e[0m"
         read -p "Escolha uma opção: " opt
         case $opt in
             1) run --install ;;
@@ -116,8 +118,9 @@ menu() {
             29) run --gNB_b106_bm_srsRAN ;;
             30) run --gNB_srsRAN_docker ;; 
             31) run --logs_srsRAN_docker ;;
-            32) run --stop_srsRAN_docker ;;   
-            33) echo "Saindo..."; break ;;
+            32) run --stop_srsRAN_docker ;; 
+            33) run --installZabbix ;;  
+            34) echo "Saindo..."; break ;;
             *) echo "Opção inválida!" ;;
 	esac
     done

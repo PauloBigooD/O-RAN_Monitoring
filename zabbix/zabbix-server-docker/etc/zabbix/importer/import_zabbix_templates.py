@@ -363,7 +363,7 @@ def update_host_ip(session, token, host_id):
             "interfaceid": interface_id,
             "ip": "172.18.0.1",
             "dns": "",
-            "port": "10050",
+            "port": "10055",
             "useip": 1
         },
         "id": 8

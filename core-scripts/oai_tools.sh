@@ -452,16 +452,20 @@ function start_UE_rfsim_docker(){
     }
 
 function FlexRIC() {
+    echo "================================================"
     echo "Instalando dependências do FlexRIC"
+    echo "================================================"
     sudo apt-get update
-    install_package "automake" "g++" "make" "libpcre2-dev" "byacc" "cmake" "python3-dev" "libsctp-dev" "bison" 
+    install_package "automake" "g++" "make" "libpcre2-dev" "byacc" "cmake" "python3-dev" "libsctp-dev" "bison" "libconfig-dev" "cmake-curses-gui" "pkg-config" "libconfig++-dev"
     cd $WORK_DIR || exit
     if [ -d "swig" ]; then
         echo "Removendo diretório existente 'swig'..."
         sudo rm -rf swig
     fi
     if [ ! -d "swig" ]; then
+    echo "================================================"
     echo "Instalando SWIG"
+    echo "================================================"
     git clone https://github.com/swig/swig.git
     cd "$WORK_DIR"/swig || { echo "Erro ao acessar o diretório swig"; exit 1; }
     git checkout release-4.1
@@ -473,28 +477,65 @@ function FlexRIC() {
     else
         echo "Erro: Não foi possível remover o diretório."
     fi
+
     if [ -d "flexric" ]; then
-        echo "Removendo diretório existente 'flexric'..."
+        echo "[INFO] Removendo FlexRIC antigo..."
         sudo rm -rf flexric
     fi
-    if [ ! -d "flexric" ]; then
-    echo "Instalando FlexRIC"
-    cd "$WORK_DIR" || { echo "Erro ao acessar WORK_DIR"; exit 1; }
+
+    echo "============================================"
+    echo "  Escolha a branch do FlexRIC"
+    echo "============================================"
+    echo "1) 37e85a00 (OAI compatível)"
+    echo "2) dev       (OAI compatível)"
+    echo "3) br-flexric (srsRAN compatível)"
+    read -p "Selecione [1-3]: " BRANCH_OPT
+
+    case $BRANCH_OPT in
+        1) FLEXRIC_BRANCH="37e85a00" ;;
+        2) FLEXRIC_BRANCH="dev" ;;
+        3) FLEXRIC_BRANCH="br-flexric" ;;
+        *)
+            echo "Opção inválida. Abortando."
+            return 1
+            ;;
+    esac   
+    echo "================================================"
+    echo "[INFO] Clonando FlexRIC branch: $FLEXRIC_BRANCH"
+    echo "================================================"
     git clone https://gitlab.eurecom.fr/mosaic5g/flexric.git
-    cd flexric || { echo "Erro ao acessar diretório flexric"; exit 1; }
-    git checkout 37e85a00 #dev #  beabdd072ca9e381d4d27c9fbc6bb19382817489|| { echo "Erro ao alternar para o branch dev"; exit 1; }
-    rm examples/xApp/c/monitor/CMakeLists.txt
-    echo "Copiando xAppMON"
-    cp -f $WORK_DIR/xApp/flexRIC/* examples/xApp/c/monitor/ 
-    mkdir -p build
-    cd build || { echo "Erro ao acessar diretório build"; exit 1; }
-    cmake .. || { echo "Erro no comando cmake"; exit 1; }
-    make -j8 || { echo "Erro ao compilar FlexRIC"; exit 1; }
-    sudo make install || { echo "Erro ao instalar FlexRIC"; exit 1; }
-    #ctest -j8 --output-on-failure
-    else
-        echo "Erro: Não foi possível remover o diretório."
+    cd flexric || exit 1
+    git checkout "$FLEXRIC_BRANCH"
+
+    ############################################
+    # xAPP COPY LOGIC
+    ############################################
+    rm -f examples/xApp/c/monitor/CMakeLists.txt
+    echo "================================================"
+    echo "[INFO] Copiando xApp MONITOR"
+    echo "================================================"
+
+    if [[ "$FLEXRIC_BRANCH" == "37e85a00" || "$FLEXRIC_BRANCH" == "dev" ]]; then
+        echo "[INFO] xApp para OAI"
+        cp -f $WORK_DIR/xApp/flexRIC/oai/* examples/xApp/c/monitor/
+        mkdir -p build
+        cd build || { echo "Erro ao acessar diretório build"; exit 1; }
+        cmake -DSWIG_EXECUTABLE=/usr/bin/swig .. || { echo "Erro no comando cmake"; exit 1; }
+        make -j8 || { echo "Erro ao compilar FlexRIC"; exit 1; }
+        sudo make install || { echo "Erro ao instalar FlexRIC"; exit 1; }
+
+    elif [[ "$FLEXRIC_BRANCH" == "br-flexric" ]]; then
+        echo "[INFO] xApp para srsRAN"
+        cp -f $WORK_DIR/xApp/flexRIC/srsRAN/* examples/xApp/c/monitor/
+        mkdir build
+        export LibConfig_INCLUDE_DIR=/usr/include
+        export LibConfig_LIBRARY=/usr/lib/x86_64-linux-gnu/libconfig.so
+        cd build || { echo "Erro ao acessar diretório build"; exit 1; }
+        cmake -DKPM_VERSION=KPM_V3_00 -DXAPP_DB=NONE_XAPP -DSWIG_EXECUTABLE=/usr/bin/swig ../ || { echo "Erro no comando cmake"; exit 1; }
+        make || { echo "Erro ao compilar FlexRIC"; exit 1; }
+        sudo make install || { echo "Erro ao instalar FlexRIC"; exit 1; }
     fi
+
     if type clone_repo_RAN >/dev/null 2>&1; then
         clone_repo_RAN
     else
@@ -520,14 +561,14 @@ function xApps(){
         | 6 - xappMON_RAN_srsRAN          <-> Collect the E2SMs capabilities E2 Node OAI                                                                 |
         --------------------------------------------------------------------------------------------------------------------------------------------------
         "
-    read -p "Escolha uma opção [1 ... 4] para deploy: " escolha
+    read -p "Escolha uma opção para deploy: " escolha
     case $escolha in
         1) ./flexric/build/examples/xApp/c/monitor/xapp_kpm_moni ;;
         2) ./flexric/build/examples/xApp/c/monitor/xapp_rc_moni ;;
         3) ./flexric/build/examples/xApp/c/kpm_rc/xapp_kpm_rc ;;
         4) ./flexric/build/examples/xApp/c/monitor/xapp_gtp_mac_rlc_pdcp_moni ;;
-        5) ./flexric/build/examples/xApp/c/monitor/xappMON.c ;;
-        6) ./flexric/build/examples/xApp/c/monitor/xappMON_srs.c ;;
+        5) ./flexric/build/examples/xApp/c/monitor/xappMON ;;
+        6) ./flexric/build/examples/xApp/c/monitor/xappMON_srs ;;
         *) echo "Opção inválida! Tente novamente." ;;
         esac
         echo ""
@@ -542,6 +583,26 @@ function startZabbix(){
 function stopZabbix(){
     cd zabbix/zabbix-server-docker/
     docker compose down
+    }
+
+function installZabbix(){
+    cd zabbix/zabbix-agent/ || return
+    echo "=========================================="
+    echo "Instalação do coletor de KPIs Zabbix Agent"
+    echo "=========================================="
+    read -p "Informe o hostname: " HOSTNAME
+    read -p "Informe o IP do Zabbix Server: " SERVER
+    read -p "Informe o metadata (ex: O-RAN): " METADATA
+    echo ""
+    echo "Instalando com os seguintes parâmetros:"
+    echo "Hostname: $HOSTNAME"
+    echo "Server: $SERVER"
+    echo "Metadata: $METADATA"
+    echo ""
+    sudo ./install_zabbix_agent2.sh \
+        --hostname "$HOSTNAME" \
+        --server "$SERVER" \
+        --metadata "$METADATA"
     }
 
 function install_scRIC(){
@@ -704,6 +765,9 @@ case "${COMMAND}" in
         ;;
     "--logs_scRIC")
         logs_scRIC
+        ;;
+    "--installZabbix")
+        installZabbix
         ;;
     "--startZabbix")
         startZabbix
